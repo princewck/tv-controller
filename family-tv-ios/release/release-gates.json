@@ -45,7 +45,7 @@
       "id": "cloud-scale",
       "status": "partial",
       "required": "Validate production API/assets, quota/load and authenticated remote deployment",
-      "evidence": "Worker/D1 and binding exist. Existing authenticated dashboard applied migrations0001/0002; verified10 business tables,5 triggers,0 households. API/assets still HelloWorld template; dashboard code editor failed to load after one reload, Wrangler OAuth pending; production quota/load/CDN not verified."
+      "evidence": "Independent Worker and D1 binding exist; migrations0001/0002 verified in dashboard with10business tables/5triggers. Browser /healthz still rendersHelloWorld template; terminal client receivesCloudflare1010. API/assets undeployed, existing dashboard editor unavailable, officialWranglerOAuth grant awaits confirmation; publicAPI/CDN/quota/load unverified."
     },
     {
       "id": "delete-household",
@@ -71,20 +71,20 @@
     },
     {
       "id": "distribution-archive",
-      "status": "partial",
+      "status": "complete",
       "required": "Valid provisioning profile, release archive, export/signature and App Store Connect upload validation",
-      "evidence": "Build5 signed archive/export verified; IPA release/appstore-export-05/FamilyTV.ipa SHA a48b26cd32ae6078721e232bc1f2d475821b48b25fbe0ac8be4dfaefe10f9fe2. Distribution profile correct, get-task-allow false, no StoreKit/XCTest resources. Existing Xcode account upload validation in progress; no submission."
+      "evidence": "Build5 archive/export and signature verified locally; correct distribution profile/get-task-allow false/no test resources. App Store Connect processed the uploaded binary and reports VALIDATED; version1.0.0 draft associated with build5. Validation is not App Review approval."
     },
     {
       "id": "submission-assets",
       "status": "partial",
-      "evidence": "zh-Hans version metadata, ten screenshots, subtitle/categories/contentrights and computed4+ rating saved in ASC. Seven privacy types fully drafted, not published. Reviewer name/phone missing; public support/privacy hosting, live review family/hardware video and updated legal agreement remain."
+      "evidence": "Version metadata, ten demo-labeled screenshots, categories, computed4+ rating, Build5 association and review business contact saved. Subscription native review screenshot and notes saved. Seven privacy types fully drafted, not published. Public support/privacy hosting, live review family/hardware recording and updated legal agreement remain."
     },
     {
       "id": "legal-storefront",
-      "status": "open",
+      "status": "partial",
       "required": "Confirm legal entity, support contact, target storefronts and applicable registration details before submission. No contact or legal identity has been invented.",
-      "evidence": "User provided contact@minnuo.net and local company certificate. US-first preparation assumption stated; app freeUSD0.00, app and subscription USA-only availability saved. Mac/Vision opt-in disabled. Legal/account agreements remain unaccepted."
+      "evidence": "Local authorized company certificate and contact@minnuo.net used; same Apple organization account supplied existing review name/business telephone. US-first preparation assumption: freeUSD0.00 app andUSD9.90 monthly subscription USA-only. Paid/free Apps agreements currently active, but AppleDeveloperProgramLicenseAgreement dated2026-10-29 awaits explicit action-time consent."
     },
     {
       "id": "review-access",
@@ -105,5 +105,5 @@
   ],
   "analysisSource": "chatgpt-conversation://6ae4c566-d800-83e9-8f8b-4afc6d0dc6e6",
   "checkedAt": "2026-10-30T20:14:58.599150+00:00",
-  "updatedAt": "2026-10-30T22:37:28.751260+00:00"
+  "updatedAt": "2026-10-30T22:48:59.767987+00:00"
 }
