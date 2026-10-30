@@ -8,7 +8,7 @@ errors=[]
 patterns=[r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----',r'gh[pousr]_[A-Za-z0-9]{30,}',r'github_pat_[A-Za-z0-9_]{40,}',r'AKIA[0-9A-Z]{16}',r'LTAI[A-Za-z0-9]{12,}',r'(?<![0-9])192\.168\.\d{1,3}\.\d{1,3}']
 for name in filter(None,files):
  p=root/name
- if any(x in p.parts for x in ['secrets','work','node_modules','.gradle','home-entry']) or p.suffix in ['.apk','.dex','.sqlite','.jks','.keystore','.pem','.key']:
+ if any(x in Path(name).parts for x in ['secrets','work','node_modules','.gradle','home-entry']) or p.suffix in ['.apk','.dex','.sqlite','.jks','.keystore','.pem','.key']:
   errors.append(name+': forbidden artifact');continue
  text=p.read_text()
  if any(re.search(pattern,text) for pattern in patterns): errors.append(name+': credential or device address pattern')
