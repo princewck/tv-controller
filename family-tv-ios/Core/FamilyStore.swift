@@ -62,6 +62,12 @@ enum DataLoadState: Equatable {
         let version = refreshVersion
         loadState = .loading
         if demo {
+            let sampleTime = Date.now.timeIntervalSince1970 * 1000
+            devices = devices.map { device in
+                var sample = device
+                if sample.id == "demo-living" { sample.last_heartbeat_ms = sampleTime }
+                return sample
+            }
             if selectedID == "demo-bedroom" { usage = DemoData.usage(watched: 0) }
             else if usage == nil { usage = DemoData.usage() }
             lastRefresh = .now

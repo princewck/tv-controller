@@ -12,7 +12,7 @@ struct WelcomeView: View {
                     Text("好好看，\n也好好休息。")
                         .font(.largeTitle.bold()).fixedSize(horizontal: false, vertical: true)
                     Text("观有度，让电视时间有商有量。")
-                        .font(.title3).foregroundStyle(.secondary)
+                        .font(.title3).foregroundStyle(Color("SupportingText"))
                     VStack(alignment: .leading, spacing: 24) {
                         intro("看得明白", "了解受管应用的观看时长。", "chart.bar")
                         intro("休息有约定", "设置观看额度和休息时段。", "moon")
@@ -22,16 +22,16 @@ struct WelcomeView: View {
                         Text("需要先准备一台兼容的 Android TV")
                             .font(.headline)
                         Text("电视需安装并配置配套客户端；iPhone 不能直接管理未安装客户端的电视、Apple TV 或 HDMI 设备。")
-                            .font(.subheadline).foregroundStyle(.secondary)
+                            .font(.subheadline).foregroundStyle(Color("SupportingText"))
                         NavigationLink("如何添加电视") { InstallationView() }.frame(minHeight: 44)
                     }
                     Button { showLogin = true } label: { Text("连接我的家庭").frame(maxWidth: .infinity, minHeight: 44) }
                         .buttonStyle(.borderedProminent).accessibilityIdentifier("connectFamily")
                     Button("先体验演示模式") { store.enterDemo() }
                         .frame(maxWidth: .infinity, minHeight: 44).accessibilityIdentifier("enterDemo")
-                    if subscription.hasPurchaseIntent { Text("你从 App Store 发起了订阅，请先连接购买要使用的家庭，再继续。").font(.footnote).foregroundStyle(.secondary) }
+                    if subscription.hasPurchaseIntent { Text("你从 App Store 发起了订阅，请先连接购买要使用的家庭，再继续。").font(.footnote).foregroundStyle(Color("SupportingText")) }
                     Text("演示无需账号，不连接真实电视。")
-                        .font(.footnote).foregroundStyle(.secondary).frame(maxWidth: .infinity)
+                        .font(.footnote).foregroundStyle(Color("SupportingText")).frame(maxWidth: .infinity)
                 }.padding(24).frame(maxWidth: 600)
             }
             .navigationTitle("观有度").navigationBarTitleDisplayMode(.inline)
@@ -41,7 +41,7 @@ struct WelcomeView: View {
     private func intro(_ title: String, _ subtitle: String, _ icon: String) -> some View {
         HStack(alignment: .top, spacing: 16) {
             Image(systemName: icon).font(.title2).foregroundStyle(Color.accentColor).frame(width: 30).accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 4) { Text(title).font(.headline); Text(subtitle).foregroundStyle(.secondary) }
+            VStack(alignment: .leading, spacing: 4) { Text(title).font(.headline); Text(subtitle).foregroundStyle(Color("SupportingText")) }
         }
     }
 }
@@ -63,7 +63,7 @@ struct LoginView: View {
                 Section("服务地址") {
                     TextField("HTTPS 服务地址", text: $origin).keyboardType(.URL).textContentType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled()
                     Text("登录凭证将发送到此地址，请仅连接你信任的服务。")
-                        .font(.footnote).foregroundStyle(.secondary)
+                        .font(.footnote).foregroundStyle(Color("SupportingText"))
                 }
                 Section {
                     Button { connect() } label: {

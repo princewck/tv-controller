@@ -22,7 +22,7 @@ struct RegistrationView: View {
             Section {
                 NavigationLink("隐私与数据") { PrivacyView() }
                 Link("使用条款", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
-                Text(origin).font(.footnote).foregroundStyle(.secondary)
+                Text(origin).font(.footnote).foregroundStyle(Color("SupportingText"))
             }
         }.navigationTitle("创建家庭").navigationBarTitleDisplayMode(.inline)
     }

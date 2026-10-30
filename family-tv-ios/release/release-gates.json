@@ -44,8 +44,8 @@
     {
       "id": "cloud-scale",
       "status": "partial",
-      "required": "Validate current gateway load, retry strategy and production deployment. Cloudflare use authorized; no migration performed yet",
-      "evidence": "Worker/D1 resources and binding exist. Full API, Apple verification and static downloads prepared; local workerd plus D1 and dry-run passed. Official Wrangler OAuth consent is awaiting user confirmation (new persistent write access); remote migrations/deployment and quota/load tests not performed."
+      "required": "Validate production API/assets, quota/load and authenticated remote deployment",
+      "evidence": "Worker/D1 and binding exist. Existing authenticated dashboard applied migrations0001/0002; verified10 business tables,5 triggers,0 households. API/assets still HelloWorld template; dashboard code editor failed to load after one reload, Wrangler OAuth pending; production quota/load/CDN not verified."
     },
     {
       "id": "delete-household",
@@ -56,13 +56,13 @@
     {
       "id": "native-tests",
       "status": "partial",
-      "evidence": "release/native-release-03-tests.xcresult: final source 15 passed, 0 failed. Includes local StoreKit monthly USD9.90 purchase/account binding/expiry, restored original-ID receipt selection, proof forwarding, async household isolation, demo and setup. Cloud restoration suite 10/10. No real Apple sandbox transaction or TV execution proof."
+      "evidence": "Build4 source: release/native-store-final-large-tests.xcresult16 passed0 failed; final-medium2 UI passed0 failed. Demo heartbeat freshness and bounded StoreKit receipt/expiry settling added. Capture-only history recaptures also passed once per size. Cloud10/10, adapter48 and Android runtime7/7 remain prior evidence. Actual Apple Sandbox and TV execution not verified."
     },
     {
       "id": "visual-accessibility",
       "status": "partial",
       "required": "Review iPhone screens, dark appearance, large text, landscape, and accessibility labels",
-      "evidence": "Four setup slides and scoped paywall/30-day history reviewed. Light normal type and dark accessibility XXXL captured; date density/height and contrast corrected. Independent reviewer final scoped disposition ship. Support/privacy pages rendered in Chrome at actual width433, content width416, no horizontal overflow. Full VoiceOver/landscape/account keyboard coverage remains pending."
+      "evidence": "Both shipped phone sizes have5 verified native screenshots, each clearly demo-labeled, captured from passing UI flows. SupportingText adaptive token and primary duration values implemented. Independent fresh full review disposition ship at light/default-type screenshot scope; prior dark/large-text history review separately documented. Full VoiceOver/landscape/account keyboard remain pending."
     },
     {
       "id": "real-tv-verification",
@@ -73,18 +73,18 @@
       "id": "distribution-archive",
       "status": "partial",
       "required": "Valid provisioning profile, release archive, export/signature and App Store Connect upload validation",
-      "evidence": "Build3 archived/exported from final native source; IPA seal verified with codesign --deep --strict, matching Apple distribution profile and familytv bundle, get-task-allow false, profile expiry valid, production origin embedded, no StoreKit/XCTest resources. See release/build-evidence.json and native-release-03-source.json. App Store upload/validation has not been performed."
+      "evidence": "Build4 archived/exported to release/appstore-export-04/FamilyTV.ipa; signature verified codesign --deep --strict, correct distribution profile and app identifier, get-task-allow false, no StoreKit or XCTest resources in IPA. See build-evidence.json. Not uploaded or App Store validated."
     },
     {
       "id": "submission-assets",
       "status": "partial",
-      "evidence": "Draft metadata rewritten for daily quota/cloud Plus. App icon and setup screenshots exist; support/privacy HTML prepared locally. Need public hosting, full screenshots, review household/hardware video and legal agreement review."
+      "evidence": "Local zh-Hans metadata and ten native screenshot candidates prepared; medium screenshots upload in progress. Version metadata Save blocked by missing review contact name/phone; no fabricated contact. Public support/privacy hosting, live review household/hardware video and updated legal agreement remain."
     },
     {
       "id": "legal-storefront",
       "status": "open",
       "required": "Confirm legal entity, support contact, target storefronts and applicable registration details before submission. No contact or legal identity has been invented.",
-      "evidence": "User provided contact@minnuo.net and authorized local certificate. Storefront selection and applicable registration details remain unconfirmed."
+      "evidence": "User provided contact@minnuo.net and authorized local company certificate. US-first preparation assumption stated after optional question unanswered; subscriptionUSA availability andUSD9.90 saved, group/product zh-Hans+en-US localizations saved. App availability and legal/account agreement checks remain."
     },
     {
       "id": "review-access",
@@ -103,5 +103,7 @@
       "evidence": "Matching independently verified AppTransaction proof, one-hour freshness, original-family exclusion, atomic ownership arbitration, renewed/refunded notifications mapped by original ID, native restore and owned-receipt sync implemented. 10 cloud tests and 15 native tests pass; synthetic signature tests and real Apple certificate/online status checks pass in workerd. Public deployment and actual sandbox restore remain unverified."
     }
   ],
-  "checkedAt": "2026-10-30T20:14:58.599150+00:00"
+  "analysisSource": "chatgpt-conversation://6ae4c566-d800-83e9-8f8b-4afc6d0dc6e6",
+  "checkedAt": "2026-10-30T20:14:58.599150+00:00",
+  "updatedAt": "2026-10-30T21:46:39.488794+00:00"
 }

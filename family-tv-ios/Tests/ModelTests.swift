@@ -58,5 +58,17 @@ final class ModelTests: XCTestCase {
         XCTAssertEqual(usage.appTotals(days: 30).map(\.app), ["b", "a"])
         XCTAssertEqual(usage.appTotals(days: 7).map(\.seconds), [60])
     }
+    @MainActor func testDemoRefreshKeepsOnlyConnectedSampleFresh() async {
+        let store = FamilyStore(restoreSession: false)
+        store.enterDemo()
+        store.devices[0].last_heartbeat_ms = Date.now.addingTimeInterval(-120).timeIntervalSince1970 * 1000
+        XCTAssertFalse(store.devices[0].isOnline())
+        await store.refresh()
+        XCTAssertTrue(store.devices[0].isOnline())
+        XCTAssertNil(store.devices[1].last_heartbeat_ms)
+        XCTAssertFalse(store.devices[1].isOnline())
+        XCTAssertTrue(store.demo)
+        XCTAssertNil(store.auth)
+    }
 
 }

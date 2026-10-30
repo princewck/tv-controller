@@ -12,7 +12,7 @@ struct SubscriptionView: View {
             if family.demo { Section { DemoBanner() } }
             Section {
                 Text("家庭云 Plus").font(.largeTitle.bold())
-                Text("把每一天，连成看得懂的变化。").font(.title3).foregroundStyle(.secondary)
+                Text("把每一天，连成看得懂的变化。").font(.title3).foregroundStyle(Color("SupportingText"))
             }
             Section("订阅包含") {
                 Label("云端保存最近 30 天观看历史", systemImage: "icloud")
@@ -32,9 +32,9 @@ struct SubscriptionView: View {
                         }.buttonStyle(.borderedProminent).disabled(subscription.purchasing || restoring || subscription.entitled || family.demo || accountToken == nil || family.capabilities?.paid_history != true)
                     } else if subscription.loading { ProgressView("正在获取 App Store 价格…") }
                     else { Button("重新获取订阅价格") { Task { await subscription.load() } } }
-                    if !family.demo && family.capabilities?.paid_history != true { Text("当前家庭服务尚未支持家庭云订阅，请确认服务连接后重试。").font(.footnote).foregroundStyle(.secondary) }
-                    if family.demo { Text("演示模式不发起真实购买。").font(.footnote).foregroundStyle(.secondary) }
-                    else if accountToken == nil { Text("请先登录家庭账号，再订阅家庭云。").font(.footnote).foregroundStyle(.secondary) }
+                    if !family.demo && family.capabilities?.paid_history != true { Text("当前家庭服务尚未支持家庭云订阅，请确认服务连接后重试。").font(.footnote).foregroundStyle(Color("SupportingText")) }
+                    if family.demo { Text("演示模式不发起真实购买。").font(.footnote).foregroundStyle(Color("SupportingText")) }
+                    else if accountToken == nil { Text("请先登录家庭账号，再订阅家庭云。").font(.footnote).foregroundStyle(Color("SupportingText")) }
                 }
                 Button("恢复购买") {
                     Task {
@@ -54,9 +54,9 @@ struct SubscriptionView: View {
                     Button("重新同步家庭云") { Task { if let accountToken { let ids = await family.syncSubscriptions(subscription.receipts(for: accountToken, ownedOriginalIDs: Set(family.premium.original_ids ?? []))); await subscription.finishSyncedTransactions(transactionIDs: ids) } } }
                 }
                 if subscription.entitled && !family.premiumActive && !subscription.hasAccess(for: family.auth?.identity.tenant_id) && !family.demo { Text("订阅关联其他家庭时，请登录原家庭。原家庭已永久删除的，可在这里恢复购买。").font(.subheadline) }
-                if let message = subscription.message { Text(message).font(.subheadline).foregroundStyle(.secondary) }
+                if let message = subscription.message { Text(message).font(.subheadline).foregroundStyle(Color("SupportingText")) }
             } footer: {
-                Text("月度自动续订。付款由 Apple 收取，续订价格以购买确认页为准；可随时在 Apple 订阅设置中取消，取消后可用至当前周期结束。订阅有效时保留最近 30 天云端历史；到期后停止保留往日记录。设备连接和基础控制可免费使用。")
+                Text("月度自动续订。付款由 Apple 收取，续订价格以购买确认页为准；可随时在 Apple 订阅设置中取消，取消后可用至当前周期结束。订阅有效时保留最近 30 天云端历史；到期后停止保留往日记录。设备连接和基础控制可免费使用。").foregroundStyle(Color("SupportingText"))
             }
             Section {
                 NavigationLink("隐私与数据") { PrivacyView() }

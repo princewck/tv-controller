@@ -9,7 +9,7 @@ struct HistoryView: View {
     var body: some View {
         List {
             if store.demo { Section { DemoBanner() } }
-            if let failure = store.loadState.failure { Section { Label(failure, systemImage: "wifi.exclamationmark").font(.subheadline); Text("以下记录可能尚未更新。").font(.footnote).foregroundStyle(.secondary) } }
+            if let failure = store.loadState.failure { Section { Label(failure, systemImage: "wifi.exclamationmark").font(.subheadline); Text("以下记录可能尚未更新。").font(.footnote).foregroundStyle(Color("SupportingText")) } }
             if !store.premiumActive && !store.demo {
                 Section {
                     ContentUnavailableView("看见更长远的变化", systemImage: "chart.bar.xaxis", description: Text("订阅家庭云 Plus，保存云端观看历史并查看趋势分析。"))
@@ -46,7 +46,7 @@ struct HistoryView: View {
                     ForEach(usage.appTotals(days: range), id: \.app) { item in
                         durationRow(DailyUsage.name(item.app), seconds: item.seconds)
                     }
-                    if usage.appTotals(days: range).isEmpty { Text("这段时间尚无采集记录。").foregroundStyle(.secondary) }
+                    if usage.appTotals(days: range).isEmpty { Text("这段时间尚无采集记录。").foregroundStyle(Color("SupportingText")) }
                 }
                 Section("每日观看") {
                     ForEach(usage.days(range).reversed(), id: \.day) { item in durationRow(item.day, seconds: item.seconds) }

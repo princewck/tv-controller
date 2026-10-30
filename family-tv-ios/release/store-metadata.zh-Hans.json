@@ -14,7 +14,9 @@
   "reviewContact": null,
   "reviewCredentials": null,
   "hardwareDemoVideo": null,
-  "storefronts": null,
+  "storefronts": [
+    "USA"
+  ],
   "copyright": "2026 Shanghai Minnuo Network Technology Co., Ltd.",
   "supportEmail": "contact@minnuo.net",
   "inAppPurchases": [
@@ -37,5 +39,6 @@
       "productionPurchaseVerified": false
     }
   ],
-  "appAppleID": "6829013285"
+  "appAppleID": "6829013285",
+  "storefrontBasis": "US-first preparation assumption stated after optional storefront clarification remained unanswered"
 }

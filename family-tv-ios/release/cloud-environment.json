@@ -10,8 +10,18 @@
   "binding": "DB",
   "boundToWorker": true,
   "previewUsesProductionDatabase": false,
-  "schemaMigrated": false,
+  "schemaMigrated": true,
   "testEnvironment": "https://tv.chengkai.wang",
   "supportEmail": "contact@minnuo.net",
-  "dashboardURL": "https://dash.cloudflare.com/0e467c906db204b9448ef5cb763b5f6a/workers/services/view/familytv-api/production/settings#bindings"
+  "dashboardURL": "https://dash.cloudflare.com/0e467c906db204b9448ef5cb763b5f6a/workers/services/view/familytv-api/production/settings#bindings",
+  "schemaMigrationMethod": "Existing authenticated Cloudflare dashboard D1 console",
+  "schemaMigrations": [
+    "0001_cloud.sql",
+    "0002_usage_samples.sql"
+  ],
+  "businessTablesVerified": 10,
+  "businessTriggersVerified": 5,
+  "householdsAfterInitialization": 0,
+  "schemaProof": "release/cloud-d1-schema-proof.png",
+  "workerEditorUnavailable": "Dashboard editor remained blank/Loading after one reload; no code or assets published"
 }

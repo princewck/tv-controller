@@ -18,7 +18,7 @@ struct SettingsView: View {
                     HStack {
                         Label(device.label, systemImage: "tv")
                         Spacer()
-                        Text(device.isOnline() ? "最近在线" : "未连接").foregroundStyle(.secondary)
+                        Text(device.isOnline() ? "最近在线" : "未连接").foregroundStyle(Color("SupportingText"))
                     }.accessibilityElement(children: .combine)
                 }
                 NavigationLink("添加电视") { InstallationView() }

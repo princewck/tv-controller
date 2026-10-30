@@ -10,15 +10,15 @@ struct InstallationView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Text("\(step + 1) / 4").font(.subheadline).monospacedDigit().foregroundStyle(.secondary)
+                Text("\(step + 1) / 4").font(.subheadline).monospacedDigit().foregroundStyle(Color("SupportingText"))
                 Spacer()
-                if store.demo { Text("演示").font(.subheadline).foregroundStyle(.secondary) }
+                if store.demo { Text("演示").font(.subheadline).foregroundStyle(Color("SupportingText")) }
             }.padding(.horizontal, 24).padding(.top, 12)
             TabView(selection: Binding(get: { step }, set: { target in
                 if canNavigate(to: target) { step = target }
             })) {
                 slide(icon: "wifi", title: "先连上同一个 Wi-Fi", subtitle: "请确保电视和运行 Codex、Cursor 等 Agent 助手的电脑，在同一个 Wi-Fi 下。") {
-                    Text("准备好电视和电脑，就可以继续。").foregroundStyle(.secondary)
+                    Text("准备好电视和电脑，就可以继续。").foregroundStyle(Color("SupportingText"))
                 }.tag(0)
                 slide(icon: "camera.viewfinder", title: "截图，交给你的助手", subtitle: "请截图本页并发给你的 Agent 助手。") {
                     if let ticket = store.setupTicket {
@@ -28,7 +28,7 @@ struct InstallationView: View {
                             LabeledContent("服务", value: ticket.origin).font(.footnote)
                             Text("设备：\(ticket.device)").font(.caption.monospaced()).textSelection(.enabled)
                             VStack(alignment: .leading, spacing: 6) {
-                                Text("安装码 · 15 分钟内有效").font(.footnote).foregroundStyle(.secondary)
+                                Text("安装码 · 15 分钟内有效").font(.footnote).foregroundStyle(Color("SupportingText"))
                                 Text(ticket.displayCode).font(.title3.monospaced().bold()).textSelection(.enabled)
                             }
                             if ticket.expired {
@@ -53,7 +53,7 @@ struct InstallationView: View {
                     }.padding(20).background(.background, in: .rect(cornerRadius: 16))
                     Text("最后请执行系统重启，不要点“关机”；关机可能只是熄屏。")
                         .font(.subheadline).foregroundStyle(.primary)
-                    if let checkError { Text(checkError).font(.footnote).foregroundStyle(.secondary) }
+                    if let checkError { Text(checkError).font(.footnote).foregroundStyle(Color("SupportingText")) }
                     if store.demo {
                         Button("演示检查通过的效果") {
                             health = InstallationHealth(device: "demo-install", checks: InstallationChecks(connected: true, playback_test: true, adb_closed: true, rebooted: true, permissions: true), complete: true)
@@ -63,7 +63,7 @@ struct InstallationView: View {
                 }
                 if verifiedHealth?.complete == true {
                 slide(icon: verifiedHealth?.complete == true ? "checkmark.circle" : "hourglass", title: verifiedHealth?.complete == true ? "配置完成" : "还差最后的检查", subtitle: verifiedHealth?.complete == true ? "电视已经准备好，现在可以约定观看与休息时间了。" : "请回到上一步，等待健康检查通过。") {
-                    if verifiedHealth?.complete == true { Text(store.demo ? "这是演示结果，没有配置真实电视。" : "接下来，交给观有度。").foregroundStyle(.secondary) }
+                    if verifiedHealth?.complete == true { Text(store.demo ? "这是演示结果，没有配置真实电视。" : "接下来，交给观有度。").foregroundStyle(Color("SupportingText")) }
                 }.tag(3)
                 }
             }.tabViewStyle(.page(indexDisplayMode: .never))
@@ -110,7 +110,7 @@ struct InstallationView: View {
         }
     }
     private func check(_ title: String, _ passed: Bool) -> some View {
-        HStack { Image(systemName: passed ? "checkmark.circle.fill" : "circle").foregroundStyle(passed ? Color.accentColor : .secondary); Text(title); Spacer(); Text(passed ? "通过" : "等待").foregroundStyle(.secondary).font(.footnote) }.accessibilityElement(children: .combine)
+        HStack { Image(systemName: passed ? "checkmark.circle.fill" : "circle").foregroundStyle(passed ? Color.accentColor : .secondary); Text(title); Spacer(); Text(passed ? "通过" : "等待").foregroundStyle(Color("SupportingText")).font(.footnote) }.accessibilityElement(children: .combine)
     }
     private func slide<Content: View>(icon: String, title: String, subtitle: String, @ViewBuilder content: () -> Content) -> some View {
         ScrollView {

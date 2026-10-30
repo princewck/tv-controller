@@ -6,23 +6,39 @@ final class FamilyFlowTests: XCTestCase {
         app.launchArguments = ["--demo"]
         app.launch()
         XCTAssertTrue(app.staticTexts["演示模式 · 所有数据均为示例"].waitForExistence(timeout: 10))
+        capture(app, name: "store-01-today")
         app.buttons["grantTime"].tap()
         app.buttons["confirmGrant"].tap()
         for _ in 0..<3 where !app.staticTexts["演示：已给予 15 分钟临时额度。"].exists { app.swipeDown() }
         XCTAssertTrue(app.staticTexts["演示：已给予 15 分钟临时额度。"].waitForExistence(timeout: 5))
         app.tabBars.buttons["规则"].tap()
+        XCTAssertTrue(app.navigationBars["观看规则"].waitForExistence(timeout: 5))
+        app.swipeDown()
+        XCTAssertTrue(app.staticTexts["演示模式 · 所有数据均为示例"].waitForExistence(timeout: 5))
+        capture(app, name: "store-02-rules")
         for _ in 0..<3 where !app.buttons["editRules"].exists { app.swipeUp() }
         app.buttons["editRules"].tap()
         XCTAssertTrue(app.navigationBars["编辑规则"].waitForExistence(timeout: 5))
         app.buttons["saveRules"].tap()
         app.tabBars.buttons["记录"].tap()
         XCTAssertTrue(app.staticTexts["本周合计"].waitForExistence(timeout: 5))
+        revealDemoBanner(app)
+        capture(app, name: "store-03-history-week")
+        app.buttons["30 天"].tap()
+        XCTAssertTrue(app.staticTexts["近 30 天合计"].waitForExistence(timeout: 5))
+        revealDemoBanner(app)
+        capture(app, name: "store-04-history-month")
     }
 }
 
 extension FamilyFlowTests {
+    @MainActor private func revealDemoBanner(_ app: XCUIApplication) {
+        let banner = app.staticTexts["演示模式 · 所有数据均为示例"]
+        for _ in 0..<3 where !banner.isHittable { app.swipeDown() }
+        XCTAssertTrue(banner.isHittable)
+    }
     @MainActor private func capture(_ app: XCUIApplication, name: String) {
-        let attachment = XCTAttachment(screenshot: app.screenshot())
+        let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
         attachment.name = name
         attachment.lifetime = .keepAlways
         add(attachment)

@@ -13,7 +13,7 @@ struct TodayView: View {
             if let failure = store.loadState.failure {
                 Section {
                     Label("未能更新状态", systemImage: "exclamationmark.triangle")
-                    Text(failure).font(.subheadline).foregroundStyle(.secondary)
+                    Text(failure).font(.subheadline).foregroundStyle(Color("SupportingText"))
                     if let last = store.lastRefresh { Text("以下为上次获取的数据：\(last.formatted(date: .abbreviated, time: .shortened))").font(.footnote) }
                     Button("重新获取") { Task { await store.refresh() } }
                 }
@@ -26,10 +26,10 @@ struct TodayView: View {
                     if let device = store.selected {
                         TimelineView(.periodic(from: .now, by: 10)) { context in
                             Label(device.isOnline(at: context.date) ? "最近在线" : "离线或尚未连接", systemImage: device.isOnline(at: context.date) ? "wifi" : "wifi.slash")
-                                .foregroundStyle(device.isOnline(at: context.date) ? Color.accentColor : Color.secondary)
+                                .foregroundStyle(device.isOnline(at: context.date) ? Color.accentColor : Color("SupportingText"))
                         }
                         if let ms = device.last_heartbeat_ms {
-                            LabeledContent("上次电视连接") { Text(Date(timeIntervalSince1970: ms / 1000), style: .relative).foregroundStyle(.secondary) }
+                            LabeledContent("上次电视连接") { Text(Date(timeIntervalSince1970: ms / 1000), style: .relative).foregroundStyle(Color("SupportingText")) }
                         }
                     }
                 }
@@ -46,7 +46,7 @@ struct TodayView: View {
                         LabeledContent("每日观看上限", value: limit.durationText)
                     }
                     if usage.state.control_revision != nil {
-                        Text(usage.state.executionText).font(.subheadline).foregroundStyle(.secondary)
+                        Text(usage.state.executionText).font(.subheadline).foregroundStyle(Color("SupportingText"))
                     }
                     if (usage.state.override_seconds ?? 0) > 0 {
                         LabeledContent("临时额度", value: (usage.state.override_seconds ?? 0).durationText)
@@ -66,7 +66,7 @@ struct TodayView: View {
                 }
                 Section("受管应用") {
                     let rows = usage.daily.filter { $0.day == usage.today && $0.seconds > 0 }
-                    if rows.isEmpty { Text("今天还没有观看记录").foregroundStyle(.secondary) }
+                    if rows.isEmpty { Text("今天还没有观看记录").foregroundStyle(Color("SupportingText")) }
                     ForEach(rows) { row in LabeledContent(row.appName, value: row.seconds.durationText) }
                 }
             } else if store.devices.isEmpty && store.loadState == .loaded {
@@ -81,7 +81,7 @@ struct TodayView: View {
                 if let last = store.lastRefresh { LabeledContent("本页更新于") { Text(last, style: .time) } }
                 Button("刷新状态") { Task { await store.refresh() } }
                 Text("统计日期按北京时间计算；仅包含受管应用的播放采样。")
-                    .font(.footnote).foregroundStyle(.secondary)
+                    .font(.footnote).foregroundStyle(Color("SupportingText"))
             }
         }
         .navigationTitle("今天")

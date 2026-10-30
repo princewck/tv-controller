@@ -16,6 +16,7 @@ struct RootView: View {
             if store.connected { MainTabs() } else { WelcomeView() }
         }
         .tint(.accentColor)
+        .labeledContentStyle(ReadableFieldStyle())
         .task(id: store.connected && scenePhase == .active) {
             guard store.connected, scenePhase == .active else { return }
             while !Task.isCancelled {
@@ -55,8 +56,18 @@ struct MainTabs: View {
 struct DemoBanner: View {
     var body: some View {
         Label("演示模式 · 所有数据均为示例", systemImage: "play.rectangle")
-            .font(.subheadline).foregroundStyle(.secondary).accessibilityIdentifier("demoBanner")
+            .font(.subheadline).foregroundStyle(Color("SupportingText")).accessibilityIdentifier("demoBanner")
     }
 }
 
 private struct SubscriptionSyncID: Hashable { var account: String?; var enabled: Bool; var receipts: [String]; var originalIDs: [String] }
+
+private struct ReadableFieldStyle: LabeledContentStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        LabeledContent {
+            configuration.content.foregroundStyle(Color.primary)
+        } label: {
+            configuration.label
+        }.labeledContentStyle(.automatic)
+    }
+}

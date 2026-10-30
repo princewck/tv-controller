@@ -10,7 +10,7 @@ struct RulesView: View {
                 Section {
                     if let failure = store.loadState.failure {
                         Label("未能获取家庭规则", systemImage: "exclamationmark.triangle")
-                        Text(failure).font(.subheadline).foregroundStyle(.secondary)
+                        Text(failure).font(.subheadline).foregroundStyle(Color("SupportingText"))
                         Button("重新获取") { Task { await store.refresh() } }
                     } else { ProgressView("正在获取家庭规则…") }
                 }
@@ -19,7 +19,7 @@ struct RulesView: View {
                 Section { Text("显示上次获取的规则，尚未确认服务端是否已更新。").font(.subheadline); Button("重新获取") { Task { await store.refresh() } } }
             }
             if let limit = store.policy.daily_limit_seconds {
-                Section("每日观看上限") { LabeledContent("每天", value: limit.durationText); Text("每日额度按北京时间午夜重置，临时额度可以额外放行。").font(.footnote).foregroundStyle(.secondary) }
+                Section("每日观看上限") { LabeledContent("每天", value: limit.durationText); Text("每日额度按北京时间午夜重置，临时额度可以额外放行。").font(.footnote).foregroundStyle(Color("SupportingText")) }
             }
             if store.capabilities?.staged_rules != false {
             Section {
@@ -28,18 +28,18 @@ struct RulesView: View {
                 LabeledContent("第二次挑战后", value: store.policy.second_reward_seconds.durationText)
                 LabeledContent("后续每次", value: store.policy.repeat_seconds.durationText)
                 LabeledContent("连续休息后重置", value: store.policy.rest_reset_seconds.durationText)
-            } header: { Text("观看与休息") } footer: { Text("当前服务按阶段执行；额度用完后显示电视端挑战页。跨午夜不会自动重置。家庭内电视各自计时。") }
+            } header: { Text("观看与休息") } footer: { Text("当前服务按阶段执行；额度用完后显示电视端挑战页。跨午夜不会自动重置。家庭内电视各自计时。").foregroundStyle(Color("SupportingText")) }
             }
             Section {
-                if store.policy.banned_windows.isEmpty { Text("尚未设置休息时段").foregroundStyle(.secondary) }
+                if store.policy.banned_windows.isEmpty { Text("尚未设置休息时段").foregroundStyle(Color("SupportingText")) }
                 ForEach(store.policy.banned_windows) { window in
                     VStack(alignment: .leading, spacing: 6) {
-                        HStack { Text(window.label).font(.headline); Spacer(); Text(window.enabled ? "已开启" : "已关闭").foregroundStyle(.secondary) }
+                        HStack { Text(window.label).font(.headline); Spacer(); Text(window.enabled ? "已开启" : "已关闭").foregroundStyle(Color("SupportingText")) }
                         Text("\(window.start) – \(window.end)").monospacedDigit()
-                        Text(daysText(window.days)).font(.footnote).foregroundStyle(.secondary)
+                        Text(daysText(window.days)).font(.footnote).foregroundStyle(Color("SupportingText"))
                     }.padding(.vertical, 4)
                 }
-            } header: { Text("休息时段 · 北京时间") } footer: { Text("跨午夜时段归属于开始的那一天；开始与结束相同表示全天。临时额度优先于休息时段。") }
+            } header: { Text("休息时段 · 北京时间") } footer: { Text("跨午夜时段归属于开始的那一天；开始与结束相同表示全天。临时额度优先于休息时段。").foregroundStyle(Color("SupportingText")) }
             Section { Button("编辑规则") { editing = true }.accessibilityIdentifier("editRules") }
             }
         }
@@ -68,7 +68,7 @@ struct PolicyEditor: View {
                         if draft.daily_limit_seconds != nil {
                             minutes("每天最多", Binding(get: { draft.daily_limit_seconds ?? 5400 }, set: { draft.daily_limit_seconds = $0 }), range: 1...1440)
                         }
-                        Text(store.capabilities?.staged_rules == false ? "按北京时间午夜重置。临时额度可以额外放行；家长暂停优先于临时额度。" : "按北京时间午夜重置；阶段额度同时生效。临时额度可额外放行，家长暂停优先于临时额度。").font(.footnote).foregroundStyle(.secondary)
+                        Text(store.capabilities?.staged_rules == false ? "按北京时间午夜重置。临时额度可以额外放行；家长暂停优先于临时额度。" : "按北京时间午夜重置；阶段额度同时生效。临时额度可额外放行，家长暂停优先于临时额度。").font(.footnote).foregroundStyle(Color("SupportingText"))
                     }
                 }
                 if store.capabilities?.staged_rules != false {
@@ -85,7 +85,7 @@ struct PolicyEditor: View {
                         NavigationLink {
                             WindowEditor(window: $window)
                         } label: {
-                            VStack(alignment: .leading) { Text(window.label.isEmpty ? "休息时段" : window.label); Text("\(window.start) – \(window.end) · \(window.enabled ? "开启" : "关闭")").font(.footnote).foregroundStyle(.secondary) }
+                            VStack(alignment: .leading) { Text(window.label.isEmpty ? "休息时段" : window.label); Text("\(window.start) – \(window.end) · \(window.enabled ? "开启" : "关闭")").font(.footnote).foregroundStyle(Color("SupportingText")) }
                         }
                     }.onDelete { draft.banned_windows.remove(atOffsets: $0) }
                     if draft.banned_windows.count < 32 {
@@ -104,7 +104,7 @@ struct PolicyEditor: View {
     }
     private func minutes(_ title: String, _ seconds: Binding<Int>, range: ClosedRange<Int>) -> some View {
         Stepper(value: Binding(get: { seconds.wrappedValue / 60 }, set: { seconds.wrappedValue = $0 * 60 }), in: range) {
-            VStack(alignment: .leading, spacing: 3) { Text(title); Text(seconds.wrappedValue.durationText).foregroundStyle(.secondary).monospacedDigit() }
+            VStack(alignment: .leading, spacing: 3) { Text(title); Text(seconds.wrappedValue.durationText).foregroundStyle(Color("SupportingText")).monospacedDigit() }
         }
     }
 }
