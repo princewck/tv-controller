@@ -10,7 +10,7 @@ export function cspFor(html){
 }
 const equal=(a,b)=>typeof a==='string'&&typeof b==='string'&&Buffer.byteLength(a)===Buffer.byteLength(b)&&timingSafeEqual(Buffer.from(a),Buffer.from(b));
 const cookieToken=req=>(req.headers.cookie||'').split(';').map(x=>x.trim()).find(x=>x.startsWith('__Host-tv_session='))?.slice('__Host-tv_session='.length);
-export function createApp(store,config,{logger=console.log}={}){
+export function createApp(store,config,{logger=console.log,reviewer}={}){
   const app=express(),html=readFileSync(new URL('../public/math_test.html',import.meta.url),'utf8'),adminHtml=readFileSync(new URL('../public/admin.html',import.meta.url),'utf8');
   const pageCsp=cspFor(html+adminHtml);
   app.disable('x-powered-by');app.set('trust proxy','loopback');
@@ -57,7 +57,7 @@ export function createApp(store,config,{logger=console.log}={}){
   app.get('/lock_status',browser,(req,res)=>res.json(store.browserState(req.session)));
   app.post('/answer',origin,browser,csrf,(req,res)=>res.json(store.answer(req.session,req.body)));
   app.post('/unlock',origin,browser,csrf,(req,res)=>res.json(store.unlock(req.session,req.body.nonce)));
-  installAdmin(app,store,config,{origin,browser,csrf});
+  installAdmin(app,store,config,{origin,browser,csrf,reviewer});
   app.use((req,res)=>res.status(404).json({error:'Not found'}));
   app.use((err,req,res,next)=>{
     const status=err instanceof HttpError?err.status:(err.type==='entity.too.large'?413:err instanceof SyntaxError?400:500);

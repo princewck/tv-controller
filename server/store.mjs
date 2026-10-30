@@ -3,6 +3,8 @@ import { DatabaseSync } from 'node:sqlite';
 import { mkdirSync, readFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import {PolicyEngine} from './policy.mjs';
+import {pickQuestion,learningForDevice} from './learning.mjs';
+import {activeDisplay,displayState} from './display.mjs';
 import { randomBytes, randomInt, randomUUID, createHash } from 'node:crypto';
 
 export const hash=value=>createHash('sha256').update(value).digest('hex');
@@ -76,7 +78,7 @@ export class Store {
     if(!/^[a-zA-Z0-9_.-]{1,180}$/.test(body.app||'')||typeof body.is_playing!=='boolean'
       ||! /^[0-9a-f-]{36}$/i.test(body.event_id||''))throw new HttpError(400,'Invalid heartbeat');
     this.policy.maybeReset(device.device_name);
-    const math=this.activeMath(device.device_name,now);
+    const math=this.activeMath(device.device_name,now),display=activeDisplay(this,device.device_name);
     const previousState=this.state(device.device_name,now);
     const duplicate=this.get('SELECT 1 FROM heartbeat_receipts WHERE device_name=? AND event_id=?',device.device_name,body.event_id);
     if(!duplicate){
@@ -85,6 +87,7 @@ export class Store {
       if(last!==null&&now-last<8000)throw new HttpError(429,'Heartbeat too frequent');
       this.run('INSERT INTO heartbeat_receipts VALUES(?,?,?)',device.device_name,body.event_id,now);
       this.run('UPDATE devices SET last_heartbeat_ms=? WHERE device_name=?',now,device.device_name);
+      this.run('INSERT INTO client_capabilities VALUES(?,?,?) ON CONFLICT(device_name) DO UPDATE SET display_supported=excluded.display_supported,received_ms=excluded.received_ms',device.device_name,body.display_supported===true?1:0,now);
       // 持久保留首次看到某启动计数的时间，区别于真正开机时间；不把心跳当观看流水。
       if(body.client_mode==='native'&&Number.isInteger(body.boot_count)&&body.boot_count>=0&&body.boot_count<=10000000){
         const previous=this.get("SELECT details_json FROM control_events WHERE device_name=? AND event_type='client_boot_seen' ORDER BY timestamp DESC,id DESC LIMIT 1",device.device_name);
@@ -94,7 +97,7 @@ export class Store {
       }
       const seconds=last===null?10:Math.min(10,Math.max(0,Math.floor((now-last)/1000)));
       if(body.is_playing&&this.config.monitoredApps.has(body.app))this.policy.notePlaying(device.device_name);
-      if(!math&&body.is_playing&&this.config.monitoredApps.has(body.app)&&seconds>0){
+      if(!math&&!display&&body.is_playing&&this.config.monitoredApps.has(body.app)&&seconds>0){
         this.policy.consume(device.device_name,seconds);
         // 将跨上海午夜的采样拆分，充值永远不会污染这份真实使用流水。
         let cursor=Math.floor(now/1000)-seconds, remaining=seconds;
@@ -109,6 +112,8 @@ export class Store {
       }
     }
     const state=this.state(device.device_name,now);
+    if(body.display_supported===true&&!this.get("SELECT 1 FROM control_events WHERE device_name=? AND event_type='client_display_capability'",device.device_name))this.audit(device.device_name,'client_display_capability');
+    if(display&&body.display_visible===display.id&&display.visible_ms===null){this.run('UPDATE display_jobs SET visible_ms=? WHERE id=?',now,display.id);this.audit(device.device_name,'display_client_visible',null,{job_id:display.id});}
     if(state.status==='lock'){
       if(previousState.status!=='lock')this.audit(device.device_name,'lock_requested');
       state.message=state.lock_reason==='restricted_time'?'Adult verification required':'Take a break';
@@ -117,7 +122,8 @@ export class Store {
       this.run('INSERT INTO launch_tickets VALUES(?,?,?)',hash(ticket),device.device_name,now+90_000);
       state.launch_url=this.config.origin+'/#ticket='+ticket;
     }
-    return {...state,duplicate:!!duplicate,math_active:!!math,usage_ignored_reason:math?'math_active':null};
+    if(display&&body.display_supported===true){const ticket=secret();this.run('INSERT INTO launch_tickets VALUES(?,?,?)',hash(ticket),device.device_name,now+90000);state.display_command={id:display.id,expires_ms:display.expires_ms,launch_url:this.config.origin+'/#ticket='+ticket};}
+    return {...state,duplicate:!!duplicate,math_active:!!math,usage_ignored_reason:display?'display_active':math?'math_active':null};
   });
     // 仅在事务提交后通知后台；重传、限流和失败请求不冒充新心跳。
     if(!result.duplicate)this.events.emit('heartbeat',{device:device.device_name,event_id:body.event_id,received_ms,is_playing:body.is_playing,app:body.app,client_mode:body.client_mode==='native'?'native':'shell',adb_enabled:body.client_mode==='native'&&[0,1].includes(body.adb_enabled)?body.adb_enabled:null,boot_count:Number.isInteger(body.boot_count)&&body.boot_count>=0?body.boot_count:null});
@@ -128,7 +134,7 @@ export class Store {
     const row=this.get('SELECT t.* FROM launch_tickets t JOIN devices d USING(device_name) WHERE t.token_hash=? AND d.enabled=1',hash(ticket));
     if(!row||row.expires_ms<=this.clock()||!this.tenantEnabled(row.device_name))throw new HttpError(401,'Ticket expired');
     this.run('DELETE FROM launch_tickets WHERE token_hash=?',hash(ticket));
-    if(this.state(row.device_name).status==='lock')this.openMath(row.device_name);
+    if(!activeDisplay(this,row.device_name)&&this.state(row.device_name).status==='lock')this.openMath(row.device_name);
     // 一个设备只有一个活动答题会话，避免并行浏览器反复领取奖励。
     this.run('DELETE FROM browser_sessions WHERE device_name=?',row.device_name);
     const token=secret(),csrf=secret(),now=this.clock();
@@ -150,18 +156,20 @@ export class Store {
   question(session){
     if(session.ready_nonce)return null;
     if(!session.question_id||session.question_expires_ms<=this.clock()){
-      // 结果和操作数都在0..100；答案仅保存在服务端。
-      const a=randomInt(0,101), plus=randomInt(0,2)===1;
-      const b=plus?randomInt(0,101-a):randomInt(0,a+1);
-      const expected=plus?a+b:a-b;
-      this.run('UPDATE browser_sessions SET question_id=?,question_text=?,expected_answer=?,question_expires_ms=? WHERE token_hash=?',randomUUID(),`${a} ${plus?'+':'−'} ${b} = ?`,expected,this.clock()+120_000,session.token_hash);
+      const generated=pickQuestion(learningForDevice(this,session.device_name)),id=randomUUID();
+      const {answer,...payload}=generated;
+      this.run('UPDATE browser_sessions SET question_id=?,question_text=?,expected_answer=?,question_expires_ms=? WHERE token_hash=?',id,payload.text,answer,this.clock()+120_000,session.token_hash);
+      this.run('INSERT INTO question_payloads VALUES(?,?,?)',id,JSON.stringify(payload),this.clock()+120_000);
       session=this.sessionByHash(session.token_hash);
     }
-    return {id:session.question_id,text:session.question_text,expires_ms:session.question_expires_ms};
+    const payload=this.get('SELECT payload_json FROM question_payloads WHERE question_id=?',session.question_id);
+    return {id:session.question_id,...(payload?JSON.parse(payload.payload_json):{text:session.question_text}),expires_ms:session.question_expires_ms};
   }
   browserState(session){return this.tx(()=>{
     session=this.refresh(this.sessionByHash(session.token_hash));
     const state=this.state(session.device_name);
+    const presentation=activeDisplay(this,session.device_name);
+    if(presentation)return {...state,display:displayState(this,presentation),csrf:session.csrf,math_active:false};
     const math=state.status==='lock'?this.openMath(session.device_name):this.activeMath(session.device_name);
     if(math)this.run('UPDATE math_sessions SET last_seen_ms=? WHERE id=?',this.clock(),math.id);
     return {...state,math_active:!!math,csrf:session.csrf,streak:session.streak,ready_nonce:session.ready_nonce,
@@ -211,6 +219,10 @@ export class Store {
     return {success:true,credited_seconds:reward,...this.state(session.device_name)};
   });}
   cleanup(){const now=this.clock();this.tx(()=>{
+    this.run('DELETE FROM display_jobs WHERE created_ms<?',now-7*86400000);
+    this.run('DELETE FROM display_agent_tokens WHERE expires_ms<=? AND id NOT IN(SELECT agent_id FROM display_jobs WHERE agent_id IS NOT NULL)',now);
+    this.run("UPDATE display_jobs SET review_status='error' WHERE review_status='pending' AND created_ms<?",now-60000);
+    this.run('DELETE FROM question_payloads WHERE expires_ms<=?',now);
     this.run('DELETE FROM launch_tickets WHERE expires_ms<=?',now);
     this.run('DELETE FROM browser_sessions WHERE expires_ms<=?',now);
     this.run('DELETE FROM heartbeat_receipts WHERE received_ms<?',now-86400_000);

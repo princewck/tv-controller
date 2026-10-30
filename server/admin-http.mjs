@@ -3,6 +3,8 @@ import {scrypt as scryptCb,timingSafeEqual} from 'node:crypto';
 import {promisify} from 'node:util';
 import {secret,hash,HttpError,dayOf} from './store.mjs';
 import {validatePolicy,minuteCode} from './policy.mjs';
+import {installLearning} from './learning.mjs';
+import {installDisplay} from './display.mjs';
 import {identityFor,scoped,installTenancy,passwordMatches} from './tenancy.mjs';
 const scrypt=promisify(scryptCb),ADMIN_DAYS=120;
 export const safeEqual=(a,b)=>typeof a==='string'&&typeof b==='string'&&Buffer.byteLength(a)===Buffer.byteLength(b)&&timingSafeEqual(Buffer.from(a),Buffer.from(b));
@@ -14,7 +16,7 @@ async function verifyPassword(password,file){
  const digest=await scrypt(password,Buffer.from(config.salt,'hex'),64,{N:16384,r:8,p:1,maxmem:64*1024*1024});
  return timingSafeEqual(digest,Buffer.from(config.digest,'hex'));
 }
-export function installAdmin(app,store,config,{origin,browser,csrf}){
+export function installAdmin(app,store,config,{origin,browser,csrf,reviewer}){
  const file=config.adminPasswordFile||process.env.ADMIN_PASSWORD_FILE||'/etc/tv-parent-admin.json';
  const audit=(req,action,details={},tenant=req.identity?.tenant_id||'default')=>{
   store.run('INSERT INTO tenant_audit(tenant_id,actor,timestamp,action,details_json) VALUES(?,?,?,?,?)',tenant,req.identity?.username||'anonymous',store.clock(),action,JSON.stringify(details));
@@ -110,6 +112,8 @@ export function installAdmin(app,store,config,{origin,browser,csrf}){
   res.json({device:DEVICE,today,days:30,daily,timeline,math,state:DEVICE?store.state(DEVICE):{stage:0,remaining_seconds:0,rest_until_ms:null},server_now_ms:now,
    admin_audit:scope.tenant==='default'?store.db.prepare('SELECT timestamp,action,details_json FROM admin_audit ORDER BY timestamp DESC LIMIT 50').all():store.db.prepare('SELECT timestamp,action,details_json FROM tenant_audit WHERE tenant_id=? ORDER BY timestamp DESC LIMIT 50').all(scope.tenant)});
  });
+ installDisplay(app,store,{origin,requireAdmin,adminCsrf,audit,reviewer});
+ installLearning(app,store,{origin,requireAdmin,adminCsrf,audit});
  installTenancy(app,store,{origin,requireAdmin,adminCsrf,audit,hashWork:async fn=>{
   if(inFlight>=3)throw new HttpError(503,'Password service busy');inFlight++;try{return await fn();}finally{inFlight--;}
  }});

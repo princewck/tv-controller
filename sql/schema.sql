@@ -160,3 +160,31 @@ CREATE INDEX IF NOT EXISTS tickets_expiry ON launch_tickets(expires_ms);
 CREATE INDEX IF NOT EXISTS browser_expiry ON browser_sessions(expires_ms);
 CREATE INDEX IF NOT EXISTS answer_expiry ON answer_receipts(created_ms);
 CREATE INDEX IF NOT EXISTS admin_expiry ON admin_sessions(expires_ms);
+
+CREATE TABLE IF NOT EXISTS tenant_learning (
+ tenant_id TEXT PRIMARY KEY REFERENCES tenants(tenant_id), config_json TEXT NOT NULL, updated_ms INTEGER NOT NULL
+) STRICT;
+CREATE TABLE IF NOT EXISTS question_payloads (
+ question_id TEXT PRIMARY KEY, payload_json TEXT NOT NULL, expires_ms INTEGER NOT NULL
+) STRICT;
+CREATE INDEX IF NOT EXISTS question_payload_expiry ON question_payloads(expires_ms);
+PRAGMA user_version=5;
+
+CREATE TABLE IF NOT EXISTS display_agent_tokens (
+ id TEXT PRIMARY KEY, tenant_id TEXT NOT NULL REFERENCES tenants(tenant_id), device_name TEXT NOT NULL REFERENCES devices(device_name),
+ token_hash TEXT NOT NULL UNIQUE, expires_ms INTEGER NOT NULL, enabled INTEGER NOT NULL DEFAULT 1, created_ms INTEGER NOT NULL
+) STRICT;
+CREATE TABLE IF NOT EXISTS display_jobs (
+ id TEXT PRIMARY KEY, tenant_id TEXT NOT NULL REFERENCES tenants(tenant_id), device_name TEXT NOT NULL REFERENCES devices(device_name),
+ agent_id TEXT REFERENCES display_agent_tokens(id), request_id TEXT NOT NULL, intent TEXT NOT NULL, document_json TEXT NOT NULL,
+ digest TEXT NOT NULL, context_digest TEXT NOT NULL, review_status TEXT NOT NULL CHECK(review_status IN('pending','allow','deny','error')),
+ review_policy TEXT, state TEXT NOT NULL DEFAULT 'draft' CHECK(state IN('draft','published','cancelled')),
+ created_ms INTEGER NOT NULL, expires_ms INTEGER, opened_ms INTEGER, visible_ms INTEGER,
+ UNIQUE(device_name,request_id)
+) STRICT;
+CREATE INDEX IF NOT EXISTS display_device_live ON display_jobs(device_name,state,expires_ms);
+CREATE INDEX IF NOT EXISTS display_agent_quota ON display_jobs(agent_id,created_ms);
+PRAGMA user_version=6;
+CREATE TABLE IF NOT EXISTS client_capabilities (
+ device_name TEXT PRIMARY KEY REFERENCES devices(device_name), display_supported INTEGER NOT NULL, received_ms INTEGER NOT NULL
+) STRICT;

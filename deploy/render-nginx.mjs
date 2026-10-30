@@ -38,7 +38,7 @@ const body=`
         proxy_read_timeout 75s;
         proxy_send_timeout 5s;
     }
-    location ~ ^/(heartbeat|bootstrap|lock_status|answer|unlock|adult_verify|healthz|admin/(login|logout|session|stats|config|grant|users|devices|user_update|device_update))$ {
+    location ~ ^/(heartbeat|bootstrap|lock_status|answer|unlock|adult_verify|healthz|admin/(login|logout|session|stats|config|grant|users|devices|user_update|device_update|learning|displays|display_submit|display_publish|display_cancel|display_agent_token)|agent/displays)$ {
         limit_req zone=tv_parent_api burst=15 nodelay;
         limit_req_status 429;
         proxy_pass http://127.0.0.1:3000;

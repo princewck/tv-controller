@@ -92,7 +92,7 @@ test('v3数据库迁移保留设备令牌/观看/管理员Cookie/自定义规则
   old.prepare('INSERT INTO admin_sessions VALUES(?,?,?,?)').run(hash('test-old-admin-cookie-value-123'),'csrf',1,9999999999999);old.close();
   for(let i=0;i<2;i++){
    const store=new Store({...loadConfig({}),databasePath:file});assert.equal(store.tenantForDevice('Xiaomi_HyperOS_TV'),'default');assert.equal(store.device('test-existing-device-token-value-123').device_name,'Xiaomi_HyperOS_TV');
-   assert.equal(store.get('SELECT count(*) n FROM usage_events').n,1);assert.equal(store.policy.config('Xiaomi_HyperOS_TV').initial_seconds,600);assert.equal(store.get('PRAGMA user_version').user_version,4);assert.equal(store.get('SELECT count(*) n FROM admin_sessions').n,1);store.close();
+   assert.equal(store.get('SELECT count(*) n FROM usage_events').n,1);assert.equal(store.policy.config('Xiaomi_HyperOS_TV').initial_seconds,600);assert.equal(store.get('PRAGMA user_version').user_version,6);assert.equal(store.get('SELECT count(*) n FROM admin_sessions').n,1);store.close();
   }
  }finally{rmSync(dir,{recursive:true,force:true});}
 });

@@ -73,6 +73,7 @@ public class MonitorService extends Service {
    SharedPreferences p=NativeState.prefs(this);JSONObject body=new JSONObject();body.put("device",p.getString("device",""));body.put("app",app);
    body.put("is_playing",playing);body.put("event_id",UUID.randomUUID().toString());body.put("client_mode","native");
    body.put("adb_enabled",android.provider.Settings.Global.getInt(getContentResolver(),"adb_enabled",-1));
+   body.put("display_supported",true);body.put("display_visible",getPackageName().equals(app)?p.getString("display_visible_job",""):"");
    body.put("boot_count",android.provider.Settings.Global.getInt(getContentResolver(),"boot_count",-1));
    response=request("/heartbeat",body);
    String result=response.optString("status");if(!result.equals("allow")&&!result.equals("lock"))throw new IOException("Invalid response");
@@ -81,6 +82,24 @@ public class MonitorService extends Service {
   if(stop||!NativeState.enabled(this)){releaseFocus();return;}
   String result=response.getString("status");status(result,app);
   NativeState.log(this,"HEARTBEAT status="+result+" app="+app+" playing="+playing+" mode="+NativeState.prefs(this).getString("mode","observe"));
+  JSONObject display=response.optJSONObject("display_command");
+  if(display!=null){
+   if(!"enforce".equals(NativeState.prefs(this).getString("mode","observe"))||!interactive)return;
+   // 保留设置、权限与安装界面，避免阻断家长恢复权限。不会开机或唤醒屏幕。
+   if(app.equals("com.android.systemui")||app.contains("settings")||app.contains("permissioncontroller")||app.contains("packageinstaller"))return;
+   if(getPackageName().equals(app))return;
+   String id=display.optString("id"),url=display.optString("launch_url");
+   if(!id.matches("[0-9a-f-]{36}")||!url.matches("https://tv\\.example\\.com/#ticket=[A-Za-z0-9_-]{43}"))throw new IOException("Invalid display command");
+   if(SystemClock.elapsedRealtime()-lastLaunch<8000)return;
+   pauseMedia();
+   if(watched){ControlAccessibilityService svc=ControlAccessibilityService.instance;for(int attempt=0;svc!=null&&attempt<3;attempt++){if(!PlaybackProbe.playing(uid)||!app.equals(PlaybackProbe.foreground()))break;svc.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK);Thread.sleep(400);}}
+   ControlAccessibilityService service=ControlAccessibilityService.instance;if(service==null)return;
+   service.startActivity(new Intent(service,MainActivity.class).setAction(Intent.ACTION_VIEW).setData(Uri.parse(url)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP));
+   lastLaunch=SystemClock.elapsedRealtime();Thread.sleep(700);
+   boolean visible=getPackageName().equals(PlaybackProbe.foreground());
+   NativeState.prefs(this).edit().putString("display_visible_job",visible?id:"").apply();
+   NativeState.log(this,"DISPLAY_RESULT visible="+visible);return;
+  }
   if(result.equals("allow")){releaseFocus();return;}
   if(!"enforce".equals(NativeState.prefs(this).getString("mode","observe"))||!watched||!interactive)return;
   String url=response.optString("launch_url");
@@ -88,13 +107,7 @@ public class MonitorService extends Service {
   if(SystemClock.elapsedRealtime()-lastLaunch<8000||!app.equals(PlaybackProbe.foreground()))return;
   ControlAccessibilityService a=ControlAccessibilityService.instance;if(a==null)return;
   // 标准媒体暂停不需要INJECT_EVENTS。音频焦点+系统返回使无媒体会话的视频也退出播放器。
-  AudioManager audio=getSystemService(AudioManager.class);
-  audio.dispatchMediaKeyEvent(new android.view.KeyEvent(android.view.KeyEvent.ACTION_DOWN,android.view.KeyEvent.KEYCODE_MEDIA_PAUSE));
-  audio.dispatchMediaKeyEvent(new android.view.KeyEvent(android.view.KeyEvent.ACTION_UP,android.view.KeyEvent.KEYCODE_MEDIA_PAUSE));
-  audioFocus=new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE)
-   .setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_SPEECH).build())
-   .setOnAudioFocusChangeListener(change->{},new Handler(Looper.getMainLooper())).build();
-  hasFocus=audio.requestAudioFocus(audioFocus)==AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
+  pauseMedia();
   for(int attempt=0;attempt<3;attempt++){
    if(!PlaybackProbe.playing(uid)||!app.equals(PlaybackProbe.foreground()))break;
    boolean sent=a.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK);
@@ -104,6 +117,16 @@ public class MonitorService extends Service {
   lastLaunch=SystemClock.elapsedRealtime();Thread.sleep(700);
   boolean visible=getPackageName().equals(PlaybackProbe.foreground()),silent=!PlaybackProbe.playing(uid);
   NativeState.log(this,"LOCK_RESULT visible="+visible+" video_audio_stopped="+silent);
+ }
+ private void pauseMedia(){
+  releaseFocus();
+  AudioManager audio=getSystemService(AudioManager.class);
+  audio.dispatchMediaKeyEvent(new android.view.KeyEvent(android.view.KeyEvent.ACTION_DOWN,android.view.KeyEvent.KEYCODE_MEDIA_PAUSE));
+  audio.dispatchMediaKeyEvent(new android.view.KeyEvent(android.view.KeyEvent.ACTION_UP,android.view.KeyEvent.KEYCODE_MEDIA_PAUSE));
+  audioFocus=new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE)
+   .setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_SPEECH).build())
+   .setOnAudioFocusChangeListener(change->{},new Handler(Looper.getMainLooper())).build();
+  hasFocus=audio.requestAudioFocus(audioFocus)==AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
  }
  private JSONObject request(String path,JSONObject body)throws Exception{
   HttpsURLConnection c=(HttpsURLConnection)new URL(NativeState.ORIGIN+path).openConnection(java.net.Proxy.NO_PROXY);
