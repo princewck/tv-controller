@@ -1,0 +1,6 @@
+[Unit]
+Description=Consistent backup of TV parental control SQLite
+[Service]
+Type=oneshot
+UMask=0077
+ExecStart=/opt/tv-parent-control/deploy/backup.sh

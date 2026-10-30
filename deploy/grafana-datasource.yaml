@@ -1,0 +1,12 @@
+apiVersion: 1
+datasources:
+  - name: TV usage (read-only snapshot)
+    uid: tv_usage
+    type: frser-sqlite-datasource
+    access: proxy
+    isDefault: false
+    editable: false
+    jsonData:
+      path: /var/lib/tv-parent-report/report.sqlite
+      pathOptions: mode=ro
+      attachLimit: 0

@@ -1,0 +1,18 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'org.example.tvchallenge'
+    compileSdk 34
+    defaultConfig { applicationId 'org.example.tvchallenge'; minSdk 26; targetSdk 34; versionCode 4; versionName '3.1' }
+    signingConfigs {
+        release {
+            if (System.getenv('TV_RELEASE_STORE_FILE')) {
+                storeFile file(System.getenv('TV_RELEASE_STORE_FILE'))
+                storePassword System.getenv('TV_RELEASE_STORE_PASSWORD')
+                keyAlias System.getenv('TV_RELEASE_KEY_ALIAS')
+                keyPassword System.getenv('TV_RELEASE_KEY_PASSWORD')
+            }
+        }
+    }
+    buildTypes { release { minifyEnabled false; signingConfig signingConfigs.release } }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}

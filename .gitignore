@@ -32,3 +32,4 @@ device.conf
 *password*.json
 *signing*.json
 .idea/
+*provision*.json

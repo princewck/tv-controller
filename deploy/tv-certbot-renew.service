@@ -1,0 +1,5 @@
+[Unit]
+Description=Renew only TV control certificate
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/certbot renew --cert-name tv.example.com --quiet

@@ -1,0 +1,21 @@
+{
+  "name": "xiaomi-tv-parent-control",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.13.0 <25"
+  },
+  "scripts": {
+    "start": "node --env-file=.env server/index.mjs",
+    "test": "node --test test/*.test.mjs",
+    "provision": "node --env-file=.env server/admin.mjs",
+    "nginx": "node deploy/render-nginx.mjs"
+  },
+  "dependencies": {
+    "express": "5.3.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1"
+  }
+}

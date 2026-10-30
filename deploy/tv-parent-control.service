@@ -1,0 +1,40 @@
+[Unit]
+Description=Xiaomi TV HTTPS parental control API
+After=network.target
+
+[Service]
+Type=simple
+User=tvcontrol
+Group=tvcontrol
+WorkingDirectory=/opt/tv-parent-control
+EnvironmentFile=/etc/tv-parent-control.env
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node /opt/tv-parent-control/server/index.mjs
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=15
+UMask=0077
+StateDirectory=tv-parent-control
+StateDirectoryMode=0750
+ReadWritePaths=/var/lib/tv-parent-control
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+NoNewPrivileges=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictRealtime=true
+LockPersonality=true
+# V8需要可执行内存，不设置MemoryDenyWriteExecute。
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+MemoryMax=256M
+TasksMax=64
+LimitNOFILE=4096
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
