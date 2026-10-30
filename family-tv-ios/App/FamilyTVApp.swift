@@ -1,4 +1,5 @@
 import SwiftUI
+import Observation
 
 @main struct FamilyTVApp: App {
     @State private var store = FamilyStore()
@@ -11,6 +12,7 @@ struct RootView: View {
     @Environment(FamilyStore.self) private var store
     @Environment(SubscriptionStore.self) private var subscription
     @Environment(\.scenePhase) private var scenePhase
+    @State private var errorPresentation = FamilyErrorPresentation()
     var body: some View {
         Group {
             if store.connected { MainTabs() } else { WelcomeView() }
@@ -37,9 +39,34 @@ struct RootView: View {
         .sheet(isPresented: Binding(get: { store.pendingRecoveryCode == nil && store.connected && !store.demo && subscription.hasPurchaseIntent }, set: { if !$0 { subscription.hasPurchaseIntent = false } })) {
             NavigationStack { SubscriptionView().toolbar { ToolbarItem(placement: .cancellationAction) { Button("完成") { subscription.hasPurchaseIntent = false } } } }
         }
-        .alert("操作未完成", isPresented: Binding(get: { store.error != nil }, set: { if !$0 { store.error = nil } })) {
-            Button("知道了") { store.error = nil }
-        } message: { Text(store.error ?? "") }
+        .familyErrorAlert()
+        .environment(errorPresentation)
+    }
+}
+
+@MainActor @Observable final class FamilyErrorPresentation {
+    var modalOwners: Set<UUID> = []
+}
+
+private struct FamilyErrorAlert: ViewModifier {
+    @Environment(FamilyStore.self) private var store
+    @Environment(FamilyErrorPresentation.self) private var presentation
+    @State private var ownerID = UUID()
+    let inModal: Bool
+    func body(content: Content) -> some View {
+        content
+            .alert("操作未完成", isPresented: Binding(
+                get: { store.error != nil && (inModal || presentation.modalOwners.isEmpty) },
+                set: { if !$0 { store.error = nil } }
+            )) { Button("知道了") { store.error = nil } } message: { Text(store.error ?? "") }
+            .onAppear { if inModal { presentation.modalOwners.insert(ownerID) } }
+            .onDisappear { if inModal { presentation.modalOwners.remove(ownerID) } }
+    }
+}
+
+extension View {
+    func familyErrorAlert(inModal: Bool = false) -> some View {
+        modifier(FamilyErrorAlert(inModal: inModal))
     }
 }
 struct MainTabs: View {

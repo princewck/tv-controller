@@ -52,16 +52,18 @@ struct LoginView: View {
     @State private var username = ""
     @State private var password = ""
     @FocusState private var focus: Field?
-    enum Field { case username, password }
+    enum Field { case username, password, origin }
     var body: some View {
         NavigationStack {
             Form {
                 Section {
                     TextField("用户名", text: $username).textContentType(.username).textInputAutocapitalization(.never).autocorrectionDisabled().focused($focus, equals: .username)
-                    SecureField("密码", text: $password).textContentType(.password).focused($focus, equals: .password).onSubmit { connect() }
+                        .submitLabel(.next).onSubmit { focus = .password }
+                    SecureField("密码", text: $password).textContentType(.password).focused($focus, equals: .password).submitLabel(.go).onSubmit { connect() }
                 } header: { Text("家庭账号") } footer: { Text("使用你的家庭账号登录。首次使用可在下方创建家庭。请勿输入 Apple 账号密码。") }
                 Section("服务地址") {
                     TextField("HTTPS 服务地址", text: $origin).keyboardType(.URL).textContentType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled()
+                        .focused($focus, equals: .origin).submitLabel(.done).onSubmit { focus = nil }
                     Text("登录凭证将发送到此地址，请仅连接你信任的服务。")
                         .font(.footnote).foregroundStyle(Color("SupportingText"))
                 }
@@ -79,6 +81,7 @@ struct LoginView: View {
             .navigationTitle("连接家庭").navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("取消") { dismiss() }.disabled(store.busy) } }
         }.interactiveDismissDisabled(store.busy)
+            .familyErrorAlert(inModal: true)
     }
     private func connect() {
         focus = nil

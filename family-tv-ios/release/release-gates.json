@@ -56,13 +56,13 @@
     {
       "id": "native-tests",
       "status": "partial",
-      "evidence": "Build4 source: release/native-store-final-large-tests.xcresult16 passed0 failed; final-medium2 UI passed0 failed. Demo heartbeat freshness and bounded StoreKit receipt/expiry settling added. Capture-only history recaptures also passed once per size. Cloud10/10, adapter48 and Android runtime7/7 remain prior evidence. Actual Apple Sandbox and TV execution not verified."
+      "evidence": "Build5 release/native-release-05-tests.xcresult:18 passed,0failed; large account UI2 passed,0failed. Cloud10/10, adapter48 and Android runtime7/7 remain prior evidence. Actual Apple Sandbox and TV execution not verified."
     },
     {
       "id": "visual-accessibility",
       "status": "partial",
       "required": "Review iPhone screens, dark appearance, large text, landscape, and accessibility labels",
-      "evidence": "Both shipped phone sizes have5 verified native screenshots, each clearly demo-labeled, captured from passing UI flows. SupportingText adaptive token and primary duration values implemented. Independent fresh full review disposition ship at light/default-type screenshot scope; prior dark/large-text history review separately documented. Full VoiceOver/landscape/account keyboard remain pending."
+      "evidence": "Ten demo-labeled native store screenshots independently reviewed and uploaded in both phone sizes. Build5 twelve account captures independently reviewed ship at light simulator scope; medium/large account tests and sufficientElementDescription/textClipped audits pass. Full VoiceOver and actual production/hardware behavior remain unverified."
     },
     {
       "id": "real-tv-verification",
@@ -73,18 +73,18 @@
       "id": "distribution-archive",
       "status": "partial",
       "required": "Valid provisioning profile, release archive, export/signature and App Store Connect upload validation",
-      "evidence": "Build4 archived/exported to release/appstore-export-04/FamilyTV.ipa; signature verified codesign --deep --strict, correct distribution profile and app identifier, get-task-allow false, no StoreKit or XCTest resources in IPA. See build-evidence.json. Not uploaded or App Store validated."
+      "evidence": "Build5 signed archive/export verified; IPA release/appstore-export-05/FamilyTV.ipa SHA a48b26cd32ae6078721e232bc1f2d475821b48b25fbe0ac8be4dfaefe10f9fe2. Distribution profile correct, get-task-allow false, no StoreKit/XCTest resources. Existing Xcode account upload validation in progress; no submission."
     },
     {
       "id": "submission-assets",
       "status": "partial",
-      "evidence": "Local zh-Hans metadata and ten native screenshot candidates prepared; medium screenshots upload in progress. Version metadata Save blocked by missing review contact name/phone; no fabricated contact. Public support/privacy hosting, live review household/hardware video and updated legal agreement remain."
+      "evidence": "zh-Hans version metadata, ten screenshots, subtitle/categories/contentrights and computed4+ rating saved in ASC. Seven privacy types fully drafted, not published. Reviewer name/phone missing; public support/privacy hosting, live review family/hardware video and updated legal agreement remain."
     },
     {
       "id": "legal-storefront",
       "status": "open",
       "required": "Confirm legal entity, support contact, target storefronts and applicable registration details before submission. No contact or legal identity has been invented.",
-      "evidence": "User provided contact@minnuo.net and authorized local company certificate. US-first preparation assumption stated after optional question unanswered; subscriptionUSA availability andUSD9.90 saved, group/product zh-Hans+en-US localizations saved. App availability and legal/account agreement checks remain."
+      "evidence": "User provided contact@minnuo.net and local company certificate. US-first preparation assumption stated; app freeUSD0.00, app and subscription USA-only availability saved. Mac/Vision opt-in disabled. Legal/account agreements remain unaccepted."
     },
     {
       "id": "review-access",
@@ -94,16 +94,16 @@
     {
       "id": "monthly-iap",
       "status": "partial",
-      "evidence": "App6829013285, group22530010 and product6829014365 (wang.chengkai.familytv.plus.monthly, 1 month) created in App Store Connect. US$9.90 saved and verified in UI screenshot; zh-Hans description and single-seat purchase configured. Official Apple JWS test positive/tamper rejection and real Apple chain/online OCSP pass in workerd. Real sandbox purchase/notifications/territory configuration and formal review incomplete."
+      "evidence": "App6829013285 group22530010 product6829014365 (wang.chengkai.familytv.plus.monthly,1month) created. US$9.90 andUSA-only availability saved; zh-Hans/en-US localizations configured. Official Apple JWS positive/tamper rejection and real chain/OCSP pass locally. Real Sandbox purchase/notifications and formal review incomplete."
     },
     {
       "id": "deleted-household-subscription-recovery",
       "status": "partial",
       "required": "Restore unexpired Apple entitlement to a new family only after permanent deletion of the original family; verify with actual Apple Sandbox.",
-      "evidence": "Matching independently verified AppTransaction proof, one-hour freshness, original-family exclusion, atomic ownership arbitration, renewed/refunded notifications mapped by original ID, native restore and owned-receipt sync implemented. 10 cloud tests and 15 native tests pass; synthetic signature tests and real Apple certificate/online status checks pass in workerd. Public deployment and actual sandbox restore remain unverified."
+      "evidence": "Matching independently verified AppTransaction proof, one-hour freshness, original-family exclusion, atomic ownership arbitration, renewed/refunded notifications mapped by original ID, native restore and owned-receipt sync implemented. 10 cloud tests and 18 native tests pass; synthetic signature tests and real Apple certificate/online status checks pass in workerd. Public deployment and actual sandbox restore remain unverified."
     }
   ],
   "analysisSource": "chatgpt-conversation://6ae4c566-d800-83e9-8f8b-4afc6d0dc6e6",
   "checkedAt": "2026-10-30T20:14:58.599150+00:00",
-  "updatedAt": "2026-10-30T21:46:39.488794+00:00"
+  "updatedAt": "2026-10-30T22:37:28.751260+00:00"
 }

@@ -101,6 +101,7 @@ struct PolicyEditor: View {
             }
             .confirmationDialog("放弃未保存的修改？", isPresented: $discard, titleVisibility: .visible) { Button("放弃修改", role: .destructive) { dismiss() }; Button("继续编辑", role: .cancel) {} }
         }.interactiveDismissDisabled(draft != original || store.busy)
+            .familyErrorAlert(inModal: true)
     }
     private func minutes(_ title: String, _ seconds: Binding<Int>, range: ClosedRange<Int>) -> some View {
         Stepper(value: Binding(get: { seconds.wrappedValue / 60 }, set: { seconds.wrappedValue = $0 * 60 }), in: range) {

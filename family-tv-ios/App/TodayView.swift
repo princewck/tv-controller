@@ -116,5 +116,6 @@ struct GrantView: View {
             .navigationTitle("多一点观看时间").navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("取消") { dismiss() }.disabled(store.busy) } }
         }.presentationDetents([.medium, .large]).interactiveDismissDisabled(store.busy)
+            .familyErrorAlert(inModal: true)
     }
 }

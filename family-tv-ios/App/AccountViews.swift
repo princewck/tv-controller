@@ -6,16 +6,29 @@ struct RegistrationView: View {
     @State private var username = ""
     @State private var password = ""
     @State private var repeated = ""
-    private var valid: Bool { username.range(of: "^[a-z0-9][a-z0-9_.-]{2,31}$", options: .regularExpression) != nil && password.count >= 12 && password.count <= 128 && password == repeated }
+    @FocusState private var focus: Field?
+    private enum Field { case username, password, repeated }
+    private var validUsername: Bool { username.range(of: "^[a-z0-9][a-z0-9_.-]{2,31}$", options: .regularExpression) != nil }
+    private var valid: Bool { validUsername && password.count >= 12 && password.count <= 128 && password == repeated }
+    private var validationMessage: String? {
+        if !username.isEmpty && !validUsername { return "用户名需为 3–32 位小写字母、数字或 . _ -。" }
+        if (!password.isEmpty || !repeated.isEmpty) && !(12...128).contains(password.count) { return "密码需为 12–128 位。" }
+        if !repeated.isEmpty && password != repeated { return "两次输入的密码不一致。" }
+        return nil
+    }
     var body: some View {
         Form {
             Section {
                 TextField("家庭用户名", text: $username).textContentType(.username).textInputAutocapitalization(.never).autocorrectionDisabled()
-                SecureField("设置密码", text: $password).textContentType(.newPassword)
-                SecureField("再次输入密码", text: $repeated).textContentType(.newPassword)
+                    .focused($focus, equals: .username).submitLabel(.next).onSubmit { focus = .password }
+                SecureField("设置密码", text: $password).textContentType(.newPassword).textInputAutocapitalization(.never).autocorrectionDisabled()
+                    .focused($focus, equals: .password).submitLabel(.next).onSubmit { focus = .repeated }
+                SecureField("确认密码", text: $repeated).textContentType(.newPassword).textInputAutocapitalization(.never).autocorrectionDisabled().accessibilityLabel("再次输入密码")
+                    .focused($focus, equals: .repeated).submitLabel(.done).onSubmit { focus = nil }
+                if let validationMessage { Text(validationMessage).font(.footnote).foregroundStyle(Color("SupportingText")).accessibilityIdentifier("registrationValidation") }
             } header: { Text("创建你的家庭") } footer: { Text("用户名使用 3–32 位小写字母、数字或 . _ -；密码至少 12 位。无需填写孩子的姓名或生日。") }
             Section {
-                Button { Task { await store.register(origin: origin, username: username, password: password); password = ""; repeated = "" } } label: {
+                Button { focus = nil; Task { await store.register(origin: origin, username: username, password: password); password = ""; repeated = "" } } label: {
                     HStack { Text("创建家庭"); Spacer(); if store.busy { ProgressView() } }
                 }.disabled(!valid || store.busy)
             }
@@ -97,7 +110,7 @@ struct AccountRecoveryView: View {
                     TextField("家庭用户名", text: $username).textInputAutocapitalization(.never).autocorrectionDisabled()
                     SecureField("家庭恢复码", text: $recoveryCode).textInputAutocapitalization(.never).autocorrectionDisabled()
                     SecureField("设置新密码", text: $password).textContentType(.newPassword)
-                    SecureField("再次输入新密码", text: $repeated).textContentType(.newPassword)
+                    SecureField("确认新密码", text: $repeated).textContentType(.newPassword).accessibilityLabel("再次输入新密码")
                 } footer: { Text("恢复码是在创建家庭时保存的代码。密码至少 12 位；恢复成功后，所有设备上的家庭登录凭证都会失效。电视绑定保持有效。") }
                 Section {
                     Button("重设家庭密码") { Task {
