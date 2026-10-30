@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "familytv-api",
+  "main": "src/index.mjs",
+  "account_id": "0e467c906db204b9448ef5cb763b5f6a",
+  "compatibility_date": "2026-10-23",
+  "d1_databases": [{"binding":"DB","database_name":"familytv-production","database_id":"413eea96-2169-4c6b-9792-423336058dad","migrations_dir":"migrations"}],
+  "rules": [{"type":"Data","globs":["**/*.cer"],"fallthrough":true}],
+  "assets": {"directory":"./public","html_handling":"none"},
+  "alias": {"node-fetch":"./src/apple-fetch.mjs"},
+  "vars": {"PUBLIC_ORIGIN":"https://familytv-api.princewck.workers.dev","APP_APPLE_ID":"6829013285","BUNDLE_ID":"wang.chengkai.familytv","PRODUCT_ID":"wang.chengkai.familytv.plus.monthly"},
+  "triggers": {"crons":["17 3 * * *"]},
+  "observability": {"enabled":true,"logs":{"invocation_logs":false}}
+}

@@ -4,6 +4,8 @@
 
 电视时间是一套用于 Android TV 的家长管理工具：记录视频观看情况，在需要休息时显示学习挑战，并让家长随时调整规则或临时放行。支持多个家庭独立使用。
 
+iPhone 家长端“观有度”的源码、家庭云服务和完整安装技能在 [family-tv-ios/](family-tv-ios/README.md)。下文的网页部署流程用于旧协议；拿到 iPhone 安装页截图的 Agent 请直接阅读[对应安装入口](#从-iphone-截图交给-agent-配置)。
+
 ## 可以做什么
 
 - **查看观看情况**：了解今天看了多久、用了哪些应用，以及最近30天的观看时段。
@@ -13,9 +15,11 @@
 - **安排屏幕展示**：由 AI 助手提交展示内容，通过审核后由家长确认展示；此功能需先配置审核服务。
 - **一家一套配置**：管理员创建家庭账号，各家庭独立管理自己的电视、规则和记录。
 
-不需要更换电视桌面。完成首次安装配置后，日常通过网页管理。
+旧网页方案不需要更换电视桌面。完成首次安装配置后，日常通过网页管理。
 
 ## 开始使用
+
+拿到 iPhone 安装截图的助手，请直接阅读本文后面的“从 iPhone 截图交给 Agent 配置”。
 
 安装前准备 Android 8.0 及以上的电视，以及能操作终端、可访问电视网络的电脑。
 
@@ -51,3 +55,21 @@
 Android 电视客户端、家长管理网页、HTTPS 后端和部署工具。电视主动连接服务端，不需要内网穿透。观看记录保存在所使用的服务端。
 
 采用 [MIT 许可证](LICENSE)。
+
+## 从 iPhone 截图交给 Agent 配置
+
+观有度 iPhone App 的安装页使用单次安装码和手机健康检查。其电视端采用通用 APK，Agent 从 Cloudflare CDN 下载固定版本，并依据完整技能包完成安装与验收；不按电视型号编译。
+
+| 产物 | 版本 | 地址 |
+| --- | --- | --- |
+| Agent 安装技能 ZIP | 1.0.1 | https://familytv-api.princewck.workers.dev/downloads/install/1.0.1/family-tv-setup.zip |
+| 通用电视 APK | 5.0.1 | https://familytv-api.princewck.workers.dev/downloads/tv/5.0.1/family-tv.apk |
+| 下载清单与 SHA-256 | 1.0.1 | https://familytv-api.princewck.workers.dev/downloads/install/1.0.1/manifest.json |
+
+对应技能源码在 [family-tv-ios/distribution/family-tv-setup/](family-tv-ios/distribution/family-tv-setup/SKILL.md)，新版电视源码在 [family-tv-ios/service/android-webview/](family-tv-ios/service/android-webview/)。这些产物已在本机构建与校验，公网部署验证尚未完成。部署完成前不要把地址存在当作已可下载安装。
+
+家长把手机安装页截图交给 Agent。Agent 下载 ZIP 后，解压并先读取 `family-tv-setup/SKILL.md`；完整的安装步骤、型号差异、凭证保护和验收判据都在技能包中。包内包含兑换安装码、下载与校验 APK、私有配置注入、诊断和必要的 ADB 辅助脚本，不要求家长逐条执行命令。
+
+电视和 Agent 电脑须在同一 Wi-Fi。Agent 先验证观察计时，再启用执行模式验证真实播放拦截与恢复、规则和离线缓存；最后关闭电视端 ADB，再由家长执行系统**重启**，不要点可能仅熄屏的“关机”。手机针对本页设备的全部健康检查通过且完成重启后复测，才算配置完成。
+
+服务、APK 和技能包必须支持相同协议。上面的 APK 使用每日额度协议 v2；旧网页服务及其学习挑战协议不能直接混用。`tv.chengkai.wang` 是测试环境，实际支持情况以协议检查为准。新服务不可用、旧接口缺失、型号或权限不支持时，Agent 应报告具体未通过项，不修改后台数据伪造验收。

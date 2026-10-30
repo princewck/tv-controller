@@ -1,0 +1,52 @@
+{
+  "identifier": "820D74C2-7EC7-4BAA-A2D4-F61E20CFE946",
+  "nonRenewingSubscriptions": [],
+  "products": [],
+  "settings": {
+    "_applicationInternalID": "",
+    "_developerTeamID": "C5792GBPNR",
+    "_failTransactionsEnabled": false,
+    "_locale": "en_US",
+    "_storefront": "USA",
+    "_storeKitErrors": []
+  },
+  "subscriptionGroups": [
+    {
+      "id": "C8833F3B",
+      "localizations": [],
+      "name": "Family TV Plus",
+      "subscriptions": [
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "9.90",
+          "familyShareable": false,
+          "groupNumber": 1,
+          "internalID": "9625311240",
+          "introductoryOffer": null,
+          "localizations": [
+            {
+              "description": "Cloud viewing history and weekly trends",
+              "displayName": "Family TV Plus Monthly",
+              "locale": "en_US"
+            },
+            {
+              "description": "云端观看历史与趋势分析",
+              "displayName": "家庭云 Plus 月度订阅",
+              "locale": "zh_CN"
+            }
+          ],
+          "productID": "wang.chengkai.familytv.plus.monthly",
+          "recurringSubscriptionPeriod": "P1M",
+          "referenceName": "Family TV Plus Monthly",
+          "subscriptionGroupID": "C8833F3B",
+          "type": "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version": {
+    "major": 3,
+    "minor": 0
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "skill_version": "1.0.1",
+  "protocol_version": 2,
+  "minimum_android": 26,
+  "apk": {
+    "version": "5.0.1",
+    "version_code": 7,
+    "package": "org.example.tvchallenge",
+    "url": "https://familytv-api.princewck.workers.dev/downloads/tv/5.0.1/family-tv.apk",
+    "sha256": "87d19f6b9138e42d478f7ac7bfed3ad092196298496fc32c5764729bb1492751",
+    "size": 26752,
+    "signing_certificate_sha256": "3a698a5f8ee49e430a7fdfc6757cae6957f98f7c959ecb517713c4a9ff8ca3d5"
+  },
+  "skill": {
+    "url": "https://familytv-api.princewck.workers.dev/downloads/install/1.0.1/family-tv-setup.zip",
+    "sha256": "006f2aa634b5a2223d1705fd2ff7963b453f62ea363215094633256df0fa46ae",
+    "size": 15819
+  }
+}

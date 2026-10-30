@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """检查当前 Git 跟踪文件；额外的私有敏感值由本地发布流程检查，不写入此脚本。"""
 from pathlib import Path
-import re, subprocess, sys
+import hashlib, re, subprocess, sys
 root=Path(__file__).resolve().parents[1]
 files=subprocess.check_output(['git','ls-files','-z'],cwd=root).decode().split('\0')
 errors=[]
@@ -10,7 +10,12 @@ for name in filter(None,files):
  p=root/name
  if any(x in Path(name).parts for x in ['secrets','work','node_modules','.gradle','home-entry']) or p.suffix in ['.apk','.dex','.sqlite','.jks','.keystore','.pem','.key']:
   errors.append(name+': forbidden artifact');continue
- text=p.read_text()
+ raw=p.read_bytes()
+ try: text=raw.decode('utf-8')
+ except UnicodeDecodeError:
+  if p.suffix=='.png' and raw.startswith(b'\x89PNG\r\n\x1a\n'): continue
+  if p.name=='AppleRootCA-G3.cer' and hashlib.sha256(raw).hexdigest()=='63343abfb89a6a03ebb57e9b3f5fa7be7c4f5c756f3017b3a8c488c3653e9179': continue
+  errors.append(name+': unexpected binary artifact');continue
  if any(re.search(pattern,text) for pattern in patterns): errors.append(name+': credential or device address pattern')
  if re.search(r'/(?:Users|home)/[A-Za-z0-9_-]+/',text): errors.append(name+': private home path')
 if errors:

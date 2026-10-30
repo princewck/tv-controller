@@ -1,0 +1,25 @@
+import AppKit
+let size = NSSize(width: 1024, height: 1024)
+let image = NSImage(size: size)
+image.lockFocus()
+NSColor(srgbRed: 0.075, green: 0.34, blue: 0.28, alpha: 1).setFill()
+NSBezierPath(rect: NSRect(origin: .zero, size: size)).fill()
+let screen = NSBezierPath(roundedRect: NSRect(x: 185, y: 300, width: 654, height: 460), xRadius: 64, yRadius: 64)
+NSColor(srgbRed: 0.97, green: 0.96, blue: 0.90, alpha: 1).setStroke()
+screen.lineWidth = 44
+screen.stroke()
+let stand = NSBezierPath()
+stand.move(to: NSPoint(x: 512, y: 300)); stand.line(to: NSPoint(x: 512, y: 212))
+stand.move(to: NSPoint(x: 382, y: 212)); stand.line(to: NSPoint(x: 642, y: 212))
+stand.lineWidth = 44; stand.lineCapStyle = .round; stand.stroke()
+let pause = NSBezierPath(roundedRect: NSRect(x: 429, y: 425, width: 55, height: 210), xRadius: 12, yRadius: 12)
+NSColor(srgbRed: 0.97, green: 0.96, blue: 0.90, alpha: 1).setFill(); pause.fill()
+NSBezierPath(roundedRect: NSRect(x: 540, y: 425, width: 55, height: 210), xRadius: 12, yRadius: 12).fill()
+image.unlockFocus()
+let bitmap = NSBitmapImageRep(bitmapDataPlanes: nil, pixelsWide: 1024, pixelsHigh: 1024, bitsPerSample: 8, samplesPerPixel: 3, hasAlpha: false, isPlanar: false, colorSpaceName: .deviceRGB, bytesPerRow: 0, bitsPerPixel: 0)!
+NSGraphicsContext.saveGraphicsState()
+NSGraphicsContext.current = NSGraphicsContext(bitmapImageRep: bitmap)
+image.draw(in: NSRect(origin: .zero, size: size))
+NSGraphicsContext.restoreGraphicsState()
+let data = bitmap.representation(using: .png, properties: [:])!
+try data.write(to: URL(fileURLWithPath: CommandLine.arguments[1]))
