@@ -7,13 +7,15 @@ struct RegistrationView: View {
     @State private var password = ""
     @State private var repeated = ""
     @State private var attemptedSubmit = false
+    @State private var showingValidation = false
     @FocusState private var focus: Field?
     private enum Field { case username, password, repeated }
-    private var validUsername: Bool { username.range(of: "^[a-z0-9][a-z0-9_.-]{2,31}$", options: .regularExpression) != nil }
+    private var normalizedUsername: String { username.trimmingCharacters(in: .whitespacesAndNewlines) }
+    private var validUsername: Bool { normalizedUsername.range(of: "^[a-z0-9][a-z0-9_.-]{2,31}$", options: .regularExpression) != nil }
     private var valid: Bool { validUsername && password.count >= 12 && password.count <= 128 && password == repeated }
     private var validationMessage: String? {
-        if (!username.isEmpty || attemptedSubmit) && !validUsername { return L10n.tr("用户名需为 3–32 位小写字母、数字或 . _ -。") }
-        if (!password.isEmpty || !repeated.isEmpty || attemptedSubmit) && !(12...128).contains(password.count) { return L10n.tr("密码需为 12–128 位。") }
+        if (!username.isEmpty || attemptedSubmit) && !validUsername { return L10n.tr("用户名需为3–32位小写字母、数字或 . _ -，并以字母或数字开头。") }
+        if (!password.isEmpty || !repeated.isEmpty || attemptedSubmit) && !(12...128).contains(password.count) { return L10n.tr("密码需为12–128位，当前为\(password.count)位。") }
         if (attemptedSubmit || !repeated.isEmpty) && password != repeated { return L10n.tr("两次输入的密码不一致。") }
         return nil
     }
@@ -39,17 +41,20 @@ struct RegistrationView: View {
                 Text(ServiceEndpoint.isOfficial(origin) ? L10n.tr("官方服务") : origin).font(.footnote).foregroundStyle(Color("SupportingText"))
             }
         }.navigationTitle(L10n.tr("创建家庭")).navigationBarTitleDisplayMode(.inline)
+            .alert(L10n.tr("操作未完成"), isPresented: $showingValidation) {
+                Button(L10n.tr("知道了"), role: .cancel) {}
+            } message: { Text(validationMessage ?? "") }
     }
     private func submit() {
         guard !store.busy else { return }
         attemptedSubmit = true
+        focus = nil
         guard valid else {
-            focus = !validUsername ? .username : !(12...128).contains(password.count) ? .password : .repeated
+            showingValidation = true
             return
         }
-        focus = nil
         Task {
-            await store.register(origin: origin, username: username, password: password)
+            await store.register(origin: origin, username: normalizedUsername, password: password)
             if store.pendingRecoveryCode != nil { password = ""; repeated = "" }
         }
     }

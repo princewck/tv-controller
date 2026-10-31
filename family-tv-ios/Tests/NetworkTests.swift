@@ -25,6 +25,31 @@ final class NetworkTests: XCTestCase {
         SavedSession(origin: URL(string: "https://fixture.invalid")!, token: "fixture-session", csrf: "fixture-csrf", identity: Identity(username: "fixture", role: "user", tenant_id: "t"), expires: 9999999999999)
     }
     override func tearDown() { FixtureProtocol.handler = nil; super.tearDown() }
+    func testRegistrationPostsCredentialsAndReadsSessionAndRecoveryCode() async throws {
+        FixtureProtocol.handler = { request in
+            XCTAssertEqual(request.httpMethod, "POST")
+            XCTAssertEqual(request.url?.path, "/admin/register")
+            let body: Data
+            if let data = request.httpBody { body = data }
+            else {
+                let stream = try XCTUnwrap(request.httpBodyStream); stream.open(); defer { stream.close() }
+                var buffer = [UInt8](repeating: 0, count: 4096); var data = Data()
+                while stream.hasBytesAvailable { let count = stream.read(&buffer, maxLength: buffer.count); if count <= 0 { break }; data.append(contentsOf: buffer.prefix(count)) }
+                body = data
+            }
+            let values = try XCTUnwrap(try JSONSerialization.jsonObject(with: body) as? [String: String])
+            XCTAssertEqual(values["username"], "fixture_parent")
+            XCTAssertEqual(values["password"], "test-only-password-123")
+            let headers = ["Set-Cookie": "__Host-tv_admin=fixture-registration; Path=/; Secure; HttpOnly"]
+            let response = HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: headers)!
+            let data = Data(#"{"csrf":"fixture-csrf","expires_ms":4102444800000,"identity":{"username":"fixture_parent","role":"user","tenant_id":"fixture-household"},"recovery_code":"fixture-recovery"}"#.utf8)
+            return (response, data)
+        }
+        let (session, code) = try await api().register(origin: URL(string: "https://fixture.invalid")!, username: "fixture_parent", password: "test-only-password-123")
+        XCTAssertEqual(session.token, "fixture-registration")
+        XCTAssertEqual(session.identity.username, "fixture_parent")
+        XCTAssertEqual(code, "fixture-recovery")
+    }
     func testAuthenticatedMutationSendsOriginCookieCSRFAndEscapedDevice() async throws {
         FixtureProtocol.handler = { request in
             XCTAssertEqual(request.value(forHTTPHeaderField: "Origin"), "https://fixture.invalid")

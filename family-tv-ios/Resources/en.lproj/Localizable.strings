@@ -131,6 +131,7 @@
 "家长来决定" = "Parents stay in control";
 "密码" = "Password";
 "密码需为 12–128 位。" = "Use 12–128 characters for the password.";
+"密码需为12–128位，当前为{p0}位。" = "Your password must be 12–128 characters. It currently has {p0}.";
 "将稳定间隔用于本家庭全部电视？" = "Use consistent viewing periods for all TVs in this family?";
 "少一些打断，多一些约定" = "Fewer interruptions, clearer plans";
 "少打扰的休息安排" = "Plan breaks with fewer interruptions";
@@ -292,6 +293,7 @@
 "用户名" = "Username";
 "用户名使用 3–32 位小写字母、数字或 . _ -；密码至少 12 位。无需填写孩子的姓名或生日。" = "Use 3–32 lowercase letters, numbers, dots, underscores or hyphens for the username, and a password of 12–128 characters. No child's name or birthday needed.";
 "用户名需为 3–32 位小写字母、数字或 . _ -。" = "Use 3–32 lowercase letters, numbers, dots, underscores or hyphens for the username.";
+"用户名需为3–32位小写字母、数字或 . _ -，并以字母或数字开头。" = "Use 3–32 lowercase letters, numbers, dots, underscores or hyphens. Start with a letter or number.";
 "由观有度提供，无需填写服务器地址。" = "Provided by Family TV. No server address needed.";
 "电视" = "TV";
 "电视上会发生什么？" = "What happens on the TV?";

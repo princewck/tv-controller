@@ -33,6 +33,29 @@ final class FamilyFlowTests: XCTestCase {
 }
 
 extension FamilyFlowTests {
+    @MainActor func testValidRegistrationSubmitsAndRetainsInputsAfterConnectionFailure() {
+        let app = XCUIApplication()
+        app.launchEnvironment["FAMILYTV_UI_LANGUAGE"] = "zh-Hans"; app.launch()
+        ensureSignedOut(app)
+        defer { app.terminate() }
+        for _ in 0..<4 where !app.buttons["connectFamily"].isHittable { app.swipeUp() }
+        app.buttons["connectFamily"].tap()
+        app.buttons["serviceSelection"].tap(); app.buttons["自定义部署"].tap()
+        // Reserved .invalid domain: exercise a real submit without creating any account.
+        replace(app.textFields["customServiceOrigin"], with: "https://registration-fixture.invalid")
+        app.buttons["创建新家庭"].tap()
+        replace(app.textFields["家庭用户名"], with: "  fixture_parent  ")
+        replace(app.secureTextFields["设置密码"], with: "test-only-password-123")
+        replace(app.secureTextFields["再次输入密码"], with: "test-only-password-123\n")
+        app.buttons["createHousehold"].tap()
+        XCTAssertTrue(app.alerts["操作未完成"].waitForExistence(timeout: 30))
+        XCTAssertTrue(app.alerts.staticTexts["无法连接服务。"].exists)
+        capture(app, name: "registration-submitted-connection-failure")
+        app.alerts.buttons["知道了"].tap()
+        XCTAssertEqual(app.textFields["家庭用户名"].value as? String, "  fixture_parent  ")
+        XCTAssertGreaterThan((app.secureTextFields["设置密码"].value as? String ?? "").count, 12)
+    }
+
     @MainActor func testAccountInputValidationAndErrorRecovery() throws {
         let app = XCUIApplication()
         app.launchEnvironment["FAMILYTV_UI_LANGUAGE"] = "zh-Hans"; app.launch()
@@ -64,9 +87,19 @@ extension FamilyFlowTests {
         XCTAssertTrue(app.navigationBars["创建家庭"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["createHousehold"].isEnabled)
         app.buttons["createHousehold"].tap()
+        XCTAssertTrue(app.alerts["操作未完成"].waitForExistence(timeout: 3))
+        app.alerts.buttons["知道了"].tap()
         XCTAssertTrue(app.descendants(matching: .any)["registrationValidation"].waitForExistence(timeout: 3))
         capture(app, name: "account-missing-fields-explained")
         replace(app.textFields["家庭用户名"], with: "review_ui_check")
+        replace(app.secureTextFields["设置密码"], with: "12345678901")
+        replace(app.secureTextFields["再次输入密码"], with: "12345678901\n")
+        app.buttons["createHousehold"].tap()
+        XCTAssertTrue(app.alerts["操作未完成"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.alerts.staticTexts["密码需为12–128位，当前为11位。"].exists)
+        capture(app, name: "registration-explains-eleven-character-password")
+        app.alerts.buttons["知道了"].tap()
+        XCTAssertFalse(app.keyboards.firstMatch.exists)
         replace(app.secureTextFields["设置密码"], with: "UI-Test-Only-Password-123")
         capture(app, name: "account-after-first-password")
         XCTAssertFalse(app.staticTexts["密码需为 12–128 位。"].exists)
