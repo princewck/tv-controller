@@ -9,32 +9,36 @@ struct WelcomeView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 28) {
                     Image(systemName: "tv.and.mediabox").font(.largeTitle).foregroundStyle(Color.accentColor).padding(.top, 32).accessibilityHidden(true)
-                    Text("好好看，\n也好好休息。")
+                    Text(L10n.tr("好好看，\n也好好休息。"))
                         .font(.largeTitle.bold()).fixedSize(horizontal: false, vertical: true)
-                    Text("观有度，让电视时间有商有量。")
+                    Text(L10n.tr("观有度，让电视时间有商有量。"))
                         .font(.title3).foregroundStyle(Color("SupportingText"))
                     VStack(alignment: .leading, spacing: 24) {
-                        intro("看得明白", "了解受管应用的观看时长。", "chart.bar")
-                        intro("休息有约定", "设置观看额度和休息时段。", "moon")
-                        intro("家长来决定", "需要时，给予一段额外观看时间。", "hand.raised")
+                        intro(L10n.tr("看得明白"), L10n.tr("了解受管应用的观看时长。"), "chart.bar")
+                        intro(L10n.tr("休息有约定"), L10n.tr("设置观看额度和休息时段。"), "moon")
+                        intro(L10n.tr("家长来决定"), L10n.tr("需要时，给予一段额外观看时间。"), "hand.raised")
                     }.padding(.vertical, 8)
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("需要先准备一台兼容的 Android TV")
+                        Text(L10n.tr("需要先准备一台兼容的 Android TV"))
                             .font(.headline)
-                        Text("电视需安装并配置配套客户端；iPhone 不能直接管理未安装客户端的电视、Apple TV 或 HDMI 设备。")
+                        Text(L10n.tr("电视需安装并配置配套客户端；iPhone 不能直接管理未安装客户端的电视、Apple TV 或 HDMI 设备。"))
                             .font(.subheadline).foregroundStyle(Color("SupportingText"))
-                        NavigationLink("如何添加电视") { InstallationView() }.frame(minHeight: 44)
+                        NavigationLink(L10n.tr("如何添加电视")) { InstallationView() }.frame(minHeight: 44)
+                        NavigationLink(L10n.tr("电视上会发生什么？")) { TVGuideView() }
+                            .frame(minHeight: 44).accessibilityIdentifier("welcomeTVGuide")
                     }
-                    Button { showLogin = true } label: { Text("连接我的家庭").frame(maxWidth: .infinity, minHeight: 44) }
+                    Button { showLogin = true } label: { Text(L10n.tr("连接我的家庭")).frame(maxWidth: .infinity, minHeight: 44) }
                         .buttonStyle(.borderedProminent).accessibilityIdentifier("connectFamily")
-                    Button("先体验演示模式") { store.enterDemo() }
+                    Button(L10n.tr("先体验演示模式")) { store.enterDemo() }
                         .frame(maxWidth: .infinity, minHeight: 44).accessibilityIdentifier("enterDemo")
-                    if subscription.hasPurchaseIntent { Text("你从 App Store 发起了订阅，请先连接购买要使用的家庭，再继续。").font(.footnote).foregroundStyle(Color("SupportingText")) }
-                    Text("演示无需账号，不连接真实电视。")
+                    if subscription.hasPurchaseIntent { Text(L10n.tr("你从 App Store 发起了订阅，请先连接购买要使用的家庭，再继续。")).font(.footnote).foregroundStyle(Color("SupportingText")) }
+                    Text(L10n.tr("演示无需账号，不连接真实电视。"))
                         .font(.footnote).foregroundStyle(Color("SupportingText")).frame(maxWidth: .infinity)
+                    NavigationLink(L10n.tr("语言")) { LanguageSettingsView() }
+                        .accessibilityIdentifier("welcomeLanguageSettings")
                 }.padding(24).frame(maxWidth: 600)
             }
-            .navigationTitle("观有度").navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(L10n.tr("观有度")).navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $showLogin) { LoginView() }
         }
     }
@@ -60,25 +64,25 @@ struct LoginView: View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("用户名", text: $username).textContentType(.username).textInputAutocapitalization(.never).autocorrectionDisabled().focused($focus, equals: .username)
+                    TextField(L10n.tr("用户名"), text: $username).textContentType(.username).textInputAutocapitalization(.never).autocorrectionDisabled().focused($focus, equals: .username)
                         .submitLabel(.next).onSubmit { focus = .password }
-                    SecureField("密码", text: $password).textContentType(.password).focused($focus, equals: .password).submitLabel(.go).onSubmit { connect() }
-                } header: { Text("家庭账号") } footer: { Text("使用你的家庭账号登录。首次使用可在下方创建家庭。请勿输入 Apple 账号密码。") }
+                    SecureField(L10n.tr("密码"), text: $password).textContentType(.password).focused($focus, equals: .password).submitLabel(.go).onSubmit { connect() }
+                } header: { Text(L10n.tr("家庭账号")) } footer: { Text(L10n.tr("使用你的家庭账号登录。首次使用可在下方创建家庭。请勿输入 Apple 账号密码。")) }
                 ServiceSelectionView(selection: $serviceSelection, customOrigin: $customOrigin)
                     .disabled(store.busy)
                 Section {
                     Button { connect() } label: {
-                        HStack { Text("连接家庭"); Spacer(); if store.busy { ProgressView() } }
+                        HStack { Text(L10n.tr("连接家庭")); Spacer(); if store.busy { ProgressView() } }
                     }.disabled(username.trimmingCharacters(in: .whitespaces).isEmpty || password.isEmpty || !validOrigin || store.busy)
                 }
                 Section {
-                    NavigationLink("创建新家庭") { RegistrationView(origin: origin) }.disabled(!validOrigin || store.busy)
-                    NavigationLink("忘记密码，用恢复码找回") { AccountRecoveryView(origin: origin) }.disabled(!validOrigin || store.busy)
+                    NavigationLink(L10n.tr("创建新家庭")) { RegistrationView(origin: origin) }.disabled(!validOrigin || store.busy)
+                    NavigationLink(L10n.tr("忘记密码，用恢复码找回")) { AccountRecoveryView(origin: origin) }.disabled(!validOrigin || store.busy)
                 }
-                Section { NavigationLink("安装与账号说明") { InstallationView() } }
+                Section { NavigationLink(L10n.tr("安装与账号说明")) { InstallationView() } }
             }
-            .navigationTitle("连接家庭").navigationBarTitleDisplayMode(.inline)
-            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("取消") { dismiss() }.disabled(store.busy) } }
+            .navigationTitle(L10n.tr("连接家庭")).navigationBarTitleDisplayMode(.inline)
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L10n.tr("取消")) { dismiss() }.disabled(store.busy) } }
         }.interactiveDismissDisabled(store.busy)
             .familyErrorAlert(inModal: true)
     }

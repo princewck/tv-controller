@@ -4,9 +4,10 @@ final class FamilyFlowTests: XCTestCase {
     @MainActor func testDemoGrantAndRulesFlow() {
         let app = XCUIApplication()
         app.launchArguments = ["--demo"]
-        app.launch()
+        app.launchEnvironment["FAMILYTV_UI_LANGUAGE"] = "zh-Hans"; app.launch()
         XCTAssertTrue(app.staticTexts["演示模式 · 所有数据均为示例"].waitForExistence(timeout: 10))
         capture(app, name: "store-01-today")
+        for _ in 0..<4 where !app.buttons["grantTime"].isHittable { app.swipeUp() }
         app.buttons["grantTime"].tap()
         app.buttons["confirmGrant"].tap()
         for _ in 0..<3 where !app.staticTexts["演示：已给予 15 分钟临时额度。"].exists { app.swipeDown() }
@@ -21,7 +22,7 @@ final class FamilyFlowTests: XCTestCase {
         XCTAssertTrue(app.navigationBars["编辑规则"].waitForExistence(timeout: 5))
         app.buttons["saveRules"].tap()
         app.tabBars.buttons["记录"].tap()
-        XCTAssertTrue(app.staticTexts["本周合计"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["近 7 天合计"].waitForExistence(timeout: 5))
         revealDemoBanner(app)
         capture(app, name: "store-03-history-week")
         app.buttons["30 天"].tap()
@@ -34,7 +35,7 @@ final class FamilyFlowTests: XCTestCase {
 extension FamilyFlowTests {
     @MainActor func testAccountInputValidationAndErrorRecovery() throws {
         let app = XCUIApplication()
-        app.launch()
+        app.launchEnvironment["FAMILYTV_UI_LANGUAGE"] = "zh-Hans"; app.launch()
         ensureSignedOut(app)
         defer { app.terminate() }
         for _ in 0..<3 where !app.buttons["connectFamily"].isHittable { app.swipeUp() }
@@ -89,7 +90,7 @@ extension FamilyFlowTests {
         let app = XCUIApplication()
         app.launchArguments = ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
         XCUIDevice.shared.orientation = .landscapeLeft
-        app.launch()
+        app.launchEnvironment["FAMILYTV_UI_LANGUAGE"] = "zh-Hans"; app.launch()
         defer { app.terminate(); XCUIDevice.shared.orientation = .portrait }
         for _ in 0..<5 where !app.buttons["connectFamily"].isHittable { app.swipeUp() }
         app.buttons["connectFamily"].tap()
@@ -144,7 +145,7 @@ extension FamilyFlowTests {
         add(attachment)
     }
     @MainActor func testFourStepInstallationNeverFinishesBeforeHealthChecks() {
-        let app = XCUIApplication(); app.launchArguments = ["--demo"]; app.launch()
+        let app = XCUIApplication(); app.launchArguments = ["--demo"]; app.launchEnvironment["FAMILYTV_UI_LANGUAGE"] = "zh-Hans"; app.launch()
         app.tabBars.buttons["我的"].tap()
         app.buttons["添加电视"].tap()
         XCTAssertTrue(app.staticTexts["先连上同一个 Wi-Fi"].waitForExistence(timeout: 5))
@@ -171,7 +172,7 @@ extension FamilyFlowTests {
 
 extension FamilyFlowTests {
     @MainActor func testOfficialServiceHidesURLAndCustomRequiresAddress() {
-        let app = XCUIApplication(); app.launch()
+        let app = XCUIApplication(); app.launchEnvironment["FAMILYTV_UI_LANGUAGE"] = "zh-Hans"; app.launch()
         ensureSignedOut(app)
         defer { app.terminate() }
         for _ in 0..<3 where !app.buttons["connectFamily"].isHittable { app.swipeUp() }

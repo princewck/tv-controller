@@ -9,14 +9,22 @@
 /* Begin PBXBuildFile section */
 		07E7D39250BE0EBA378D5D62 /* ServiceSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D952A5A969E6B40B8672453 /* ServiceSelectionView.swift */; };
 		29F439FAEE0D58A6B9E23EB7 /* InstallationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FCD6148B807A58BFC32C02 /* InstallationView.swift */; };
+		302631F34CA024845CE368DD /* BreakDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C854A52007871A91240D8A /* BreakDesign.swift */; };
+		32017A277DA81F1E354751D2 /* LocalizationFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93935FFAEFB23F4A4AE51ED /* LocalizationFlowTests.swift */; };
+		37846B5511D37F01154DD336 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D375EC19312E4217F4A5DA /* L10n.swift */; };
 		3F4DD9D9732F786F6B5AC4B3 /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61170065334B3FECFA690F1D /* ModelTests.swift */; };
 		3FA91A680395328DE314300D /* SubscriptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31B531F713F963B38B6F61E /* SubscriptionTests.swift */; };
 		4449446F35EC073EB0A8E0D6 /* FamilyTVApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387B159C9F7A9D2174063CD7 /* FamilyTVApp.swift */; };
 		4524D9B455ABD68B85D875FF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5897D281A80D1DE9A270A99D /* SettingsView.swift */; };
+		4E94EC3F2E9F5335D323E0CC /* LanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E672D92E7ECA9F310161E8 /* LanTests.swift */; };
 		5654F42C34D990083AD260D4 /* FamilyTV.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 51868F6339BFC84FE98A3B4A /* FamilyTV.storekit */; };
+		568BC70632722BD5610B0582 /* LanguageSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F323BB66FD808E6B8097FD /* LanguageSettingsView.swift */; };
 		5993462F1096DF924A4B641E /* RulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B30C250B140EFD691A7569F /* RulesView.swift */; };
 		5DF028CC517AFDED605FF7A6 /* ServiceEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77A6AF084C00C24C1BF65F /* ServiceEndpoint.swift */; };
+		6242621EBA39A29F769AA062 /* TVGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A798C7D05C17D5C4B4F5B6 /* TVGuideView.swift */; };
 		6D34012221713966605ADFA3 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B99B187E73CF3BFDD828 /* HistoryView.swift */; };
+		76156F2AD708711F48E92304 /* LanTLSExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7814425E410B3BED241406D3 /* LanTLSExchange.swift */; };
+		81B576298B2C62BD7F43C0D4 /* LanVector.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F2B2C72DE8D3636126B59DA /* LanVector.json */; };
 		882AC6EA955CC8DFABA5569F /* TVAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C34D7E92F0142EF9C362BE5 /* TVAPI.swift */; };
 		8F1B82FA4F7F921CCC5F8A94 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDE94B16A5231C18B291BD9 /* WelcomeView.swift */; };
 		96771B2CB40C5E28002C4E4C /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFBCAAC951792828533B7CD /* Models.swift */; };
@@ -24,11 +32,23 @@
 		9910723B7D234D99E2EF485A /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB433DD7C76AF423BCA8F0A /* SubscriptionView.swift */; };
 		9B1754CD1D709DCF0FEB3D9C /* FamilyFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9BF8363B7477F0E43D4F66 /* FamilyFlowTests.swift */; };
 		A392CF38394C9EF1BA9523B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D36E1562806AF6AAB2AE2985 /* Assets.xcassets */; };
+		A4B1D8990D903C6490B734B8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3E504D151E3E164019CDBC5A /* InfoPlist.strings */; };
+		A51BA54AB9902D9B37029D08 /* LocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADCF913583651EF2D67652C /* LocalizationTests.swift */; };
 		A54C40BE623E1BB6BE16AAA5 /* AccountViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DCC7E29C2E89297D354C87 /* AccountViews.swift */; };
+		A6EFC8336C996E8CC742A53A /* TVIllustrationExports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C29A2118219AEE102272BFC /* TVIllustrationExports.swift */; };
+		B182FA41E823D73E077CF40C /* LocalNetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255E0026CA09602DFD08758C /* LocalNetworkView.swift */; };
+		B9CCB6656C5AA71FF47DB96C /* TVExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64D23F6CA3623308356F451A /* TVExample.swift */; };
+		BA7088BCE016BC6F64F18A96 /* LocalNetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6EF18A1EDD04E90F71084A0 /* LocalNetworkController.swift */; };
 		C3B203026EF66BC64DF0F801 /* NetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AA8739232FE1CFB54163F6 /* NetworkTests.swift */; };
 		C84EB85C5D7FAC90C26865FB /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E63316E27723EAEEE7A4C67 /* TodayView.swift */; };
+		CB81AAAF5BDBD0EF443CD29B /* TVIllustrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03760881C4FAA6833A1A60A /* TVIllustrationView.swift */; };
+		D5D4FD465C57FE8A00914EEA /* LanIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C67403CC6861188B7E4A220 /* LanIdentity.swift */; };
+		DBD56DE161CA9D3C0A20AB59 /* TVGuideFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5514F80884A74A231B59F5 /* TVGuideFlowTests.swift */; };
+		DFF18434733212B2009B40C3 /* OfflineHouseholdVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37758754279954067EB314FF /* OfflineHouseholdVault.swift */; };
 		E446A2ADE95C514F8E5E0B8E /* SubscriptionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4F07ECB892FA257E73107E /* SubscriptionStore.swift */; };
+		E7A8C13DA579837082C5E96D /* BetterBreaksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981CC256BFAB6BCC5523140C /* BetterBreaksView.swift */; };
 		FAFD4637892D9C0BB0A7F9B6 /* FamilyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426169793A13C045FB0ACF95 /* FamilyStore.swift */; };
+		FBBBA9CFE8E5479B415842BC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5A00C3620E23EE98F8C25CE7 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,29 +71,55 @@
 /* Begin PBXFileReference section */
 		0156B99B187E73CF3BFDD828 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		05FCD6148B807A58BFC32C02 /* InstallationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallationView.swift; sourceTree = "<group>"; };
+		09110A7388975D3975E7FB3D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0CDE94B16A5231C18B291BD9 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		13F323BB66FD808E6B8097FD /* LanguageSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageSettingsView.swift; sourceTree = "<group>"; };
+		1ADCF913583651EF2D67652C /* LocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTests.swift; sourceTree = "<group>"; };
 		1B30C250B140EFD691A7569F /* RulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesView.swift; sourceTree = "<group>"; };
+		24ED659C77774D67DDEFA998 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		255E0026CA09602DFD08758C /* LocalNetworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNetworkView.swift; sourceTree = "<group>"; };
+		27C854A52007871A91240D8A /* BreakDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakDesign.swift; sourceTree = "<group>"; };
 		2C77A6AF084C00C24C1BF65F /* ServiceEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceEndpoint.swift; sourceTree = "<group>"; };
+		30A798C7D05C17D5C4B4F5B6 /* TVGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVGuideView.swift; sourceTree = "<group>"; };
+		37758754279954067EB314FF /* OfflineHouseholdVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineHouseholdVault.swift; sourceTree = "<group>"; };
+		37BAD0BEF674A94AEC96E40A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		387B159C9F7A9D2174063CD7 /* FamilyTVApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyTVApp.swift; sourceTree = "<group>"; };
 		3C34D7E92F0142EF9C362BE5 /* TVAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVAPI.swift; sourceTree = "<group>"; };
 		3D952A5A969E6B40B8672453 /* ServiceSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceSelectionView.swift; sourceTree = "<group>"; };
 		426169793A13C045FB0ACF95 /* FamilyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyStore.swift; sourceTree = "<group>"; };
 		4AFBCAAC951792828533B7CD /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		51033CD03ED475053F589F41 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		51868F6339BFC84FE98A3B4A /* FamilyTV.storekit */ = {isa = PBXFileReference; path = FamilyTV.storekit; sourceTree = "<group>"; };
 		5897D281A80D1DE9A270A99D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		5C67403CC6861188B7E4A220 /* LanIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanIdentity.swift; sourceTree = "<group>"; };
 		5E63316E27723EAEEE7A4C67 /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		61170065334B3FECFA690F1D /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
 		62C8E17B0768264F9FD38D95 /* FamilyTVUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FamilyTVUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		64D23F6CA3623308356F451A /* TVExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVExample.swift; sourceTree = "<group>"; };
 		6AB433DD7C76AF423BCA8F0A /* SubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionView.swift; sourceTree = "<group>"; };
+		75D375EC19312E4217F4A5DA /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
+		7814425E410B3BED241406D3 /* LanTLSExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanTLSExchange.swift; sourceTree = "<group>"; };
+		7C29A2118219AEE102272BFC /* TVIllustrationExports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVIllustrationExports.swift; sourceTree = "<group>"; };
 		7F708C1959805EDC487A282A /* FamilyTV.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FamilyTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F2B2C72DE8D3636126B59DA /* LanVector.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = LanVector.json; sourceTree = "<group>"; };
+		981CC256BFAB6BCC5523140C /* BetterBreaksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetterBreaksView.swift; sourceTree = "<group>"; };
 		9B9BF8363B7477F0E43D4F66 /* FamilyFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyFlowTests.swift; sourceTree = "<group>"; };
 		A2A2AD088692E3D1BA2D5140 /* FamilyTVTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FamilyTVTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA15A5DA647EA73A66AF57F0 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BB45FD27784DE3D48FE1C069 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C31B531F713F963B38B6F61E /* SubscriptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionTests.swift; sourceTree = "<group>"; };
 		C3DCC7E29C2E89297D354C87 /* AccountViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViews.swift; sourceTree = "<group>"; };
+		CF5514F80884A74A231B59F5 /* TVGuideFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVGuideFlowTests.swift; sourceTree = "<group>"; };
+		D03760881C4FAA6833A1A60A /* TVIllustrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVIllustrationView.swift; sourceTree = "<group>"; };
 		D36E1562806AF6AAB2AE2985 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DF66C6FAF0D8C4C580FADA57 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		E0A855A9F563756C044A389F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		E6EF18A1EDD04E90F71084A0 /* LocalNetworkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNetworkController.swift; sourceTree = "<group>"; };
 		F6AA8739232FE1CFB54163F6 /* NetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTests.swift; sourceTree = "<group>"; };
+		F93935FFAEFB23F4A4AE51ED /* LocalizationFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationFlowTests.swift; sourceTree = "<group>"; };
+		F9E672D92E7ECA9F310161E8 /* LanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanTests.swift; sourceTree = "<group>"; };
 		FC4F07ECB892FA257E73107E /* SubscriptionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionStore.swift; sourceTree = "<group>"; };
+		FF2B97FDA6F0E5B0BDD3FD01 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -103,9 +149,13 @@
 			isa = PBXGroup;
 			children = (
 				51868F6339BFC84FE98A3B4A /* FamilyTV.storekit */,
+				F9E672D92E7ECA9F310161E8 /* LanTests.swift */,
+				1ADCF913583651EF2D67652C /* LocalizationTests.swift */,
 				61170065334B3FECFA690F1D /* ModelTests.swift */,
 				F6AA8739232FE1CFB54163F6 /* NetworkTests.swift */,
 				C31B531F713F963B38B6F61E /* SubscriptionTests.swift */,
+				7C29A2118219AEE102272BFC /* TVIllustrationExports.swift */,
+				AD2FB5CB8268DB805358539F /* Fixtures */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -114,6 +164,8 @@
 			isa = PBXGroup;
 			children = (
 				9B9BF8363B7477F0E43D4F66 /* FamilyFlowTests.swift */,
+				F93935FFAEFB23F4A4AE51ED /* LocalizationFlowTests.swift */,
+				CF5514F80884A74A231B59F5 /* TVGuideFlowTests.swift */,
 			);
 			path = UITests;
 			sourceTree = "<group>";
@@ -122,17 +174,30 @@
 			isa = PBXGroup;
 			children = (
 				C3DCC7E29C2E89297D354C87 /* AccountViews.swift */,
+				981CC256BFAB6BCC5523140C /* BetterBreaksView.swift */,
 				387B159C9F7A9D2174063CD7 /* FamilyTVApp.swift */,
 				0156B99B187E73CF3BFDD828 /* HistoryView.swift */,
 				05FCD6148B807A58BFC32C02 /* InstallationView.swift */,
+				13F323BB66FD808E6B8097FD /* LanguageSettingsView.swift */,
+				255E0026CA09602DFD08758C /* LocalNetworkView.swift */,
 				1B30C250B140EFD691A7569F /* RulesView.swift */,
 				3D952A5A969E6B40B8672453 /* ServiceSelectionView.swift */,
 				5897D281A80D1DE9A270A99D /* SettingsView.swift */,
 				6AB433DD7C76AF423BCA8F0A /* SubscriptionView.swift */,
 				5E63316E27723EAEEE7A4C67 /* TodayView.swift */,
+				30A798C7D05C17D5C4B4F5B6 /* TVGuideView.swift */,
+				D03760881C4FAA6833A1A60A /* TVIllustrationView.swift */,
 				0CDE94B16A5231C18B291BD9 /* WelcomeView.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		AD2FB5CB8268DB805358539F /* Fixtures */ = {
+			isa = PBXGroup;
+			children = (
+				8F2B2C72DE8D3636126B59DA /* LanVector.json */,
+			);
+			path = Fixtures;
 			sourceTree = "<group>";
 		};
 		DB9DA38306FB66DC610C6603 /* Resources */ = {
@@ -140,6 +205,8 @@
 			children = (
 				D36E1562806AF6AAB2AE2985 /* Assets.xcassets */,
 				DF66C6FAF0D8C4C580FADA57 /* PrivacyInfo.xcprivacy */,
+				3E504D151E3E164019CDBC5A /* InfoPlist.strings */,
+				5A00C3620E23EE98F8C25CE7 /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -147,11 +214,18 @@
 		E47C766D65CCF45D53A373CD /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				27C854A52007871A91240D8A /* BreakDesign.swift */,
 				426169793A13C045FB0ACF95 /* FamilyStore.swift */,
+				75D375EC19312E4217F4A5DA /* L10n.swift */,
+				5C67403CC6861188B7E4A220 /* LanIdentity.swift */,
+				7814425E410B3BED241406D3 /* LanTLSExchange.swift */,
+				E6EF18A1EDD04E90F71084A0 /* LocalNetworkController.swift */,
 				4AFBCAAC951792828533B7CD /* Models.swift */,
+				37758754279954067EB314FF /* OfflineHouseholdVault.swift */,
 				2C77A6AF084C00C24C1BF65F /* ServiceEndpoint.swift */,
 				FC4F07ECB892FA257E73107E /* SubscriptionStore.swift */,
 				3C34D7E92F0142EF9C362BE5 /* TVAPI.swift */,
+				64D23F6CA3623308356F451A /* TVExample.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -240,6 +314,9 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
+				en,
+				ja,
+				ko,
 				"zh-Hans",
 			);
 			mainGroup = 1D14CB328B8224D717DE0E58;
@@ -262,6 +339,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5654F42C34D990083AD260D4 /* FamilyTV.storekit in Resources */,
+				81B576298B2C62BD7F43C0D4 /* LanVector.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +348,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A392CF38394C9EF1BA9523B8 /* Assets.xcassets in Resources */,
+				A4B1D8990D903C6490B734B8 /* InfoPlist.strings in Resources */,
+				FBBBA9CFE8E5479B415842BC /* Localizable.strings in Resources */,
 				96E47704050F9230E8259617 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,11 +362,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				A54C40BE623E1BB6BE16AAA5 /* AccountViews.swift in Sources */,
+				E7A8C13DA579837082C5E96D /* BetterBreaksView.swift in Sources */,
+				302631F34CA024845CE368DD /* BreakDesign.swift in Sources */,
 				FAFD4637892D9C0BB0A7F9B6 /* FamilyStore.swift in Sources */,
 				4449446F35EC073EB0A8E0D6 /* FamilyTVApp.swift in Sources */,
 				6D34012221713966605ADFA3 /* HistoryView.swift in Sources */,
 				29F439FAEE0D58A6B9E23EB7 /* InstallationView.swift in Sources */,
+				37846B5511D37F01154DD336 /* L10n.swift in Sources */,
+				D5D4FD465C57FE8A00914EEA /* LanIdentity.swift in Sources */,
+				76156F2AD708711F48E92304 /* LanTLSExchange.swift in Sources */,
+				568BC70632722BD5610B0582 /* LanguageSettingsView.swift in Sources */,
+				BA7088BCE016BC6F64F18A96 /* LocalNetworkController.swift in Sources */,
+				B182FA41E823D73E077CF40C /* LocalNetworkView.swift in Sources */,
 				96771B2CB40C5E28002C4E4C /* Models.swift in Sources */,
+				DFF18434733212B2009B40C3 /* OfflineHouseholdVault.swift in Sources */,
 				5993462F1096DF924A4B641E /* RulesView.swift in Sources */,
 				5DF028CC517AFDED605FF7A6 /* ServiceEndpoint.swift in Sources */,
 				07E7D39250BE0EBA378D5D62 /* ServiceSelectionView.swift in Sources */,
@@ -294,6 +383,9 @@
 				E446A2ADE95C514F8E5E0B8E /* SubscriptionStore.swift in Sources */,
 				9910723B7D234D99E2EF485A /* SubscriptionView.swift in Sources */,
 				882AC6EA955CC8DFABA5569F /* TVAPI.swift in Sources */,
+				B9CCB6656C5AA71FF47DB96C /* TVExample.swift in Sources */,
+				6242621EBA39A29F769AA062 /* TVGuideView.swift in Sources */,
+				CB81AAAF5BDBD0EF443CD29B /* TVIllustrationView.swift in Sources */,
 				C84EB85C5D7FAC90C26865FB /* TodayView.swift in Sources */,
 				8F1B82FA4F7F921CCC5F8A94 /* WelcomeView.swift in Sources */,
 			);
@@ -304,6 +396,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B1754CD1D709DCF0FEB3D9C /* FamilyFlowTests.swift in Sources */,
+				32017A277DA81F1E354751D2 /* LocalizationFlowTests.swift in Sources */,
+				DBD56DE161CA9D3C0A20AB59 /* TVGuideFlowTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,9 +405,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E94EC3F2E9F5335D323E0CC /* LanTests.swift in Sources */,
+				A51BA54AB9902D9B37029D08 /* LocalizationTests.swift in Sources */,
 				3F4DD9D9732F786F6B5AC4B3 /* ModelTests.swift in Sources */,
 				C3B203026EF66BC64DF0F801 /* NetworkTests.swift in Sources */,
 				3FA91A680395328DE314300D /* SubscriptionTests.swift in Sources */,
+				A6EFC8336C996E8CC742A53A /* TVIllustrationExports.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,6 +428,31 @@
 			targetProxy = 8B465B286B2711A82C5BB734 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		3E504D151E3E164019CDBC5A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E0A855A9F563756C044A389F /* en */,
+				09110A7388975D3975E7FB3D /* ja */,
+				AA15A5DA647EA73A66AF57F0 /* ko */,
+				51033CD03ED475053F589F41 /* zh-Hans */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		5A00C3620E23EE98F8C25CE7 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FF2B97FDA6F0E5B0BDD3FD01 /* en */,
+				BB45FD27784DE3D48FE1C069 /* ja */,
+				24ED659C77774D67DDEFA998 /* ko */,
+				37BAD0BEF674A94AEC96E40A /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		12A6AB8BD2C0C8867C48AB65 /* Debug */ = {
@@ -430,7 +552,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 10;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = C5792GBPNR;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -514,7 +636,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 10;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C5792GBPNR;
 				ENABLE_NS_ASSERTIONS = NO;

@@ -1,0 +1,13 @@
+{
+  "envelope" : {
+    "base_revision" : 1,
+    "device" : "tv_lan_fixture",
+    "issued_ms" : 1893556800000,
+    "key_id" : "0b393743-2c17-4e90-97b4-2e894260d706",
+    "payload" : "eyJraW5kIjoicGF1c2UiLCJwYXVzZWQiOnRydWV9",
+    "request_id" : "d4f1155a-a43e-4a92-babb-3bde480aec25",
+    "signature" : "MEYCIQDrX5bNnJi1k4U0fTczIt24pnEyKqexLm92WoqZKL3JqwIhAMELmAL\/RawsPkYNtuAJesGTtPidGsN9YX6Y\/lw0KrpH",
+    "v" : 1
+  },
+  "public_key_der" : "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEvnaP2BVCJvJ3CslW9TSMG33LBlg+HOxMR2wdBGDnNR1hFnJTe94PyzBeSm+IDUlkgKljVjSSFg7dSqapXAarfg=="
+}

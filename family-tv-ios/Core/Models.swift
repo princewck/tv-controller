@@ -14,7 +14,7 @@ struct TVDevice: Codable, Identifiable, Equatable {
 }
 struct QuietWindow: Codable, Identifiable, Equatable {
     var id = UUID().uuidString
-    var label: String = "睡前休息"
+    var label: String = L10n.tr("睡前休息")
     var days: [Int] = Array(0...6)
     var start = "20:30"
     var end = "07:00"
@@ -52,14 +52,14 @@ struct PlaybackState: Codable {
     var enforcement_result: String?
     var applied_ms: Double?
     var executionText: String {
-        guard let revision = control_revision, let applied = applied_revision else { return "此电视尚未提供执行回执" }
-        guard applied == revision else { return "等待电视获取最新指令" }
+        guard let revision = control_revision, let applied = applied_revision else { return L10n.tr("此电视尚未提供执行回执") }
+        guard applied == revision else { return L10n.tr("等待电视获取最新指令") }
         switch enforcement_result {
-        case "stopped": return "电视报告已停止受管播放"
-        case "allowed": return "电视报告已恢复允许观看"
-        case "observing": return "电视仅处于观察模式，未执行拦截"
-        case "failed": return "电视执行失败，请检查权限"
-        default: return "等待电视确认执行结果"
+        case "stopped": return L10n.tr("电视报告已停止受管播放")
+        case "allowed": return L10n.tr("电视报告已恢复允许观看")
+        case "observing": return L10n.tr("电视仅处于观察模式，未执行拦截")
+        case "failed": return L10n.tr("电视执行失败，请检查权限")
+        default: return L10n.tr("等待电视确认执行结果")
         }
     }
 }
@@ -72,6 +72,7 @@ struct MobileCapabilities: Codable {
     var registration: Bool?
     var household_delete: Bool?
     var paid_history: Bool?
+    var lan: Bool?
 }
 struct DailyUsage: Codable, Identifiable {
     var day: String
@@ -81,10 +82,10 @@ struct DailyUsage: Codable, Identifiable {
     var appName: String { Self.name(app_package) }
     static func name(_ package: String) -> String {
         switch package {
-        case "com.ktcp.video": "腾讯视频"
-        case "com.xiaodianshi.tv.yst": "哔哩哔哩 TV"
+        case "com.ktcp.video": L10n.tr("腾讯视频")
+        case "com.xiaodianshi.tv.yst": L10n.tr("哔哩哔哩 TV")
         case "com.google.android.youtube.tv": "YouTube"
-        case "com.hunantv.license": "芒果 TV"
+        case "com.hunantv.license": L10n.tr("芒果 TV")
         default: package
         }
     }
@@ -131,7 +132,7 @@ enum TVError: LocalizedError {
 extension Int {
     var durationText: String {
         let minutes = Swift.max(0, self) / 60
-        return minutes >= 60 ? "\(minutes / 60) 小时 \(minutes % 60) 分钟" : "\(minutes) 分钟"
+        return minutes >= 60 ? L10n.tr("\(minutes / 60) 小时 \(minutes % 60) 分钟") : L10n.tr("\(minutes) 分钟")
     }
 }
 
@@ -144,7 +145,7 @@ struct InstallationTicket: Codable {
     var expired: Bool { Date.now.timeIntervalSince1970 * 1000 >= expires_ms }
     var displayCode: String { String(code.prefix(8)) + "-" + String(code.suffix(8)) }
     var agentPrompt: String {
-        "请下载 https://familytv-api.princewck.workers.dev/downloads/install/1.0.2/family-tv-setup.zip，解压并先读 SKILL.md，按要求配置本页电视并完成手机健康检查。"
+        L10n.tr("请下载 https://familytv-api.princewck.workers.dev/downloads/install/1.0.2/family-tv-setup.zip，解压并先读 SKILL.md，按要求配置本页电视并完成手机健康检查。")
     }
 }
 struct InstallationChecks: Codable {

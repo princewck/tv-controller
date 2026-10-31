@@ -7,12 +7,12 @@ enum ServiceEndpoint {
         guard let url = try? TVAPI.validateOrigin(origin) else { return false }
         return url.absoluteString == officialOrigin
     }
-    static func label(for origin: String) -> String { isOfficial(origin) ? "官方服务" : "自定义部署" }
+    static func label(for origin: String) -> String { isOfficial(origin) ? L10n.tr("官方服务") : L10n.tr("自定义部署") }
 }
 enum ServiceSelection: String, CaseIterable, Identifiable {
     case official, custom
     var id: String { rawValue }
-    var title: String { self == .official ? "官方服务" : "自定义部署" }
+    var title: String { self == .official ? L10n.tr("官方服务") : L10n.tr("自定义部署") }
     func origin(custom: String) -> String {
         self == .official ? ServiceEndpoint.officialOrigin : custom.trimmingCharacters(in: .whitespacesAndNewlines)
     }

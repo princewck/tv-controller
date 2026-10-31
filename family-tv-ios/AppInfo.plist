@@ -20,5 +20,11 @@
 	<string>1</string>
 	<key>FamilyTVServiceOrigin</key>
 	<string>$(FAMILYTV_SERVICE_ORIGIN)</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_familytv._tcp</string>
+	</array>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>用于发现并加密连接你配对的家庭电视，直接发送暂停、额度和观看规则。拒绝后仍可使用云端。</string>
 </dict>
 </plist>

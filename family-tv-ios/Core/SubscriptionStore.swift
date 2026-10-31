@@ -41,7 +41,7 @@ import Observation
                 guard !Task.isCancelled else { return }
                 guard intent.product.id == Self.productID else { continue }
                 self?.product = intent.product
-                self?.message = "请先确认当前登录的家庭，再继续购买订阅。"
+                self?.message = L10n.tr("请先确认当前登录的家庭，再继续购买订阅。")
                 self?.hasPurchaseIntent = true
             }
         }
@@ -53,9 +53,9 @@ import Observation
         loading = true; defer { loading = false }
         do {
             product = try await Product.products(for: [Self.productID]).first
-            if product == nil { message = "暂时无法获取订阅价格，请稍后重试。" }
+            if product == nil { message = L10n.tr("暂时无法获取订阅价格，请稍后重试。") }
             await refreshEntitlements()
-        } catch { message = "无法连接 App Store，请稍后重试。" }
+        } catch { message = L10n.tr("无法连接 App Store，请稍后重试。") }
     }
     func refreshEntitlements() async {
         var active = false
@@ -88,16 +88,16 @@ import Observation
             switch try await product.purchase(options: [.appAccountToken(accountToken)]) {
             case let .success(result):
                 guard case let .verified(transaction) = result, transaction.productID == Self.productID else {
-                    message = "购买凭证未能验证，请恢复购买或联系支持。"; return
+                    message = L10n.tr("购买凭证未能验证，请恢复购买或联系支持。"); return
                 }
                 await refreshEntitlements()
 
-                message = entitled ? "Apple 已确认购买，正在同步家庭云。" : "订阅状态正在更新，请稍后恢复购买。"
-            case .pending: message = "购买等待 Apple 确认，确认后会自动更新。"
+                message = entitled ? L10n.tr("Apple 已确认购买，正在同步家庭云。") : L10n.tr("订阅状态正在更新，请稍后恢复购买。")
+            case .pending: message = L10n.tr("购买等待 Apple 确认，确认后会自动更新。")
             case .userCancelled: break
-            @unknown default: message = "暂时无法完成购买，请稍后重试。"
+            @unknown default: message = L10n.tr("暂时无法完成购买，请稍后重试。")
             }
-        } catch { message = "购买未完成，请稍后重试。" }
+        } catch { message = L10n.tr("购买未完成，请稍后重试。") }
     }
     func finishSyncedTransactions(transactionIDs: Set<String>) async {
         for await result in Transaction.unfinished {
@@ -111,11 +111,11 @@ import Observation
         do {
             try await AppStore.sync()
             await refreshEntitlements()
-            guard entitled else { message = "当前 Apple 账号没有有效订阅。"; return nil }
+            guard entitled else { message = L10n.tr("当前 Apple 账号没有有效订阅。"); return nil }
             let proof = try await AppTransaction.refresh()
-            guard case .verified = proof else { message = "Apple 账号凭证未通过验证，请稍后重试。"; return nil }
-            message = "Apple 购买已恢复，正在同步家庭云。"
+            guard case .verified = proof else { message = L10n.tr("Apple 账号凭证未通过验证，请稍后重试。"); return nil }
+            message = L10n.tr("Apple 购买已恢复，正在同步家庭云。")
             return proof.jwsRepresentation
-        } catch { message = "未能完整恢复购买，请检查网络后重试。"; return nil }
+        } catch { message = L10n.tr("未能完整恢复购买，请检查网络后重试。"); return nil }
     }
 }

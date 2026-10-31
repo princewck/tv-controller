@@ -42,7 +42,7 @@ final class ModelTests: XCTestCase {
         await store.grant(minutes: 15)
         await store.grant(minutes: 5)
         XCTAssertEqual(store.usage?.state.remaining_seconds, 300)
-        XCTAssertTrue(store.notice?.contains("演示") == true)
+        XCTAssertEqual(store.notice, L10n.tr("演示：已给予 \(5) 分钟临时额度。"))
         await store.setPaused(true)
         await store.grant(minutes: 5)
         XCTAssertEqual(store.usage?.state.status, "lock")
@@ -81,6 +81,6 @@ extension ModelTests {
         XCTAssertTrue(ServiceEndpoint.isOfficial(ServiceEndpoint.officialOrigin + "/"))
         XCTAssertFalse(ServiceEndpoint.isOfficial("https://familytv-api.princewck.workers.dev.evil.example"))
         XCTAssertFalse(ServiceEndpoint.isOfficial("https://user:password@familytv-api.princewck.workers.dev"))
-        XCTAssertEqual(ServiceEndpoint.label(for: "https://tv.chengkai.wang"), "自定义部署")
+        XCTAssertEqual(ServiceEndpoint.label(for: "https://tv.chengkai.wang"), L10n.tr("自定义部署"))
     }
 }
