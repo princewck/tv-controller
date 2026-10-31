@@ -23,7 +23,7 @@ def main():
     if out.exists():raise ValueError('Output exists; use the existing private file or choose a new path')
     out.parent.mkdir(parents=True,exist_ok=True,mode=0o700)
     opener=urllib.request.build_opener(NoRedirect(),urllib.request.HTTPSHandler(context=ssl.create_default_context()))
-    req=urllib.request.Request(a.origin.rstrip('/')+'/installation/redeem',data=json.dumps({'code':code}).encode(),headers={'Content-Type':'application/json','Accept':'application/json'},method='POST')
+    req=urllib.request.Request(a.origin.rstrip('/')+'/installation/redeem',data=json.dumps({'code':code}).encode(),headers={'User-Agent':'FamilyTV-Setup/1.0.2','Content-Type':'application/json','Accept':'application/json'},method='POST')
     with opener.open(req,timeout=20) as response:
         data=json.loads(response.read(16385))
     if data.get('device')!=a.device or data.get('origin')!=a.origin.rstrip('/') or not re.fullmatch(r'[A-Za-z0-9_-]{1,64}',data.get('device','')) or not re.fullmatch(r'[A-Za-z0-9_-]{43}',data.get('token','')):

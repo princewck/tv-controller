@@ -72,3 +72,15 @@ final class ModelTests: XCTestCase {
     }
 
 }
+
+extension ModelTests {
+    func testServiceSelectionUsesOnlySelectedOrigin() {
+        XCTAssertEqual(ServiceSelection.official.origin(custom: "https://other.example"), ServiceEndpoint.officialOrigin)
+        XCTAssertEqual(ServiceSelection.custom.origin(custom: " https://other.example/ "), "https://other.example/")
+        XCTAssertEqual(ServiceSelection.custom.origin(custom: ""), "")
+        XCTAssertTrue(ServiceEndpoint.isOfficial(ServiceEndpoint.officialOrigin + "/"))
+        XCTAssertFalse(ServiceEndpoint.isOfficial("https://familytv-api.princewck.workers.dev.evil.example"))
+        XCTAssertFalse(ServiceEndpoint.isOfficial("https://user:password@familytv-api.princewck.workers.dev"))
+        XCTAssertEqual(ServiceEndpoint.label(for: "https://tv.chengkai.wang"), "自定义部署")
+    }
+}

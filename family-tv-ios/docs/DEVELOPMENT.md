@@ -64,11 +64,11 @@ Android 运行测试需要另备可丢弃的模拟器。构建 `:app:assembleDeb
 python3 scripts/package-distribution.py
 ```
 
-当前清单对应 APK 5.0.1、技能 1.0.1，输出是：
+当前清单对应 APK 5.0.1、技能 1.0.2，输出是：
 
 - `cloud/public/downloads/tv/5.0.1/family-tv.apk`
-- `cloud/public/downloads/install/1.0.1/family-tv-setup.zip`
-- `cloud/public/downloads/install/1.0.1/manifest.json`
+- `cloud/public/downloads/install/1.0.2/family-tv-setup.zip`
+- `cloud/public/downloads/install/1.0.2/manifest.json`
 
 源码仓库不携带已签名 APK 或 ZIP。当前 APK 哈希属于维护者已经构建的正式签名文件；Debug 构建或使用其他密钥的构建不会通过该清单。若要发布修改后的版本，先增加 APK 的 `versionName`／`versionCode` 和技能版本，更新下载 URL、手机 Agent 提示词及对应文档；构建后用 `shasum -a 256`、文件字节数及 `apksigner` 输出更新新清单，再打包。不得改写已发布版本的内容。文件已存在但字节不同时，脚本报错，应使用新版本。
 

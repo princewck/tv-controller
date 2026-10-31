@@ -35,11 +35,14 @@ extension FamilyFlowTests {
     @MainActor func testAccountInputValidationAndErrorRecovery() throws {
         let app = XCUIApplication()
         app.launch()
+        ensureSignedOut(app)
         defer { app.terminate() }
         for _ in 0..<3 where !app.buttons["connectFamily"].isHittable { app.swipeUp() }
         app.buttons["connectFamily"].tap()
         XCTAssertTrue(app.navigationBars["连接家庭"].waitForExistence(timeout: 5))
-        replace(app.textFields["HTTPS 服务地址"], with: "http://invalid.example")
+        app.buttons["serviceSelection"].tap()
+        app.buttons["自定义部署"].tap()
+        replace(app.textFields["customServiceOrigin"], with: "http://invalid.example")
         replace(app.textFields["用户名"], with: "keyboard_check")
         replace(app.secureTextFields["密码"], with: "UI-Test-Only-Password-123\n")
         XCTAssertTrue(app.alerts["操作未完成"].waitForExistence(timeout: 5))
@@ -48,6 +51,8 @@ extension FamilyFlowTests {
         app.alerts.buttons["知道了"].tap()
         XCTAssertTrue(app.navigationBars["连接家庭"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.textFields["用户名"].value as? String, "keyboard_check")
+        app.buttons["serviceSelection"].tap()
+        app.buttons["官方服务"].tap()
         for _ in 0..<4 where !app.buttons["创建新家庭"].isHittable { app.collectionViews.firstMatch.swipeUp() }
         app.buttons["创建新家庭"].tap()
         XCTAssertTrue(app.navigationBars["创建家庭"].waitForExistence(timeout: 5))
@@ -67,10 +72,8 @@ extension FamilyFlowTests {
         capture(app, name: "account-registration-keyboard")
         replace(app.secureTextFields["再次输入密码"], with: "UI-Test-Only-Password-123")
         XCTAssertTrue(app.buttons["创建家庭"].isEnabled)
-        app.buttons["创建家庭"].tap()
-        XCTAssertTrue(app.alerts["操作未完成"].waitForExistence(timeout: 5))
-        capture(app, name: "account-registration-error")
-        app.alerts.buttons["知道了"].tap()
+        // Validation tests never submit registration against a live service.
+        capture(app, name: "account-registration-ready")
         XCTAssertTrue(app.navigationBars["创建家庭"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.textFields["家庭用户名"].value as? String, "review_ui_check")
         app.navigationBars.buttons.element(boundBy: 0).tap()
@@ -98,6 +101,13 @@ extension FamilyFlowTests {
         if #available(iOS 17.0, *) {
             try app.performAccessibilityAudit(for: [.sufficientElementDescription, .textClipped])
         }
+    }
+    @MainActor private func ensureSignedOut(_ app: XCUIApplication) {
+        guard app.tabBars.buttons["我的"].waitForExistence(timeout: 2) else { return }
+        app.tabBars.buttons["我的"].tap()
+        for _ in 0..<5 where !app.buttons["退出登录"].isHittable { app.swipeUp() }
+        app.buttons["退出登录"].tap(); app.buttons["确认退出"].tap()
+        if app.alerts["操作未完成"].waitForExistence(timeout: 12) { app.alerts.buttons["知道了"].tap() }
     }
     @MainActor private func replace(_ field: XCUIElement, with value: String) {
         XCTAssertTrue(field.waitForExistence(timeout: 5))
@@ -156,5 +166,29 @@ extension FamilyFlowTests {
         app.buttons["installationNext"].tap()
         XCTAssertTrue(app.staticTexts["配置完成"].waitForExistence(timeout: 5))
         capture(app, name: "setup-4-complete")
+    }
+}
+
+extension FamilyFlowTests {
+    @MainActor func testOfficialServiceHidesURLAndCustomRequiresAddress() {
+        let app = XCUIApplication(); app.launch()
+        ensureSignedOut(app)
+        defer { app.terminate() }
+        for _ in 0..<3 where !app.buttons["connectFamily"].isHittable { app.swipeUp() }
+        app.buttons["connectFamily"].tap()
+        XCTAssertTrue(app.buttons["serviceSelection"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.textFields["customServiceOrigin"].exists)
+        XCTAssertFalse(app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "workers.dev")).firstMatch.exists)
+        capture(app, name: "service-official-default")
+        app.buttons["serviceSelection"].tap(); app.buttons["自定义部署"].tap()
+        XCTAssertTrue(app.textFields["customServiceOrigin"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["创建新家庭"].isEnabled)
+        replace(app.textFields["customServiceOrigin"], with: "https://family.example.com")
+        app.textFields["customServiceOrigin"].typeText("\n")
+        XCTAssertTrue(app.buttons["创建新家庭"].isEnabled)
+        capture(app, name: "service-custom-origin")
+        app.buttons["serviceSelection"].tap(); app.buttons["官方服务"].tap()
+        XCTAssertFalse(app.textFields["customServiceOrigin"].exists)
+        XCTAssertTrue(app.buttons["创建新家庭"].isEnabled)
     }
 }

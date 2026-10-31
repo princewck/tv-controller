@@ -17,7 +17,7 @@ def download(manifest, output):
     opener=urllib.request.build_opener(NoRedirect(),urllib.request.HTTPSHandler(context=ssl.create_default_context()))
     temporary=None
     try:
-        with opener.open(urllib.request.Request(apk['url'],headers={'Accept':'application/vnd.android.package-archive'}),timeout=30) as response, tempfile.NamedTemporaryFile(dir=output.parent,delete=False) as file:
+        with opener.open(urllib.request.Request(apk['url'],headers={'User-Agent':'FamilyTV-Setup/1.0.2','Accept':'application/vnd.android.package-archive'}),timeout=30) as response, tempfile.NamedTemporaryFile(dir=output.parent,delete=False) as file:
             temporary=Path(file.name);digest=hashlib.sha256();size=0
             while True:
                 data=response.read(65536)

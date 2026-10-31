@@ -48,7 +48,10 @@ struct WelcomeView: View {
 struct LoginView: View {
     @Environment(FamilyStore.self) private var store
     @Environment(\.dismiss) private var dismiss
-    @State private var origin = Bundle.main.object(forInfoDictionaryKey: "FamilyTVServiceOrigin") as? String ?? "https://tv.chengkai.wang"
+    @State private var serviceSelection: ServiceSelection = .official
+    @State private var customOrigin = ""
+    private var origin: String { serviceSelection.origin(custom: customOrigin) }
+    private var validOrigin: Bool { (try? TVAPI.validateOrigin(origin)) != nil }
     @State private var username = ""
     @State private var password = ""
     @FocusState private var focus: Field?
@@ -61,20 +64,16 @@ struct LoginView: View {
                         .submitLabel(.next).onSubmit { focus = .password }
                     SecureField("密码", text: $password).textContentType(.password).focused($focus, equals: .password).submitLabel(.go).onSubmit { connect() }
                 } header: { Text("家庭账号") } footer: { Text("使用你的家庭账号登录。首次使用可在下方创建家庭。请勿输入 Apple 账号密码。") }
-                Section("服务地址") {
-                    TextField("HTTPS 服务地址", text: $origin).keyboardType(.URL).textContentType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled()
-                        .focused($focus, equals: .origin).submitLabel(.done).onSubmit { focus = nil }
-                    Text("登录凭证将发送到此地址，请仅连接你信任的服务。")
-                        .font(.footnote).foregroundStyle(Color("SupportingText"))
-                }
+                ServiceSelectionView(selection: $serviceSelection, customOrigin: $customOrigin)
+                    .disabled(store.busy)
                 Section {
                     Button { connect() } label: {
                         HStack { Text("连接家庭"); Spacer(); if store.busy { ProgressView() } }
-                    }.disabled(username.trimmingCharacters(in: .whitespaces).isEmpty || password.isEmpty || store.busy)
+                    }.disabled(username.trimmingCharacters(in: .whitespaces).isEmpty || password.isEmpty || !validOrigin || store.busy)
                 }
                 Section {
-                    NavigationLink("创建新家庭") { RegistrationView(origin: origin) }
-                    NavigationLink("忘记密码，用恢复码找回") { AccountRecoveryView(origin: origin) }
+                    NavigationLink("创建新家庭") { RegistrationView(origin: origin) }.disabled(!validOrigin || store.busy)
+                    NavigationLink("忘记密码，用恢复码找回") { AccountRecoveryView(origin: origin) }.disabled(!validOrigin || store.busy)
                 }
                 Section { NavigationLink("安装与账号说明") { InstallationView() } }
             }

@@ -25,7 +25,7 @@ struct InstallationView: View {
                         VStack(alignment: .leading, spacing: 14) {
                             Text(ticket.agentPrompt).font(.subheadline).fixedSize(horizontal: false, vertical: true)
                             Divider()
-                            LabeledContent("服务", value: ticket.origin).font(.footnote)
+                            LabeledContent("服务", value: ServiceEndpoint.isOfficial(ticket.origin) ? "官方服务" : ticket.origin).font(.footnote)
                             Text("设备：\(ticket.device)").font(.caption.monospaced()).textSelection(.enabled)
                             VStack(alignment: .leading, spacing: 6) {
                                 Text("安装码 · 15 分钟内有效").font(.footnote).foregroundStyle(Color("SupportingText"))

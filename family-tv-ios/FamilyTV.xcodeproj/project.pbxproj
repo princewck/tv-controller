@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07E7D39250BE0EBA378D5D62 /* ServiceSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D952A5A969E6B40B8672453 /* ServiceSelectionView.swift */; };
 		29F439FAEE0D58A6B9E23EB7 /* InstallationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FCD6148B807A58BFC32C02 /* InstallationView.swift */; };
 		3F4DD9D9732F786F6B5AC4B3 /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61170065334B3FECFA690F1D /* ModelTests.swift */; };
 		3FA91A680395328DE314300D /* SubscriptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31B531F713F963B38B6F61E /* SubscriptionTests.swift */; };
@@ -14,6 +15,7 @@
 		4524D9B455ABD68B85D875FF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5897D281A80D1DE9A270A99D /* SettingsView.swift */; };
 		5654F42C34D990083AD260D4 /* FamilyTV.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 51868F6339BFC84FE98A3B4A /* FamilyTV.storekit */; };
 		5993462F1096DF924A4B641E /* RulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B30C250B140EFD691A7569F /* RulesView.swift */; };
+		5DF028CC517AFDED605FF7A6 /* ServiceEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77A6AF084C00C24C1BF65F /* ServiceEndpoint.swift */; };
 		6D34012221713966605ADFA3 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B99B187E73CF3BFDD828 /* HistoryView.swift */; };
 		882AC6EA955CC8DFABA5569F /* TVAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C34D7E92F0142EF9C362BE5 /* TVAPI.swift */; };
 		8F1B82FA4F7F921CCC5F8A94 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDE94B16A5231C18B291BD9 /* WelcomeView.swift */; };
@@ -51,8 +53,10 @@
 		05FCD6148B807A58BFC32C02 /* InstallationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallationView.swift; sourceTree = "<group>"; };
 		0CDE94B16A5231C18B291BD9 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		1B30C250B140EFD691A7569F /* RulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesView.swift; sourceTree = "<group>"; };
+		2C77A6AF084C00C24C1BF65F /* ServiceEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceEndpoint.swift; sourceTree = "<group>"; };
 		387B159C9F7A9D2174063CD7 /* FamilyTVApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyTVApp.swift; sourceTree = "<group>"; };
 		3C34D7E92F0142EF9C362BE5 /* TVAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVAPI.swift; sourceTree = "<group>"; };
+		3D952A5A969E6B40B8672453 /* ServiceSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceSelectionView.swift; sourceTree = "<group>"; };
 		426169793A13C045FB0ACF95 /* FamilyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyStore.swift; sourceTree = "<group>"; };
 		4AFBCAAC951792828533B7CD /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		51868F6339BFC84FE98A3B4A /* FamilyTV.storekit */ = {isa = PBXFileReference; path = FamilyTV.storekit; sourceTree = "<group>"; };
@@ -122,6 +126,7 @@
 				0156B99B187E73CF3BFDD828 /* HistoryView.swift */,
 				05FCD6148B807A58BFC32C02 /* InstallationView.swift */,
 				1B30C250B140EFD691A7569F /* RulesView.swift */,
+				3D952A5A969E6B40B8672453 /* ServiceSelectionView.swift */,
 				5897D281A80D1DE9A270A99D /* SettingsView.swift */,
 				6AB433DD7C76AF423BCA8F0A /* SubscriptionView.swift */,
 				5E63316E27723EAEEE7A4C67 /* TodayView.swift */,
@@ -144,6 +149,7 @@
 			children = (
 				426169793A13C045FB0ACF95 /* FamilyStore.swift */,
 				4AFBCAAC951792828533B7CD /* Models.swift */,
+				2C77A6AF084C00C24C1BF65F /* ServiceEndpoint.swift */,
 				FC4F07ECB892FA257E73107E /* SubscriptionStore.swift */,
 				3C34D7E92F0142EF9C362BE5 /* TVAPI.swift */,
 			);
@@ -282,6 +288,8 @@
 				29F439FAEE0D58A6B9E23EB7 /* InstallationView.swift in Sources */,
 				96771B2CB40C5E28002C4E4C /* Models.swift in Sources */,
 				5993462F1096DF924A4B641E /* RulesView.swift in Sources */,
+				5DF028CC517AFDED605FF7A6 /* ServiceEndpoint.swift in Sources */,
+				07E7D39250BE0EBA378D5D62 /* ServiceSelectionView.swift in Sources */,
 				4524D9B455ABD68B85D875FF /* SettingsView.swift in Sources */,
 				E446A2ADE95C514F8E5E0B8E /* SubscriptionStore.swift in Sources */,
 				9910723B7D234D99E2EF485A /* SubscriptionView.swift in Sources */,
@@ -422,7 +430,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = C5792GBPNR;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -506,7 +514,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C5792GBPNR;
 				ENABLE_NS_ASSERTIONS = NO;

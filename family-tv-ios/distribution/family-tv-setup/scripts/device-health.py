@@ -9,7 +9,7 @@ def main():
     config=json.loads(a.config_file.read_text());origin=config['origin']
     if origin not in ['https://familytv-api.princewck.workers.dev','https://tv.chengkai.wang']:raise ValueError('Unsupported origin')
     opener=urllib.request.build_opener(NoRedirect(),urllib.request.HTTPSHandler(context=ssl.create_default_context()))
-    req=urllib.request.Request(origin+'/device/status',headers={'Authorization':'Bearer '+config['token'],'Accept':'application/json'})
+    req=urllib.request.Request(origin+'/device/status',headers={'User-Agent':'FamilyTV-Setup/1.0.2','Authorization':'Bearer '+config['token'],'Accept':'application/json'})
     with opener.open(req,timeout=20) as response:
         data=json.loads(response.read(32769))
     if data.get('device')!=config['device'] or data.get('protocol_version')!=2 or data.get('state',{}).get('mode')!='daily':raise ValueError('Incompatible device protocol')

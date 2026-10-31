@@ -9,7 +9,10 @@ struct SettingsView: View {
                 if store.demo { DemoBanner() }
                 else {
                     LabeledContent("家庭账号", value: store.auth?.identity.username ?? "")
-                    LabeledContent("服务地址", value: store.auth?.origin.host ?? "")
+                    LabeledContent("连接方式", value: ServiceEndpoint.label(for: store.auth?.origin.absoluteString ?? ""))
+                    if let origin = store.auth?.origin, !ServiceEndpoint.isOfficial(origin.absoluteString) {
+                        LabeledContent("服务地址", value: origin.absoluteString).font(.footnote)
+                    }
                 }
             }
             Section { NavigationLink("家庭云 Plus") { SubscriptionView() } }

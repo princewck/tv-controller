@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "familytv-api",
+  "preview_urls": false,
   "main": "src/index.mjs",
   "account_id": "0e467c906db204b9448ef5cb763b5f6a",
   "compatibility_date": "2026-10-23",
