@@ -40,6 +40,7 @@
 		B9CCB6656C5AA71FF47DB96C /* TVExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64D23F6CA3623308356F451A /* TVExample.swift */; };
 		BA7088BCE016BC6F64F18A96 /* LocalNetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6EF18A1EDD04E90F71084A0 /* LocalNetworkController.swift */; };
 		C3B203026EF66BC64DF0F801 /* NetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AA8739232FE1CFB54163F6 /* NetworkTests.swift */; };
+		C47B25B550891AE58209209A /* FormActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92369981CFD6CD6D3789CFA2 /* FormActionButton.swift */; };
 		C84EB85C5D7FAC90C26865FB /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E63316E27723EAEEE7A4C67 /* TodayView.swift */; };
 		CB81AAAF5BDBD0EF443CD29B /* TVIllustrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03760881C4FAA6833A1A60A /* TVIllustrationView.swift */; };
 		D5D4FD465C57FE8A00914EEA /* LanIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C67403CC6861188B7E4A220 /* LanIdentity.swift */; };
@@ -102,6 +103,7 @@
 		7C29A2118219AEE102272BFC /* TVIllustrationExports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVIllustrationExports.swift; sourceTree = "<group>"; };
 		7F708C1959805EDC487A282A /* FamilyTV.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FamilyTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F2B2C72DE8D3636126B59DA /* LanVector.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = LanVector.json; sourceTree = "<group>"; };
+		92369981CFD6CD6D3789CFA2 /* FormActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormActionButton.swift; sourceTree = "<group>"; };
 		981CC256BFAB6BCC5523140C /* BetterBreaksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetterBreaksView.swift; sourceTree = "<group>"; };
 		9B9BF8363B7477F0E43D4F66 /* FamilyFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyFlowTests.swift; sourceTree = "<group>"; };
 		A2A2AD088692E3D1BA2D5140 /* FamilyTVTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FamilyTVTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -176,6 +178,7 @@
 				C3DCC7E29C2E89297D354C87 /* AccountViews.swift */,
 				981CC256BFAB6BCC5523140C /* BetterBreaksView.swift */,
 				387B159C9F7A9D2174063CD7 /* FamilyTVApp.swift */,
+				92369981CFD6CD6D3789CFA2 /* FormActionButton.swift */,
 				0156B99B187E73CF3BFDD828 /* HistoryView.swift */,
 				05FCD6148B807A58BFC32C02 /* InstallationView.swift */,
 				13F323BB66FD808E6B8097FD /* LanguageSettingsView.swift */,
@@ -366,6 +369,7 @@
 				302631F34CA024845CE368DD /* BreakDesign.swift in Sources */,
 				FAFD4637892D9C0BB0A7F9B6 /* FamilyStore.swift in Sources */,
 				4449446F35EC073EB0A8E0D6 /* FamilyTVApp.swift in Sources */,
+				C47B25B550891AE58209209A /* FormActionButton.swift in Sources */,
 				6D34012221713966605ADFA3 /* HistoryView.swift in Sources */,
 				29F439FAEE0D58A6B9E23EB7 /* InstallationView.swift in Sources */,
 				37846B5511D37F01154DD336 /* L10n.swift in Sources */,
@@ -552,7 +556,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = C5792GBPNR;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -636,7 +640,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C5792GBPNR;
 				ENABLE_NS_ASSERTIONS = NO;

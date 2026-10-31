@@ -17,7 +17,12 @@ struct ServiceSelectionView: View {
                     .accessibilityIdentifier("customServiceOrigin")
             }
         } header: { Text(L10n.tr("连接服务")) } footer: {
-            Text(selection == .official ? L10n.tr("由观有度提供，无需填写服务器地址。") : L10n.tr("填写你自行部署的兼容服务地址。账号凭证会发送到此地址，请确认由你或信任的人维护。"))
+            VStack(alignment: .leading, spacing: 6) {
+                Text(selection == .official ? L10n.tr("由观有度提供，无需填写服务器地址。") : L10n.tr("填写你自行部署的兼容服务地址。账号凭证会发送到此地址，请确认由你或信任的人维护。"))
+                if selection == .custom && (try? TVAPI.validateOrigin(customOrigin)) == nil {
+                    FormValidationMessage(message: L10n.tr("请填写完整的 HTTPS 服务地址，例如 https://tv.chengkai.wang。"))
+                }
+            }
         }
     }
 }

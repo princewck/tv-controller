@@ -6,14 +6,15 @@ struct RegistrationView: View {
     @State private var username = ""
     @State private var password = ""
     @State private var repeated = ""
+    @State private var attemptedSubmit = false
     @FocusState private var focus: Field?
     private enum Field { case username, password, repeated }
     private var validUsername: Bool { username.range(of: "^[a-z0-9][a-z0-9_.-]{2,31}$", options: .regularExpression) != nil }
     private var valid: Bool { validUsername && password.count >= 12 && password.count <= 128 && password == repeated }
     private var validationMessage: String? {
-        if !username.isEmpty && !validUsername { return L10n.tr("用户名需为 3–32 位小写字母、数字或 . _ -。") }
-        if (!password.isEmpty || !repeated.isEmpty) && !(12...128).contains(password.count) { return L10n.tr("密码需为 12–128 位。") }
-        if !repeated.isEmpty && password != repeated { return L10n.tr("两次输入的密码不一致。") }
+        if (!username.isEmpty || attemptedSubmit) && !validUsername { return L10n.tr("用户名需为 3–32 位小写字母、数字或 . _ -。") }
+        if (!password.isEmpty || !repeated.isEmpty || attemptedSubmit) && !(12...128).contains(password.count) { return L10n.tr("密码需为 12–128 位。") }
+        if (attemptedSubmit || !repeated.isEmpty) && password != repeated { return L10n.tr("两次输入的密码不一致。") }
         return nil
     }
     var body: some View {
@@ -25,12 +26,12 @@ struct RegistrationView: View {
                     .focused($focus, equals: .password).submitLabel(.next).onSubmit { focus = .repeated }
                 SecureField(L10n.tr("确认密码"), text: $repeated).textContentType(.newPassword).textInputAutocapitalization(.never).autocorrectionDisabled().accessibilityLabel(L10n.tr("再次输入密码"))
                     .focused($focus, equals: .repeated).submitLabel(.done).onSubmit { focus = nil }
-                if let validationMessage { Text(validationMessage).font(.footnote).foregroundStyle(Color("SupportingText")).accessibilityIdentifier("registrationValidation") }
+                if let validationMessage { FormValidationMessage(message: validationMessage).accessibilityIdentifier("registrationValidation") }
             } header: { Text(L10n.tr("创建你的家庭")) } footer: { Text(L10n.tr("用户名使用 3–32 位小写字母、数字或 . _ -；密码至少 12 位。无需填写孩子的姓名或生日。")) }
+                .disabled(store.busy)
             Section {
-                Button { focus = nil; Task { await store.register(origin: origin, username: username, password: password); password = ""; repeated = "" } } label: {
-                    HStack { Text(L10n.tr("创建家庭")); Spacer(); if store.busy { ProgressView() } }
-                }.disabled(!valid || store.busy)
+                FormActionButton(title: L10n.tr("创建家庭"), busy: store.busy, action: submit)
+                    .accessibilityIdentifier("createHousehold")
             }
             Section {
                 NavigationLink(L10n.tr("隐私与数据")) { PrivacyView() }
@@ -38,6 +39,19 @@ struct RegistrationView: View {
                 Text(ServiceEndpoint.isOfficial(origin) ? L10n.tr("官方服务") : origin).font(.footnote).foregroundStyle(Color("SupportingText"))
             }
         }.navigationTitle(L10n.tr("创建家庭")).navigationBarTitleDisplayMode(.inline)
+    }
+    private func submit() {
+        guard !store.busy else { return }
+        attemptedSubmit = true
+        guard valid else {
+            focus = !validUsername ? .username : !(12...128).contains(password.count) ? .password : .repeated
+            return
+        }
+        focus = nil
+        Task {
+            await store.register(origin: origin, username: username, password: password)
+            if store.pendingRecoveryCode != nil { password = ""; repeated = "" }
+        }
     }
 }
 struct RecoveryCodeView: View {
@@ -55,7 +69,7 @@ struct RecoveryCodeView: View {
                         ShareLink(L10n.tr("保存恢复码"), item: code)
                     }
                 }
-                Section { Button(L10n.tr("我已妥善保存")) { store.pendingRecoveryCode = nil }.frame(minHeight: 44) }
+                Section { FormActionButton(title: L10n.tr("我已妥善保存")) { store.pendingRecoveryCode = nil } }
             }.navigationTitle(L10n.tr("家庭恢复码")).navigationBarTitleDisplayMode(.inline)
         }.interactiveDismissDisabled()
     }
@@ -74,7 +88,10 @@ struct DeleteHouseholdView: View {
                 Button(L10n.tr("管理 Apple 订阅")) { showManagement = true }
             }
             Section(L10n.tr("确认身份")) { SecureField(L10n.tr("当前家庭密码"), text: $password).textContentType(.password) }
-            Section { Button(L10n.tr("永久删除家庭"), role: .destructive) { confirm = true }.disabled(password.isEmpty || store.busy) }
+            Section { FormActionButton(title: L10n.tr("永久删除家庭"), busy: store.busy, role: .destructive) {
+                guard !password.isEmpty else { store.error = L10n.tr("请输入当前家庭密码。"); return }
+                confirm = true
+            } }
         }
         .navigationTitle(L10n.tr("删除家庭")).navigationBarTitleDisplayMode(.inline)
         .manageSubscriptionsSheet(isPresented: $showManagement)
@@ -94,6 +111,7 @@ struct AccountRecoveryView: View {
     @State private var password = ""
     @State private var repeated = ""
     @State private var replacementCode: String?
+    @State private var attemptedSubmit = false
     private var valid: Bool { !username.isEmpty && !recoveryCode.isEmpty && (12...128).contains(password.count) && password == repeated }
     var body: some View {
         Form {
@@ -103,7 +121,7 @@ struct AccountRecoveryView: View {
                     Text(L10n.tr("旧恢复码已失效。请保存新的恢复码，再使用新密码登录。"))
                     Text(replacementCode).font(.body.monospaced()).textSelection(.enabled)
                     ShareLink(L10n.tr("保存新恢复码"), item: replacementCode)
-                    Button(L10n.tr("我已保存，返回登录")) { dismiss() }
+                    FormActionButton(title: L10n.tr("我已保存，返回登录")) { dismiss() }
                 }
             } else {
                 Section {
@@ -111,13 +129,21 @@ struct AccountRecoveryView: View {
                     SecureField(L10n.tr("家庭恢复码"), text: $recoveryCode).textInputAutocapitalization(.never).autocorrectionDisabled()
                     SecureField(L10n.tr("设置新密码"), text: $password).textContentType(.newPassword)
                     SecureField(L10n.tr("确认新密码"), text: $repeated).textContentType(.newPassword).accessibilityLabel(L10n.tr("再次输入新密码"))
+                    if attemptedSubmit && !valid {
+                        FormValidationMessage(message: L10n.tr("请填写用户名和恢复码，新密码需为12–128位，且两次输入一致。"))
+                            .accessibilityIdentifier("recoveryValidation")
+                    }
                 } footer: { Text(L10n.tr("恢复码是在创建家庭时保存的代码。密码至少 12 位；恢复成功后，所有设备上的家庭登录凭证都会失效。电视绑定保持有效。")) }
+                    .disabled(store.busy)
                 Section {
-                    Button(L10n.tr("重设家庭密码")) { Task {
-                        replacementCode = await store.recover(origin: origin, username: username, recoveryCode: recoveryCode, password: password)
-                        password = ""; repeated = ""; recoveryCode = ""
-                    } }.disabled(!valid || store.busy)
-                    if store.busy { ProgressView() }
+                    FormActionButton(title: L10n.tr("重设家庭密码"), busy: store.busy) {
+                        attemptedSubmit = true
+                        guard valid else { return }
+                        Task {
+                            replacementCode = await store.recover(origin: origin, username: username, recoveryCode: recoveryCode, password: password)
+                            if replacementCode != nil { password = ""; repeated = ""; recoveryCode = "" }
+                        }
+                    }.accessibilityIdentifier("recoverHousehold")
                 }
             }
         }.navigationTitle(L10n.tr("找回家庭账号")).navigationBarTitleDisplayMode(.inline)

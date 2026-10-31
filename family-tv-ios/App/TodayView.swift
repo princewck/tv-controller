@@ -125,9 +125,9 @@ struct GrantView: View {
                     Text(L10n.tr("这会替换已有临时额度，并在休息时段内放行。离线电视需要重新连接后才能获取。"))
                 }
                 Section {
-                    Button { Task { await store.grant(minutes: minutes); if store.error == nil { dismiss() } } } label: {
-                        HStack { Text(L10n.tr("确认给予 \(minutes) 分钟")); Spacer(); if store.busy { ProgressView() } }
-                    }.disabled(store.busy).accessibilityIdentifier("confirmGrant")
+                    FormActionButton(title: L10n.tr("确认给予 \(minutes) 分钟"), busy: store.busy) {
+                        Task { await store.grant(minutes: minutes); if store.error == nil { dismiss() } }
+                    }.accessibilityIdentifier("confirmGrant")
                 }
             }
             .navigationTitle(L10n.tr("多一点观看时间")).navigationBarTitleDisplayMode(.inline)

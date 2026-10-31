@@ -122,7 +122,7 @@
 "家庭密码已更新" = "Family password updated";
 "家庭恢复码" = "Family recovery code";
 "家庭用户名" = "Family username";
-"家庭电视" = "Family TVs";
+"家庭电视" = "Home TV";
 "家庭设备" = "Family TVs";
 "家庭账号" = "Family account";
 "家长也可以随时暂停观看。临时观看时间不会解除家长暂停。" = "Parents can also pause viewing at any time. Extra viewing time doesn't end a pause set by a parent.";
@@ -392,10 +392,13 @@
 "请先配对本地电视。" = "Pair this phone with your TV first.";
 "请回到上一步，等待健康检查通过。" = "Go back and wait for the setup checks to pass.";
 "请填写完整的 HTTPS 服务地址，例如 https://tv.chengkai.wang。" = "Enter the full HTTPS service address, such as https://tv.example.com.";
+"请填写用户名和恢复码，新密码需为12–128位，且两次输入一致。" = "Enter your username and recovery code. Your new password must be 12–128 characters, and both entries must match.";
 "请家长在手机上调整观看时间。" = "Ask a parent to adjust your viewing time on their phone.";
 "请截图本页并发给你的 Agent 助手。" = "Take a screenshot of this page and send it to the AI coding assistant on your trusted computer. This isn't in-app customer support.";
 "请由家长使用" = "For parents to use";
 "请确保电视和运行 Codex、Cursor 等 Agent 助手的电脑，在同一个 Wi-Fi 下。" = "Connect the TV and your computer to the same Wi-Fi. You'll need your own AI coding assistant on that computer, such as Codex or Cursor, that can install TV apps.";
+"请输入家庭用户名和密码。" = "Enter your family username and password.";
+"请输入当前家庭密码。" = "Enter your current family password.";
 "调整观看规则" = "Edit rules for all TVs";
 "账号或密码不正确，或登录已过期，请重新登录。" = "Your username or password is incorrect, or your session has expired. Sign in again.";
 "购买凭证未能验证，请恢复购买或联系支持。" = "We couldn't verify your purchase. Restore purchases or contact support.";

@@ -34,11 +34,16 @@ struct WelcomeView: View {
                     if subscription.hasPurchaseIntent { Text(L10n.tr("你从 App Store 发起了订阅，请先连接购买要使用的家庭，再继续。")).font(.footnote).foregroundStyle(Color("SupportingText")) }
                     Text(L10n.tr("演示无需账号，不连接真实电视。"))
                         .font(.footnote).foregroundStyle(Color("SupportingText")).frame(maxWidth: .infinity)
-                    NavigationLink(L10n.tr("语言")) { LanguageSettingsView() }
-                        .accessibilityIdentifier("welcomeLanguageSettings")
                 }.padding(24).frame(maxWidth: 600)
             }
             .navigationTitle(L10n.tr("观有度")).navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink { LanguageSettingsView() } label: { Image(systemName: "globe") }
+                        .accessibilityLabel(L10n.tr("语言"))
+                        .accessibilityIdentifier("welcomeLanguageSettings")
+                }
+            }
             .sheet(isPresented: $showLogin) { LoginView() }
         }
     }
@@ -71,9 +76,8 @@ struct LoginView: View {
                 ServiceSelectionView(selection: $serviceSelection, customOrigin: $customOrigin)
                     .disabled(store.busy)
                 Section {
-                    Button { connect() } label: {
-                        HStack { Text(L10n.tr("连接家庭")); Spacer(); if store.busy { ProgressView() } }
-                    }.disabled(username.trimmingCharacters(in: .whitespaces).isEmpty || password.isEmpty || !validOrigin || store.busy)
+                    FormActionButton(title: L10n.tr("连接家庭"), busy: store.busy, action: connect)
+                        .accessibilityIdentifier("loginHousehold")
                 }
                 Section {
                     NavigationLink(L10n.tr("创建新家庭")) { RegistrationView(origin: origin) }.disabled(!validOrigin || store.busy)
@@ -87,11 +91,15 @@ struct LoginView: View {
             .familyErrorAlert(inModal: true)
     }
     private func connect() {
+        guard !store.busy else { return }
+        guard !username.trimmingCharacters(in: .whitespaces).isEmpty && !password.isEmpty else {
+            store.error = L10n.tr("请输入家庭用户名和密码。")
+            return
+        }
         focus = nil
         Task {
             await store.login(origin: origin, username: username.trimmingCharacters(in: .whitespaces), password: password)
-            password = ""
-            if store.auth != nil { dismiss() }
+            if store.auth != nil { password = ""; dismiss() }
         }
     }
 }
