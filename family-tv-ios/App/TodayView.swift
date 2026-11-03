@@ -103,7 +103,7 @@ struct TodayView: View {
         }
         .navigationTitle(L10n.tr("今天"))
         .refreshable { await store.refresh() }
-        .sheet(isPresented: $showGrant) { GrantView() }
+        .sheet(isPresented: $showGrant) { GrantView().demoExitFloating(reservingSpace: true) }
         .confirmationDialog(store.usage?.state.paused == true ? L10n.tr("解除家长暂停？") : L10n.tr("暂停受管视频播放？"), isPresented: $confirmPause, titleVisibility: .visible) {
             Button(L10n.tr("确认")) { Task { await store.setPaused(store.usage?.state.paused != true) } }
             Button(L10n.tr("取消"), role: .cancel) {}

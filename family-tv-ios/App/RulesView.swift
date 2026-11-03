@@ -45,7 +45,7 @@ struct RulesView: View {
             }
         }
         .navigationTitle(L10n.tr("观看规则"))
-        .sheet(isPresented: $editing) { PolicyEditor(policy: store.policy) }
+        .sheet(isPresented: $editing) { PolicyEditor(policy: store.policy).demoExitFloating(reservingSpace: true) }
     }
 }
 func daysText(_ days: [Int]) -> String {

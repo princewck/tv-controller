@@ -6,35 +6,69 @@ struct WelcomeView: View {
     @State private var showLogin = false
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 28) {
-                    Image(systemName: "tv.and.mediabox").font(.largeTitle).foregroundStyle(Color.accentColor).padding(.top, 32).accessibilityHidden(true)
-                    Text(L10n.tr("好好看，\n也好好休息。"))
-                        .font(.largeTitle.bold()).fixedSize(horizontal: false, vertical: true)
-                    Text(L10n.tr("观有度，让电视时间有商有量。"))
-                        .font(.title3).foregroundStyle(Color("SupportingText"))
-                    VStack(alignment: .leading, spacing: 24) {
-                        intro(L10n.tr("看得明白"), L10n.tr("了解受管应用的观看时长。"), "chart.bar")
-                        intro(L10n.tr("休息有约定"), L10n.tr("设置观看额度和休息时段。"), "moon")
-                        intro(L10n.tr("家长来决定"), L10n.tr("需要时，给予一段额外观看时间。"), "hand.raised")
-                    }.padding(.vertical, 8)
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text(L10n.tr("需要先准备一台兼容的 Android TV"))
-                            .font(.headline)
-                        Text(L10n.tr("电视需安装并配置配套客户端；iPhone 不能直接管理未安装客户端的电视、Apple TV 或 HDMI 设备。"))
-                            .font(.subheadline).foregroundStyle(Color("SupportingText"))
-                        NavigationLink(L10n.tr("如何添加电视")) { InstallationView() }.frame(minHeight: 44)
-                        NavigationLink(L10n.tr("电视上会发生什么？")) { TVGuideView() }
-                            .frame(minHeight: 44).accessibilityIdentifier("welcomeTVGuide")
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0) {
+                        Spacer(minLength: 24)
+                        VStack(alignment: .leading, spacing: 14) {
+                            HStack(alignment: .center, spacing: 20) {
+                                Text(L10n.tr("好好看，\n也好好休息。"))
+                                    .font(.title.bold()).fixedSize(horizontal: false, vertical: true)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                Image(systemName: "tv.and.mediabox.fill")
+                                    .font(.system(size: 44, weight: .semibold))
+                                    .foregroundStyle(Color.accentColor)
+                                    .frame(width: 76, height: 76)
+                                    .background(Color.accentColor.opacity(0.09), in: .rect(cornerRadius: 22))
+                                    .accessibilityHidden(true)
+                            }.accessibilityElement(children: .combine).accessibilityIdentifier("welcomeHero")
+                            Text(L10n.tr("观有度，让电视时间有商有量。"))
+                                .font(.subheadline).foregroundStyle(Color("SupportingText"))
+                                .accessibilityIdentifier("welcomeTagline")
+                        }
+                        Spacer(minLength: 28)
+                        VStack(alignment: .leading, spacing: 24) {
+                            intro(L10n.tr("看得明白"), L10n.tr("了解受管应用的观看时长。"), "chart.bar.fill", .blue)
+                            intro(L10n.tr("休息有约定"), L10n.tr("设置观看额度和休息时段。"), "moon.fill", .orange)
+                            intro(L10n.tr("家长来决定"), L10n.tr("需要时，给予一段额外观看时间。"), "hand.raised.fill", .purple)
+                        }
+                        Spacer(minLength: 28)
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(L10n.tr("首次配置需配套 Android TV 客户端和电脑；不支持 Apple TV 或 HDMI 设备。"))
+                                .font(.footnote).foregroundStyle(Color("SupportingText"))
+                                .accessibilityIdentifier("welcomeCompatibility")
+                            HStack(alignment: .firstTextBaseline, spacing: 16) {
+                                NavigationLink(L10n.tr("如何添加电视")) { InstallationView() }
+                                    .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                                NavigationLink(L10n.tr("电视上会发生什么？")) { TVGuideView() }
+                                    .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                                    .accessibilityIdentifier("welcomeTVGuide")
+                            }.font(.subheadline)
+                        }
+                        Spacer(minLength: 24)
                     }
-                    Button { showLogin = true } label: { Text(L10n.tr("连接我的家庭")).frame(maxWidth: .infinity, minHeight: 44) }
-                        .buttonStyle(.borderedProminent).accessibilityIdentifier("connectFamily")
-                    Button(L10n.tr("先体验演示模式")) { store.enterDemo() }
-                        .frame(maxWidth: .infinity, minHeight: 44).accessibilityIdentifier("enterDemo")
-                    if subscription.hasPurchaseIntent { Text(L10n.tr("你从 App Store 发起了订阅，请先连接购买要使用的家庭，再继续。")).font(.footnote).foregroundStyle(Color("SupportingText")) }
+                    .padding(.horizontal, 24)
+                    .frame(maxWidth: 600)
+                    .frame(minHeight: geometry.size.height, alignment: .topLeading)
+                    .frame(maxWidth: .infinity)
+                }
+                .scrollBounceBehavior(.basedOnSize)
+            }
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                VStack(spacing: 8) {
+                    HStack(spacing: 12) {
+                        FormActionButton(title: L10n.tr("连接我的家庭")) { showLogin = true }
+                            .accessibilityIdentifier("connectFamily")
+                        demoAction
+                    }
+                    if subscription.hasPurchaseIntent {
+                        Text(L10n.tr("你从 App Store 发起了订阅，请先连接购买要使用的家庭，再继续。"))
+                            .font(.footnote).foregroundStyle(Color("SupportingText"))
+                    }
                     Text(L10n.tr("演示无需账号，不连接真实电视。"))
-                        .font(.footnote).foregroundStyle(Color("SupportingText")).frame(maxWidth: .infinity)
-                }.padding(24).frame(maxWidth: 600)
+                        .font(.caption).foregroundStyle(Color("SupportingText"))
+                }.padding(.horizontal, 24).padding(.top, 8).padding(.bottom, 12)
+                    .frame(maxWidth: 600).frame(maxWidth: .infinity).background(.background)
             }
             .navigationTitle(L10n.tr("观有度")).navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -47,10 +81,28 @@ struct WelcomeView: View {
             .sheet(isPresented: $showLogin) { LoginView() }
         }
     }
-    private func intro(_ title: String, _ subtitle: String, _ icon: String) -> some View {
-        HStack(alignment: .top, spacing: 16) {
-            Image(systemName: icon).font(.title2).foregroundStyle(Color.accentColor).frame(width: 30).accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 4) { Text(title).font(.headline); Text(subtitle).foregroundStyle(Color("SupportingText")) }
+    private var demoButton: some View {
+        Button { store.enterDemo() } label: {
+            Text(L10n.tr("先体验演示模式"))
+                .font(.headline).fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, minHeight: 28).padding(.vertical, 4)
+        }
+        .controlSize(.large).buttonBorderShape(.roundedRectangle(radius: 14))
+        .accessibilityIdentifier("enterDemo")
+    }
+    @ViewBuilder private var demoAction: some View {
+        if #available(iOS 26, *) { demoButton.buttonStyle(.glass) }
+        else { demoButton.buttonStyle(.bordered) }
+    }
+    private func intro(_ title: String, _ subtitle: String, _ icon: String, _ color: Color) -> some View {
+        HStack(alignment: .center, spacing: 14) {
+            Image(systemName: icon).font(.title3.weight(.semibold)).foregroundStyle(color)
+                .frame(width: 36, height: 36).accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 6) {
+                Text(title).font(.headline).accessibilityIdentifier("welcomeFeatureTitle." + icon)
+                Text(subtitle).font(.subheadline).foregroundStyle(Color("SupportingText"))
+                    .accessibilityIdentifier("welcomeFeatureDetail." + icon)
+            }.fixedSize(horizontal: false, vertical: true)
         }
     }
 }

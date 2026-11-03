@@ -19,6 +19,7 @@ struct RootView: View {
             if store.connected { MainTabs() } else { WelcomeView() }
         }
         .id(appLanguage)
+        .demoExitFloating(bottomPadding: 88)
         .environment(\.locale, L10n.locale)
         .onChange(of: appLanguage) { _, _ in
             store.error = nil; store.notice = nil
@@ -83,10 +84,10 @@ struct MainTabs: View {
     @Environment(FamilyStore.self) private var store
     var body: some View {
         TabView {
-            NavigationStack { TodayView() }.tabItem { Label(L10n.tr("今天"), systemImage: "sun.max") }
-            NavigationStack { RulesView() }.tabItem { Label(L10n.tr("规则"), systemImage: "slider.horizontal.3") }
-            NavigationStack { HistoryView() }.tabItem { Label(L10n.tr("记录"), systemImage: "chart.bar.xaxis") }
-            NavigationStack { SettingsView() }.tabItem { Label(L10n.tr("我的"), systemImage: "person.crop.circle") }
+            NavigationStack { TodayView() }.safeAreaPadding(.bottom, store.demo ? 64 : 0).tabItem { Label(L10n.tr("今天"), systemImage: "sun.max") }
+            NavigationStack { RulesView() }.safeAreaPadding(.bottom, store.demo ? 64 : 0).tabItem { Label(L10n.tr("规则"), systemImage: "slider.horizontal.3") }
+            NavigationStack { HistoryView() }.safeAreaPadding(.bottom, store.demo ? 64 : 0).tabItem { Label(L10n.tr("记录"), systemImage: "chart.bar.xaxis") }
+            NavigationStack { SettingsView() }.safeAreaPadding(.bottom, store.demo ? 64 : 0).tabItem { Label(L10n.tr("我的"), systemImage: "person.crop.circle") }
         }
     }
 }

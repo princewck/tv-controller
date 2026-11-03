@@ -48,7 +48,7 @@ struct SettingsView: View {
             if !store.demo, store.capabilities?.household_delete == true {
                 Section { NavigationLink(L10n.tr("删除家庭与云端数据")) { DeleteHouseholdView() } }
             }
-            Section { Button(store.demo ? L10n.tr("退出演示模式") : L10n.tr("退出登录"), role: .destructive) { leaving = true }.disabled(store.busy) }
+            if !store.demo { Section { Button(L10n.tr("退出登录"), role: .destructive) { leaving = true }.disabled(store.busy) } }
         }
         .navigationTitle(L10n.tr("我的家庭"))
         .confirmationDialog(store.demo ? L10n.tr("退出演示模式？") : L10n.tr("退出当前家庭？"), isPresented: $leaving, titleVisibility: .visible) {

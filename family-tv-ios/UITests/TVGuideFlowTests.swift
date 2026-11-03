@@ -23,10 +23,7 @@ final class TVGuideFlowTests: XCTestCase {
 
     @MainActor func testWelcomeHasTVGuideBeforeAccountSetup() {
         let app = XCUIApplication(); app.launchArguments = ["--demo"]; app.launchEnvironment["FAMILYTV_UI_LANGUAGE"] = "zh-Hans"; app.launch()
-        app.tabBars.buttons["我的"].tap()
-        let exit = app.buttons["退出演示模式"]
-        for _ in 0..<5 where !exit.isHittable { app.swipeUp() }
-        exit.tap(); app.buttons["确认退出"].tap()
+        app.buttons["globalDemoExit"].tap()
         let guide = app.buttons["welcomeTVGuide"]
         for _ in 0..<4 where !guide.isHittable { app.swipeUp() }
         XCTAssertTrue(guide.isHittable)

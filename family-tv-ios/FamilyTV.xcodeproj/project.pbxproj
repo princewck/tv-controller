@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		078476C4C4AA9EFD7110D10C /* DemoExitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69139D655A3A0D9DCBF2DE2 /* DemoExitButton.swift */; };
 		07E7D39250BE0EBA378D5D62 /* ServiceSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D952A5A969E6B40B8672453 /* ServiceSelectionView.swift */; };
 		29F439FAEE0D58A6B9E23EB7 /* InstallationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FCD6148B807A58BFC32C02 /* InstallationView.swift */; };
 		302631F34CA024845CE368DD /* BreakDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C854A52007871A91240D8A /* BreakDesign.swift */; };
@@ -48,6 +49,7 @@
 		DFF18434733212B2009B40C3 /* OfflineHouseholdVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37758754279954067EB314FF /* OfflineHouseholdVault.swift */; };
 		E446A2ADE95C514F8E5E0B8E /* SubscriptionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4F07ECB892FA257E73107E /* SubscriptionStore.swift */; };
 		E7A8C13DA579837082C5E96D /* BetterBreaksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981CC256BFAB6BCC5523140C /* BetterBreaksView.swift */; };
+		E843C6835A03A9FD39B34BCF /* WelcomeLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D24330EA421B0B7C9334D715 /* WelcomeLayoutTests.swift */; };
 		FAFD4637892D9C0BB0A7F9B6 /* FamilyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426169793A13C045FB0ACF95 /* FamilyStore.swift */; };
 		FBBBA9CFE8E5479B415842BC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5A00C3620E23EE98F8C25CE7 /* Localizable.strings */; };
 /* End PBXBuildFile section */
@@ -113,7 +115,9 @@
 		C3DCC7E29C2E89297D354C87 /* AccountViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViews.swift; sourceTree = "<group>"; };
 		CF5514F80884A74A231B59F5 /* TVGuideFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVGuideFlowTests.swift; sourceTree = "<group>"; };
 		D03760881C4FAA6833A1A60A /* TVIllustrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVIllustrationView.swift; sourceTree = "<group>"; };
+		D24330EA421B0B7C9334D715 /* WelcomeLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeLayoutTests.swift; sourceTree = "<group>"; };
 		D36E1562806AF6AAB2AE2985 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D69139D655A3A0D9DCBF2DE2 /* DemoExitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoExitButton.swift; sourceTree = "<group>"; };
 		DF66C6FAF0D8C4C580FADA57 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		E0A855A9F563756C044A389F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E6EF18A1EDD04E90F71084A0 /* LocalNetworkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNetworkController.swift; sourceTree = "<group>"; };
@@ -168,6 +172,7 @@
 				9B9BF8363B7477F0E43D4F66 /* FamilyFlowTests.swift */,
 				F93935FFAEFB23F4A4AE51ED /* LocalizationFlowTests.swift */,
 				CF5514F80884A74A231B59F5 /* TVGuideFlowTests.swift */,
+				D24330EA421B0B7C9334D715 /* WelcomeLayoutTests.swift */,
 			);
 			path = UITests;
 			sourceTree = "<group>";
@@ -177,6 +182,7 @@
 			children = (
 				C3DCC7E29C2E89297D354C87 /* AccountViews.swift */,
 				981CC256BFAB6BCC5523140C /* BetterBreaksView.swift */,
+				D69139D655A3A0D9DCBF2DE2 /* DemoExitButton.swift */,
 				387B159C9F7A9D2174063CD7 /* FamilyTVApp.swift */,
 				92369981CFD6CD6D3789CFA2 /* FormActionButton.swift */,
 				0156B99B187E73CF3BFDD828 /* HistoryView.swift */,
@@ -367,6 +373,7 @@
 				A54C40BE623E1BB6BE16AAA5 /* AccountViews.swift in Sources */,
 				E7A8C13DA579837082C5E96D /* BetterBreaksView.swift in Sources */,
 				302631F34CA024845CE368DD /* BreakDesign.swift in Sources */,
+				078476C4C4AA9EFD7110D10C /* DemoExitButton.swift in Sources */,
 				FAFD4637892D9C0BB0A7F9B6 /* FamilyStore.swift in Sources */,
 				4449446F35EC073EB0A8E0D6 /* FamilyTVApp.swift in Sources */,
 				C47B25B550891AE58209209A /* FormActionButton.swift in Sources */,
@@ -402,6 +409,7 @@
 				9B1754CD1D709DCF0FEB3D9C /* FamilyFlowTests.swift in Sources */,
 				32017A277DA81F1E354751D2 /* LocalizationFlowTests.swift in Sources */,
 				DBD56DE161CA9D3C0A20AB59 /* TVGuideFlowTests.swift in Sources */,
+				E843C6835A03A9FD39B34BCF /* WelcomeLayoutTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -556,7 +564,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 16;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = C5792GBPNR;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -640,7 +648,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 16;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C5792GBPNR;
 				ENABLE_NS_ASSERTIONS = NO;
