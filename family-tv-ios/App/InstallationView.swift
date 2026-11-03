@@ -69,16 +69,19 @@ struct InstallationView: View {
             }.tabViewStyle(.page(indexDisplayMode: .never))
         }
         .background(Color(.systemGroupedBackground))
-        .safeAreaInset(edge: .bottom) {
+        .safeAreaInset(edge: .bottom, spacing: 0) {
             HStack(spacing: 16) {
                 if step > 0 { Button(L10n.tr("上一步")) { withAnimation { step -= 1 } }.frame(minHeight: 44) }
-                Button(buttonTitle) {
+                FormActionButton(title: buttonTitle) {
                     if step == 3, verifiedHealth?.complete == true { store.setupTicket = nil; dismiss() }
                     else { withAnimation { step += 1 } }
-                }.frame(maxWidth: .infinity, minHeight: 44).buttonStyle(.borderedProminent)
+                }
                     .disabled((step == 1 && store.setupTicket == nil) || (step >= 2 && verifiedHealth?.complete != true))
                     .accessibilityIdentifier("installationNext")
-            }.padding(.horizontal, 24).padding(.bottom, 12).background(.bar)
+            }
+            .padding(.horizontal, 24).padding(.top, 12)
+            .padding(.bottom, store.demo ? 96 : 12)
+            .background(Color(.systemGroupedBackground).ignoresSafeArea(edges: .bottom))
         }
         .navigationTitle(L10n.tr("添加电视")).navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showLogin) { LoginView() }

@@ -196,6 +196,7 @@ extension FamilyFlowTests {
         app.buttons["添加电视"].tap()
         XCTAssertTrue(app.staticTexts["先连上同一个 Wi-Fi"].waitForExistence(timeout: 5))
         capture(app, name: "setup-1-wifi")
+        XCTAssertLessThanOrEqual(app.buttons["installationNext"].frame.maxY + 8, app.buttons["globalDemoExit"].frame.minY)
         app.buttons["installationNext"].tap()
         XCTAssertTrue(app.staticTexts["截图，交给你的助手"].waitForExistence(timeout: 5))
         app.buttons["生成安装码"].tap()
