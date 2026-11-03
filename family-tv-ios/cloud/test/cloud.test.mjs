@@ -16,6 +16,17 @@ function fixture(t){
  const premium=async auth=>{const jws=randomUUID();claims.set(jws,{bundleId:env.BUNDLE_ID,productId:env.PRODUCT_ID,type:'Auto-Renewable Subscription',appAccountToken:auth.identity.tenant_id,originalTransactionId:randomUUID(),transactionId:randomUUID(),environment:'Sandbox',signedDate:now,expiresDate:now+86400000});const response=await call('/admin/subscription',{signed_transaction:jws},auth);assert.equal(response.status,200,await response.clone().text());return {jws,transaction:claims.get(jws)};};
  return {db,env,call,register,install,beat,premium,claims,advance:ms=>now+=ms,now:()=>now};
 }
+test('eight-character registration and recovery accept the boundary and reject shorter passwords',async t=>{
+ const f=fixture(t);
+ assert.equal((await f.call('/admin/register',{username:'short_parent',password:'1234567'})).status,400);
+ assert.equal((await f.call('/admin/register',{username:'long_parent',password:'x'.repeat(129)})).status,400);
+ const created=await f.call('/admin/register',{username:'eight_parent',password:'test1234'});
+ assert.equal(created.status,201);const account=await created.json();
+ assert.equal((await f.call('/admin/login',{username:'eight_parent',password:'test1234'})).status,200);
+ assert.equal((await f.call('/admin/recover',{username:'eight_parent',recovery_code:account.recovery_code,password:'1234567'})).status,400);
+ assert.equal((await f.call('/admin/recover',{username:'eight_parent',recovery_code:account.recovery_code,password:'next1234'})).status,200);
+ assert.equal((await f.call('/admin/login',{username:'eight_parent',password:'next1234'})).status,200);
+});
 test('cloud registration/login, one-use installation and tenant boundaries',async t=>{
  const f=fixture(t),a=await f.register('family_a'),b=await f.register('family_b'),device=await f.install(a);
  assert.equal((await f.call('/admin/session',null,a)).status,200);

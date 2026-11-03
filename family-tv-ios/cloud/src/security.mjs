@@ -6,7 +6,7 @@ export const secret=()=>randomBytes(32).toString('base64url');
 export const hash=value=>createHash('sha256').update(value).digest('hex');
 export const equal=(a,b)=>typeof a==='string'&&typeof b==='string'&&Buffer.byteLength(a)===Buffer.byteLength(b)&&timingSafeEqual(Buffer.from(a),Buffer.from(b));
 export async function passwordRecord(password){
- if(typeof password!=='string'||password.length<12||password.length>128)throw new HTTPError(400,'Password must be 12..128 characters');
+ if(typeof password!=='string'||password.length<8||password.length>128)throw new HTTPError(400,'Password must be 8..128 characters');
  const salt=randomBytes(16);const digest=await scrypt(password,salt,64,{N:16384,r:8,p:1,maxmem:64*1024*1024});
  return JSON.stringify({salt:salt.toString('hex'),digest:digest.toString('hex')});
 }

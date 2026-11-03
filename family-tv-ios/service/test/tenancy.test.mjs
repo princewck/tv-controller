@@ -10,6 +10,14 @@ import {Store,hash} from '../server/store.mjs';
 import {loadConfig} from '../server/config.mjs';
 import {createApp} from '../server/app.mjs';
 import {DEFAULT_POLICY} from '../server/policy.mjs';
+import {passwordRecord,passwordMatches} from '../server/tenancy.mjs';
+test('password creation accepts eight characters, rejects seven and preserves longer logins',async()=>{
+ await assert.rejects(passwordRecord('1234567'));
+ await assert.rejects(passwordRecord('x'.repeat(129)));
+ const record=await passwordRecord('test1234');assert.equal(await passwordMatches('test1234',record),true);
+ assert.equal(await passwordMatches('wrong123',record),false);
+ const old=await passwordRecord('existing-long-test-password');assert.equal(await passwordMatches('existing-long-test-password',old),true);
+});
 async function fixture(t){
  let now=Date.parse('2030-01-02T12:00:00+08:00');const dir=mkdtempSync(join(tmpdir(),'tv-tenancy-')),file=join(dir,'password.json'),password='isolated-root-test-123',salt=randomBytes(16);
  writeFileSync(file,JSON.stringify({algorithm:'scrypt-v1',salt:salt.toString('hex'),digest:scryptSync(password,salt,64).toString('hex')}));

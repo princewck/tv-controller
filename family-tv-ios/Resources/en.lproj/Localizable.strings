@@ -130,8 +130,8 @@
 "家长暂停" = "Paused by a parent";
 "家长来决定" = "Parents stay in control";
 "密码" = "Password";
-"密码需为 12–128 位。" = "Use 12–128 characters for the password.";
-"密码需为12–128位，当前为{p0}位。" = "Your password must be 12–128 characters. It currently has {p0}.";
+"密码需为 8–128 位。" = "Use 8–128 characters for the password.";
+"密码需为8–128位，当前为{p0}位。" = "Your password must be 8–128 characters. It currently has {p0}.";
 "将稳定间隔用于本家庭全部电视？" = "Use consistent viewing periods for all TVs in this family?";
 "少一些打断，多一些约定" = "Fewer interruptions, clearer plans";
 "少打扰的休息安排" = "Plan breaks with fewer interruptions";
@@ -176,7 +176,7 @@
 "忘记密码时，可以用它找回家庭账号。恢复码只显示这一次，请保存在密码管理器等安全位置。" = "Use this code to reset a forgotten password. It's shown only once, so save it somewhere safe, such as a password manager.";
 "忘记密码，用恢复码找回" = "Forgot password? Use your recovery code.";
 "恢复未完成，请核对家庭用户名和恢复码后重试。" = "Couldn't recover the account. Check your family username and recovery code, then try again.";
-"恢复码是在创建家庭时保存的代码。密码至少 12 位；恢复成功后，所有设备上的家庭登录凭证都会失效。电视绑定保持有效。" = "Enter the recovery code saved when you created this family account or last reset its password. Use a new password of 12–128 characters. Recovery signs parents out of the app and web dashboard on all devices. TV connections stay active and don't need reinstalling.";
+"恢复码是在创建家庭时保存的代码。密码至少 8 位；恢复成功后，所有设备上的家庭登录凭证都会失效。电视绑定保持有效。" = "Enter the recovery code saved when you created this family account or last reset its password. Use a new password of 8–128 characters. Recovery signs parents out of the app and web dashboard on all devices. TV connections stay active and don't need reinstalling.";
 "恢复购买" = "Restore purchases";
 "我已保存，返回登录" = "Saved. Back to sign-in.";
 "我已妥善保存" = "I've saved it safely";
@@ -291,7 +291,7 @@
 "版本 {p0} ({p1})" = "Version {p0} ({p1})";
 "生成安装码" = "Generate setup code";
 "用户名" = "Username";
-"用户名使用 3–32 位小写字母、数字或 . _ -；密码至少 12 位。无需填写孩子的姓名或生日。" = "Use 3–32 lowercase letters, numbers, dots, underscores or hyphens for the username, and a password of 12–128 characters. No child's name or birthday needed.";
+"用户名使用 3–32 位小写字母、数字或 . _ -；密码至少 8 位。无需填写孩子的姓名或生日。" = "Use 3–32 lowercase letters, numbers, dots, underscores or hyphens for the username, and a password of 8–128 characters. No child's name or birthday needed.";
 "用户名需为 3–32 位小写字母、数字或 . _ -。" = "Use 3–32 lowercase letters, numbers, dots, underscores or hyphens for the username.";
 "用户名需为3–32位小写字母、数字或 . _ -，并以字母或数字开头。" = "Use 3–32 lowercase letters, numbers, dots, underscores or hyphens. Start with a letter or number.";
 "由观有度提供，无需填写服务器地址。" = "Provided by Family TV. No server address needed.";
@@ -394,7 +394,7 @@
 "请先配对本地电视。" = "Pair this phone with your TV first.";
 "请回到上一步，等待健康检查通过。" = "Go back and wait for the setup checks to pass.";
 "请填写完整的 HTTPS 服务地址，例如 https://tv.chengkai.wang。" = "Enter the full HTTPS service address, such as https://tv.example.com.";
-"请填写用户名和恢复码，新密码需为12–128位，且两次输入一致。" = "Enter your username and recovery code. Your new password must be 12–128 characters, and both entries must match.";
+"请填写用户名和恢复码，新密码需为8–128位，且两次输入一致。" = "Enter your username and recovery code. Your new password must be 8–128 characters, and both entries must match.";
 "请家长在手机上调整观看时间。" = "Ask a parent to adjust your viewing time on their phone.";
 "请截图本页并发给你的 Agent 助手。" = "Take a screenshot of this page and send it to the AI coding assistant on your trusted computer. This isn't in-app customer support.";
 "请由家长使用" = "For parents to use";
