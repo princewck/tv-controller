@@ -4,7 +4,7 @@ import {promisify} from 'node:util';
 import {HttpError,secret,hash} from './store.mjs';
 const scrypt=promisify(scryptCb);
 export async function passwordRecord(password){
- if(typeof password!=='string'||password.length<10||password.length>128)throw new HttpError(400,'Password must be 10..128 characters');
+ if(typeof password!=='string'||password.length<8||password.length>128)throw new HttpError(400,'Password must be 8..128 characters');
  const salt=randomBytes(16),digest=await scrypt(password,salt,64,{N:16384,r:8,p:1,maxmem:64*1024*1024});
  return {algorithm:'scrypt-v1',salt:salt.toString('hex'),digest:digest.toString('hex')};
 }

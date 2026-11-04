@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>电视时间 · 家长管理</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,"Noto Sans CJK SC",sans-serif;background:#0b1019;color:#ecf1fa}*{box-sizing:border-box}body{margin:0}button,input,select,textarea{font:inherit}button{cursor:pointer;background:#2a405d;color:#eef4ff;border:1px solid #485b78;border-radius:9px;padding:11px 16px}button:hover{background:#385778}button:focus-visible,input:focus-visible{outline:3px solid #a3c9ff;outline-offset:3px}button.danger{background:#5e303b}input{background:#101a2a;color:#f2f5ff;border:1px solid #45556c;border-radius:8px;padding:11px;max-width:100%}input[type=number]{width:110px}input[type=checkbox]{width:20px;height:20px;accent-color:#8edab8}header{padding:26px max(5vw,20px);border-bottom:1px solid #26344a;display:flex;justify-content:space-between;align-items:center;gap:20px}h1{font-size:25px;margin:0}h2{font-size:21px;margin:0 0 18px}h3{font-size:17px}p{line-height:1.7;color:#b5c0d2}.sub{font-size:13px;color:#8494af}main{max-width:1250px;margin:auto;padding:28px 5vw 60px}.panel{background:#141f30;border:1px solid #2a3c55;border-radius:16px;padding:24px;margin-bottom:22px}.login{max-width:430px;margin:9vh auto}.login input{width:100%;margin:12px 0}.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}.tabs button[aria-selected=true]{background:#cae1ff;color:#14203a}.hidden,[hidden]{display:none!important}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.metric{padding:20px;background:#1a2a40;border-radius:12px}.metric strong{display:block;font-size:24px;margin-top:12px}.metric span{color:#a1b1c9;font-size:14px}.message{color:#93dec1;min-height:24px;line-height:1.6}.error{color:#ffabb1}.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;padding:12px 10px;border-bottom:1px solid #2a3a50;white-space:nowrap}th{color:#a7bbd7}label{display:flex;align-items:center;gap:10px;line-height:1.6}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.fields label{justify-content:space-between}.window{padding:18px;background:#1c2b40;border-radius:12px;margin:14px 0}.days{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}.days label{font-size:14px}.diagram{width:100%;height:auto;min-width:780px}.chart{width:100%;height:auto;min-width:630px}.legend{display:flex;gap:18px;flex-wrap:wrap;color:#a9b8ce;font-size:13px}.logic-list li{color:#bfccde;line-height:1.9;margin:7px 0}code{color:#b4dbff;overflow-wrap:anywhere}.code-preview{font-variant-numeric:tabular-nums;font-size:29px;letter-spacing:.09em;color:#a0e8c7}.notice{border-left:3px solid #d5a95d;padding:12px 18px;background:#2b271f;color:#e1c898;line-height:1.7}.live{color:#96e6bf}@media(max-width:700px){main{padding:20px 15px}.panel{padding:18px}.metrics{grid-template-columns:repeat(2,1fr)}.fields{grid-template-columns:1fr}header{padding:20px 16px;align-items:flex-start}h1{font-size:21px}.actions{gap:9px}.tabs button{flex:1;padding:11px 8px;font-size:14px}.metric strong{font-size:23px}}
+.presentation-preview{white-space:pre-wrap;overflow-wrap:anywhere}.provision-text{width:100%;background:#101a2a;color:#f2f5ff;border:1px solid #45556c;border-radius:8px;padding:12px}.heartbeat{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:13px;font-size:13px;color:#9cabc2}.heart-dot{width:12px;height:12px;background:#7d899a;border-radius:50%;flex-shrink:0}.heartbeat[data-online=true] .heart-dot{background:#90e5bb}.heartbeat time{font-variant-numeric:tabular-nums;color:#d7e4f7}@media(max-width:700px){header{flex-wrap:wrap}.heartbeat{line-height:1.8}}
+</style></head><body>
+<header><div><h1>电视时间 · 家长管理</h1><div class="sub">小米 HyperOS · 北京时间 · tv.example.com</div><div id="heartbeatLive" class="heartbeat" hidden><span id="heartDot" class="heart-dot" aria-hidden="true"></span><span id="heartState">连接中…</span><span>最近活跃 <time id="heartTime">尚无记录</time></span></div></div><button id="logout" hidden>退出登录</button></header>
+<main>
+<section id="loginPanel" class="panel login"><h2>家长账号登录</h2><p>在自己的手机或电脑上登录。此设备可保持登录 120 天，请勿在公共设备上使用。</p><form id="loginForm"><label for="username">用户名</label><input id="username" type="text" autocomplete="username" maxlength="32" value="admin" required><label for="password">密码</label><input id="password" type="password" autocomplete="current-password" maxlength="128" required><button type="submit">登录</button></form><p id="loginMessage" class="message" role="status"></p></section>
+<div id="app" hidden>
+<div class="panel"><div class="actions"><span id="identityLabel"></span><label id="tenantField" hidden>家庭 <select id="tenantSelect" aria-label="选择家庭"></select></label><label>电视 <select id="deviceSelect" aria-label="选择电视"></select></label></div><p id="emptyDevices" class="sub" hidden>此家庭还没有电视，请到“设备与账号”创建设备并下载安装凭证。</p></div>
+<nav class="tabs" aria-label="管理页面"><button data-tab="overview" aria-selected="true">观看统计</button><button data-tab="settings" aria-selected="false">规则与放行</button><button data-tab="logic" aria-selected="false">产品逻辑</button><button data-tab="accounts" aria-selected="false">设备与账号</button><button data-tab="learning" aria-selected="false">学习题库</button><button data-tab="display" aria-selected="false">屏幕展示</button></nav>
+<p id="globalMessage" class="message" role="status"></p>
+<section id="overview" data-panel>
+<div class="panel"><div class="metrics"><div class="metric"><span>今日实际观看</span><strong id="todayTotal">—</strong></div><div class="metric"><span>最近30天观看</span><strong id="monthTotal">—</strong></div><div class="metric"><span>当前阶段／剩余</span><strong id="remaining">—</strong></div><div class="metric"><span>连续休息后重置</span><strong id="restAt">—</strong></div></div><p class="sub">从启用后开始累积，不回填历史。每10秒采样；答题期间不计观看。时间区段可能包含至多20秒的短间隔，不代表逐帧精确日志。</p><div class="actions"><button id="refresh">刷新统计</button><span id="updated" class="sub"></span></div></div>
+<div class="panel"><h2>最近30天 · 按应用堆叠</h2><div class="scroll"><svg id="dailyChart" class="chart" viewBox="0 0 960 280" role="img" aria-label="最近30天每日观看时长堆叠图"></svg></div><div id="legend" class="legend"></div></div>
+<div class="panel"><h2>观看时段</h2><div class="actions"><label>查看日期 <input id="timelineDate" type="date"></label><span class="sub">时间轴为北京时间 00:00—24:00</span></div><div class="scroll"><svg id="timelineChart" class="chart" viewBox="0 0 960 230" role="img" aria-label="选定日期的观看时段"></svg></div><div class="scroll"><table><thead><tr><th>应用</th><th>开始</th><th>结束</th><th>实际记录观看</th></tr></thead><tbody id="timelineBody"></tbody></table></div></div>
+<div class="panel"><h2>答题与放行记录</h2><div class="scroll"><table><thead><tr><th>弹出时间</th><th>结束时间</th><th>结果</th><th>耗时</th><th>题数／错题</th><th>放行</th></tr></thead><tbody id="mathBody"></tbody></table></div></div>
+</section>
+<section id="settings" data-panel hidden>
+<div class="panel"><h2>临时解除限制</h2><p>替换当前剩余额度，在禁看时段也可以放行。额度按实际观看消耗，最长保留24小时；耗尽后再次验证，不叠加隐藏额度。</p><div class="actions"><label>允许观看 <input id="grantMinutes" type="number" min="1" max="1440" value="30"> 分钟</label><button id="grant">立即放行</button></div><p class="sub">每次临时放行都重新开始5小时休息计时；后续观看会继续更新到最新实际观看时间。重复点击不会累加旧额度。</p></div>
+<div class="panel"><h2>防沉迷阶段配置</h2><div class="fields"><label>首次观看 <span><input data-policy="initial_seconds" type="number" min="1" max="1440"> 分钟</span></label><label>首次通过奖励 <span><input data-policy="first_reward_seconds" type="number" min="1" max="1440"> 分钟</span></label><label>第二次通过奖励 <span><input data-policy="second_reward_seconds" type="number" min="1" max="1440"> 分钟</span></label><label>此后每次验证间隔 <span><input data-policy="repeat_seconds" type="number" min="1" max="1440"> 分钟</span></label><label>连续休息重置 <span><input data-policy="rest_reset_seconds" type="number" min="1" max="1440"> 分钟</span></label><label>临时／成人放行默认 <span><input data-policy="default_grant_seconds" type="number" min="1" max="1440"> 分钟</span></label></div><p class="sub">保存后按新规则计算当前阶段，不会删除观看流水。统计自然日与防沉迷阶段独立，午夜不会自动绕过连续观看限制。</p></div>
+<div class="panel"><h2>禁止观看时段</h2><p>支持按星期设置与跨午夜区间。同一开始／结束时间表示所选星期全天。禁看时段优先要求成人验证。</p><div id="windows"></div><div class="actions"><button id="addWindow">增加时段</button><button id="savePolicy">保存全部规则</button></div></div>
+</section>
+<section id="learning" data-panel hidden><div class="panel"><h2>学习题库</h2><p>年龄分组用于预选题型，家长可以调整科目；它不是学习能力评估。内置语文与英语为小型示例题库，支持选项序号作答。</p><div class="actions"><label>年龄分组 <select id="ageBand"><option>4-6</option><option>7-9</option><option>10-12</option><option>13+</option></select></label><button id="suggestSubjects">按年龄预选科目</button></div><div class="days"><label><input type="checkbox" data-subject="math">数学</label><label><input type="checkbox" data-subject="chinese">语文</label><label><input type="checkbox" data-subject="english">英语</label></div><button id="saveLearning">保存题库设置</button><p class="sub">本家庭共享配置，下一道新题生效；已经发出的题目保持不变。修改年龄或科目后，已有展示稿件需要重新审核。</p></div></section>
+<section id="display" data-panel hidden><div class="panel"><h2>安排电视展示</h2><p>稿件先经过内容审核，再由家长逐次确认。未配置审核服务、审核失败或电视未上报新版能力时不能发布。第一版只接收文本页面组件，不接收网页脚本、HTML或外部链接。</p><form id="submitDisplay"><label>展示目的 <input id="displayIntent" maxlength="600" required></label><label>页面文档 JSON <textarea id="displayDocument" class="provision-text" rows="6" required aria-label="页面文档JSON"></textarea></label><button type="submit">保存草稿并请求审核</button></form><p class="sub">仅展示开机且已进入执行模式的电视，不唤醒屏幕；系统设置、安装及权限界面保持可操作。新客户端需要升级，安装后先观察验收。</p><div class="actions"><button id="refreshDisplays">刷新稿件</button><button id="cancelDisplay" class="danger">结束当前展示</button></div><div id="displayJobs"></div></div><div class="panel"><h2>让外部代理提交草稿</h2><p>凭证只允许向当前电视提交草稿，24小时有效，不能发布、不能读观看统计，也没有ADB权限。家长确认仍不可跳过。</p><button id="createDisplayAgent">创建代理提交凭证</button><div id="agentSecretPanel" hidden><textarea id="agentSecret" class="provision-text" rows="5" readonly aria-label="代理提交凭证"></textarea><button id="hideAgentSecret">已保存，隐藏凭证</button></div><div id="agentTokens"></div></div></section>
+<section id="accounts" data-panel hidden>
+<div class="panel"><h2>本家庭的电视</h2><p>每个家庭最多10台电视。设备令牌只在创建或轮换时显示一次，下载后放在家长电脑的 secrets 目录，不要分享到公开仓库。</p><form id="createDevice" class="actions"><label>电视名称 <input id="deviceLabel" maxlength="64" required placeholder="客厅电视"></label><button type="submit">创建设备</button></form><div class="scroll"><table><thead><tr><th>名称</th><th>设备标识</th><th>状态</th><th>操作</th></tr></thead><tbody id="deviceRows"></tbody></table></div><div id="provisionPanel" hidden><p class="notice">安装凭证仅在这里显示一次。保存到本机后请关闭，勿发截图。</p><textarea id="provisionText" readonly aria-label="设备安装凭证" rows="6" class="provision-text"></textarea><div class="actions"><button id="downloadProvision">下载安装凭证</button><button id="closeProvision">已保存，关闭凭证</button></div><p>安装命令：<code id="provisionCommand"></code></p></div></div>
+<div id="userManagement" class="panel" hidden><h2>普通用户管理</h2><p>仅超级管理员可以创建普通用户、重置其口令和停用账号。每个用户对应独立家庭；停用后该家庭的网页会话及电视令牌立即失效，电视按故障放行处理。</p><form id="createUser" class="fields"><label>用户名 <input id="newUsername" minlength="3" maxlength="32" autocomplete="off" required></label><label>家庭名称 <input id="newHousehold" maxlength="64" required></label><label>初始密码 <input id="newPassword" type="password" minlength="8" maxlength="128" autocomplete="new-password" required></label><button type="submit">创建普通用户</button></form><div class="scroll"><table><thead><tr><th>用户名</th><th>家庭</th><th>状态</th><th>电视数</th><th>操作</th></tr></thead><tbody id="userRows"></tbody></table></div><form id="resetUser" hidden><h3>重置 <span id="resetUsername"></span> 的密码</h3><input id="resetPassword" type="password" minlength="8" maxlength="128" autocomplete="new-password" required aria-label="新的用户密码"><button type="submit">确认重置并撤销旧登录</button><button type="button" id="cancelReset">取消</button></form></div>
+</section>
+<section id="logic" data-panel hidden>
+<div class="panel"><h2>从观看到休息：完整规则</h2><p>默认阶段顺序 <strong>30 → 20 → 5 → 2 分钟循环</strong>。每次算术挑战必须连续答对3题，错误一次归零。每次通过后只发放对应阶段的完整额度；连续停止观看满5小时才回到初始30分钟。</p><div class="scroll"><svg class="diagram" viewBox="0 0 1200 465" role="img" aria-labelledby="flowTitle flowDesc"><title id="flowTitle">电视防沉迷阶段流程图</title><desc id="flowDesc">先判断临时放行和禁看时段，然后按30、20、5、2分钟阶段观看与答题，连续休息5小时重置。</desc><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 Z" fill="#8aa8cf"/></marker></defs><g fill="#1e3551" stroke="#48688e" stroke-width="2"><rect x="20" y="25" width="210" height="75" rx="14"/><rect x="280" y="25" width="250" height="75" rx="14"/><rect x="580" y="25" width="260" height="75" rx="14"/><rect x="890" y="25" width="285" height="75" rx="14"/><rect x="30" y="170" width="240" height="90" rx="14"/><rect x="330" y="170" width="240" height="90" rx="14"/><rect x="630" y="170" width="240" height="90" rx="14"/><rect x="930" y="170" width="240" height="90" rx="14"/><rect x="280" y="345" width="650" height="80" rx="14"/></g><g fill="#e2eeff" text-anchor="middle" font-size="21"><text x="125" y="69">打开受管视频</text><text x="405" y="57">有临时放行额度？</text><text x="405" y="85" font-size="16">有 → 消耗指定额度</text><text x="710" y="57">处于禁看时段？</text><text x="710" y="85" font-size="16">是 → 成人验证后临时放行</text><text x="1032" y="57">无上述限制 → 阶段计时</text><text x="1032" y="85" font-size="16">只统计真实活跃视频采样</text><text x="150" y="207">先看30分钟</text><text x="150" y="237" font-size="17">到点 → 连续答对3题</text><text x="450" y="207">完整再看20分钟</text><text x="450" y="237" font-size="17">到点 → 连续答对3题</text><text x="750" y="207">再看5分钟</text><text x="750" y="237" font-size="17">到点 → 连续答对3题</text><text x="1050" y="207">每2分钟再验证</text><text x="1050" y="237" font-size="17">此后循环，建议休息</text><text x="605" y="377">连续停止观看满5小时 → 恢复初始30分钟</text><text x="605" y="405" font-size="17">观看或临时放行都会更新休息起点；云端故障不拦截</text></g><g fill="none" stroke="#8aa8cf" stroke-width="2" marker-end="url(#arrow)"><path d="M230,63 H275"/><path d="M530,63 H575"/><path d="M840,63 H885"/><path d="M1032,100 V130 H150 V165"/><path d="M270,215 H325"/><path d="M570,215 H625"/><path d="M870,215 H925"/><path d="M1170,215 H1190 V300 H1050 V265"/><path d="M605,345 V305 H150 V265"/></g></svg></div></div>
+<div class="panel"><h2>优先级与计时细节</h2><ol class="logic-list"><li>云端不可用、TLS失败或响应异常：本地故障放行，不缓存旧锁定。断网期间无法准确统计观看，也不在恢复后补记。</li><li>临时放行额度优先；没有临时额度时，禁看时段优先于算术题，必须走成人确认。</li><li>算术题期间服务端拒绝累计观看，即使电视误报正在播放；仍保留控制心跳以接收放行。</li><li>顶部显示按最新活动计算的建议返回时间，提示连续休息；继续观看或临时放行会把时间向后推。</li><li>临时放行只给指定观看分钟数，覆盖旧临时额度；用完后重新验证，不修改已经记录的观看时长。</li><li>永久观看流水、阶段已用时长、奖励和临时额度分开保存。阶段不在午夜自动清零，统计按北京时间自然日分组。</li><li>弹题开始、结束、错误次数、奖励与管理员操作均有审计记录；答题耗时是首次网页确认到结束的墙钟时间，包含离开页面。</li></ol></div>
+<div class="panel"><h2>成人动态日期密码</h2><p>按服务端<strong>北京时间（Asia/Shanghai）</strong>，将年、月、日、时、分补零后直接拼接：</p><p><code>YYYY + MM + DD + HH + mm</code>，共12位，不包含秒。</p><p>例如：<code>2026年10月24日23时25分 → 202610242325</code>。午夜00时05分必须写成<code>00</code>与<code>05</code>。</p><p>当前服务端时间：<strong id="serverClock">—</strong></p><div id="dynamicCode" class="code-preview">—</div><p class="sub">仅接受提交到达服务器时的当前分钟；跨分钟失败时按新分钟重输。成功后按配置的默认临时额度放行，并刷新休息起点。</p><p class="notice">日期密码属于弱确认题：知道算法与时间的人都能算出，不能证明操作者成年。管理员入口使用独立的加盐哈希口令与安全Cookie，不使用这个日期密码登录。</p></div>
+<div class="panel"><h2>设备限制</h2><p>原生监控服务的日常运行不依赖ADB。系统支持时通过开机广播、每分钟恢复检查与系统任务恢复；部分固件会强停应用或移除无障碍项，完整重启后能否自启必须实机验证。本项目不含桌面启动辅助。主动撤销权限或强行停止应用后，需要家长恢复。网页不能禁止系统Home、电源或卸载，应用也不是设备所有者。电视时间没有桌面入口。</p></div>
+</section>
+</div></main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);let csrf='',stats=null,policy=null,offset=0,loaded=false,identity=null,selectedTenant='default',selectedDevice=null,deviceList=[],accountList=[],provision=null,resetUserId=null;
+const NAMES={'com.ktcp.video':'腾讯视频','com.xiaodianshi.tv.yst':'哔哩哔哩','com.newtv.cboxtv':'央视频','com.fongmi.android.tv':'OK影视','com.google.android.youtube.tv':'YouTube','com.gitvdemo.video':'银河奇异果','com.hunantv.license':'芒果TV'};
+const COLORS=['#66cfa6','#fb8dab','#e55f68','#75b8ed','#ff8073','#b3a0ee','#f1b359'];
+const name=p=>NAMES[p]||p,minutes=s=>(Number(s||0)/60).toFixed(1)+' 分钟';
+const fmt=ms=>ms?new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(ms)):'—';
+const day=ms=>new Date(ms+8*3600000).toISOString().slice(0,10);
+function message(text,error=false){$('globalMessage').textContent=text;$('globalMessage').classList.toggle('error',error);}
+async function api(path,body){const ctrl=new AbortController(),timeout=setTimeout(()=>ctrl.abort(),8000);try{
+ const r=await fetch(scopePath(path),{method:body?'POST':'GET',credentials:'same-origin',cache:'no-store',signal:ctrl.signal,headers:body?{'Content-Type':'application/json','X-CSRF-Token':csrf}:{},body:body?JSON.stringify(body):undefined});
+ const data=await r.json();if(!r.ok){const e=new Error(data.error||'请求失败');e.status=r.status;throw e;}
+ if(data.server_now_ms)offset=data.server_now_ms-Date.now();return data;
+}finally{clearTimeout(timeout);}}
+function scopePath(path){
+ if(!/^\/admin\/(config|grant|stats|devices|device_update|heartbeat_stream|learning|displays|display_submit|display_publish|display_cancel|display_agent_token)$/.test(path))return path;
+ const q=new URLSearchParams({tenant:selectedTenant});if(selectedDevice)q.set('device',selectedDevice);return path+'?'+q;
+}
+function hideProvision(){provision=null;$('provisionPanel').hidden=true;$('provisionText').value='';}
+function showProvision(value){provision=value;$('provisionText').value=JSON.stringify({device:value.device,token:value.token,origin:value.origin||location.origin},null,2);$('provisionPanel').hidden=false;$('provisionCommand').textContent='python3 tv/native-manage.py install --tv TV_IP:5555 --config-file secrets/device-provision.json';}
+function actionButton(label,run){const b=document.createElement('button');b.textContent=label;b.type='button';b.addEventListener('click',async()=>{b.disabled=true;try{await run();}catch(e){message(e.message,true);}finally{b.disabled=false;}});return b;}
+async function loadUsers(){
+ if(identity?.role!=='superadmin')return;accountList=(await api('/admin/users')).users;
+ const select=$('tenantSelect');select.replaceChildren();
+ for(const entry of [{tenant_id:'default',label:'我的家庭',enabled:1},...accountList]){
+  if(!entry.enabled)continue;const option=document.createElement('option');option.value=entry.tenant_id;option.textContent=entry.label;select.append(option);
+ }select.value=selectedTenant;
+ const body=$('userRows');body.replaceChildren();
+ accountList.forEach(user=>{const tr=document.createElement('tr');[user.username,user.label,user.enabled?'启用':'停用',user.device_count].forEach(v=>cell(tr,v));const td=document.createElement('td');
+  td.append(actionButton(user.enabled?'停用账号':'启用账号',async()=>{await api('/admin/user_update',{user_id:user.user_id,enabled:!user.enabled});if(selectedTenant===user.tenant_id&&user.enabled){selectedTenant='default';selectedDevice=null;await switchScope();}await loadUsers();message('账号状态已更新，旧登录已撤销。');}),actionButton('重置密码',async()=>{resetUserId=user.user_id;$('resetUsername').textContent=user.username;$('resetPassword').value='';$('resetUser').hidden=false;$('resetPassword').focus();}));tr.append(td);body.append(tr);
+ });
+}
+async function loadDevices(){
+ deviceList=(await api('/admin/devices')).devices;
+ if(!deviceList.some(d=>d.device_name===selectedDevice))selectedDevice=deviceList[0]?.device_name||null;
+ const select=$('deviceSelect');select.replaceChildren();deviceList.forEach(d=>{const o=document.createElement('option');o.value=d.device_name;o.textContent=d.label+(d.enabled?'':'（已停用）');select.append(o);});select.value=selectedDevice||'';select.disabled=!deviceList.length;
+ $('emptyDevices').hidden=!!deviceList.length;const body=$('deviceRows');body.replaceChildren();
+ deviceList.forEach(d=>{const tr=document.createElement('tr');[d.label,d.device_name,d.enabled?'启用':'停用'].forEach(v=>cell(tr,v));const td=document.createElement('td');
+  const update=async data=>{const old=selectedDevice;selectedDevice=d.device_name;try{return await api('/admin/device_update',data);}finally{selectedDevice=old;}};
+  td.append(actionButton(d.enabled?'停用设备':'启用设备',async()=>{await update({enabled:!d.enabled});await switchScope();message('设备状态已更新。');}),actionButton('轮换令牌',async()=>{if(!confirm('旧令牌会立即失效，需要重新向电视交付凭证。确认轮换？'))return;const result=await update({rotate_token:true});showProvision({...result,origin:location.origin});message('令牌已轮换，旧配置不再有效。');}));tr.append(td);body.append(tr);
+ });
+ $('grant').disabled=!selectedDevice;
+}
+async function switchScope(){
+ stopHeartbeat();hideProvision();lastHeart=null;lastHeartId=null;stats=null;$('timelineDate').value='';
+ $('agentSecret').value='';$('agentSecretPanel').hidden=true;await loadLearning();await loadDevices();await loadDisplays();policy=(await api('/admin/config')).policy;renderPolicy();await refresh();if(selectedDevice)startHeartbeat();
+}
+async function loadLearning(){const result=await api('/admin/learning');$('ageBand').value=result.profile.age_band;document.querySelectorAll('[data-subject]').forEach(e=>e.checked=result.profile.subjects.includes(e.dataset.subject));}
+$('suggestSubjects').addEventListener('click',()=>{const band=$('ageBand').value,subjects=band==='4-6'?['math']:band==='7-9'?['math','chinese']:['math','chinese','english'];document.querySelectorAll('[data-subject]').forEach(e=>e.checked=subjects.includes(e.dataset.subject));});
+$('saveLearning').addEventListener('click',async()=>{try{await api('/admin/learning',{profile:{age_band:$('ageBand').value,subjects:[...document.querySelectorAll('[data-subject]:checked')].map(e=>e.dataset.subject)}});await loadDisplays();message('题库设置已保存，下一道新题生效。');}catch(e){message(e.message,true);}});
+async function loadDisplays(){
+ const holder=$('displayJobs'),tokens=$('agentTokens');holder.replaceChildren();tokens.replaceChildren();if(!selectedDevice){holder.textContent='请先创建设备。';return;}
+ const result=await api('/admin/displays');
+ for(const job of result.jobs){const box=document.createElement('div');box.className='window';const title=document.createElement('h3');title.textContent=job.document.title+' · '+({pending:'待审核',allow:'审核通过',deny:'审核拒绝',error:'审核不可用'}[job.review_status]||job.review_status)+' · '+({draft:'草稿',published:'已发布',cancelled:'已结束'}[job.state]||job.state);const pre=document.createElement('pre');pre.textContent=JSON.stringify({intent:job.intent,...job.document},null,2);pre.className='presentation-preview';const label=document.createElement('label'),check=document.createElement('input');check.type='checkbox';label.append(check,document.createTextNode('我已阅读稿件，允许主动展示在当前电视上（即使未播放视频）'));const publish=actionButton('确认并展示10分钟',async()=>{if(!check.checked){message('请先阅读并勾选家长确认。',true);return;}await api('/admin/display_publish',{id:job.id,confirm:true,seconds:600});await loadDisplays();message('已进入展示队列，等待电视下一次心跳；不表示已经出画面。');});publish.disabled=job.review_status!=='allow';box.append(title,pre,label,publish);holder.append(box);}
+ if(!result.jobs.length)holder.textContent='暂无稿件。';
+ for(const token of result.tokens){const row=document.createElement('div');row.className='actions';const label=document.createElement('span');label.textContent=(token.enabled?(token.expires_ms<Date.now()+offset?'已到期':'有效'):'已撤销')+' · 到期 '+fmt(token.expires_ms);const revoke=actionButton('撤销凭证',async()=>{await api('/admin/display_agent_token',{revoke_id:token.id});await loadDisplays();message('代理提交凭证已撤销。');});revoke.disabled=!token.enabled;row.append(label,revoke);tokens.append(row);}
+}
+$('submitDisplay').addEventListener('submit',async e=>{e.preventDefault();try{const result=await api('/admin/display_submit',{request_id:crypto.randomUUID(),intent:$('displayIntent').value,document:JSON.parse($('displayDocument').value)});await loadDisplays();message(result.review_status==='allow'?'审核通过，请阅读并确认发布。':result.review_status==='deny'?'稿件未通过审核，不能发布。':'草稿已保存；审核服务尚未可用，投放保持禁用。');}catch(error){message(error.message,true);}});
+$('refreshDisplays').addEventListener('click',()=>loadDisplays().catch(e=>message(e.message,true)));
+$('cancelDisplay').addEventListener('click',async()=>{try{await api('/admin/display_cancel',{});await loadDisplays();message('已撤回，页面轮询或下一次心跳会接收结束状态。');}catch(e){message(e.message,true);}});
+$('createDisplayAgent').addEventListener('click',async()=>{try{const value=await api('/admin/display_agent_token',{});$('agentSecret').value=JSON.stringify({...value,endpoint:location.origin+'/agent/displays'},null,2);$('agentSecretPanel').hidden=false;await loadDisplays();}catch(e){message(e.message,true);}});
+$('hideAgentSecret').addEventListener('click',()=>{$('agentSecret').value='';$('agentSecretPanel').hidden=true;});
+$('tenantSelect').addEventListener('change',async()=>{selectedTenant=$('tenantSelect').value;selectedDevice=null;try{await switchScope();}catch(e){message(e.message,true);}});
+$('deviceSelect').addEventListener('change',async()=>{selectedDevice=$('deviceSelect').value;try{await switchScope();}catch(e){message(e.message,true);}});
+$('createDevice').addEventListener('submit',async e=>{e.preventDefault();try{const result=await api('/admin/devices',{label:$('deviceLabel').value});$('deviceLabel').value='';selectedDevice=result.device;await switchScope();showProvision(result);await loadUsers();message('设备已创建，请保存一次性安装凭证。');}catch(error){message(error.message,true);}});
+$('createUser').addEventListener('submit',async e=>{e.preventDefault();try{await api('/admin/users',{username:$('newUsername').value,label:$('newHousehold').value,password:$('newPassword').value});$('newPassword').value='';$('createUser').reset();await loadUsers();message('普通用户已创建，可用用户名和初始密码登录同一后台。');}catch(error){$('newPassword').value='';message(error.message,true);}});
+$('resetUser').addEventListener('submit',async e=>{e.preventDefault();try{await api('/admin/user_update',{user_id:resetUserId,password:$('resetPassword').value});$('resetPassword').value='';$('resetUser').hidden=true;message('密码已重置，旧登录已全部撤销。');}catch(error){message(error.message,true);}});
+$('cancelReset').addEventListener('click',()=>{$('resetPassword').value='';$('resetUser').hidden=true;resetUserId=null;});
+$('closeProvision').addEventListener('click',hideProvision);
+$('downloadProvision').addEventListener('click',()=>{if(!provision)return;const blob=new Blob([$('provisionText').value],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='device-provision.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
+function cell(row,text){const td=document.createElement('td');td.textContent=text;row.append(td);}
+function svg(tag,attrs,text){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));if(text!==undefined)e.textContent=text;return e;}
+function renderChart(){
+ const chart=$('dailyChart');chart.replaceChildren();const apps=[...new Set(stats.daily.map(x=>x.app_package))],map=new Map();
+ stats.daily.forEach(r=>{if(!map.has(r.day))map.set(r.day,new Map());map.get(r.day).set(r.app_package,r.seconds);});
+ const dates=Array.from({length:30},(_,i)=>day(Date.parse(stats.today+'T00:00:00+08:00')-(29-i)*86400000));
+ const max=Math.max(60,...dates.map(d=>[...(map.get(d)?.values()||[])].reduce((a,b)=>a+b,0)));
+ chart.append(svg('text',{x:10,y:18,fill:'#9bb2cf','font-size':13},'最高 '+minutes(max)));
+ dates.forEach((date,i)=>{let y=230;const x=38+i*30;
+  apps.forEach((app,j)=>{const seconds=map.get(date)?.get(app)||0,h=seconds/max*185;if(h){const r=svg('rect',{x,y:y-h,width:21,height:h,fill:COLORS[j%COLORS.length],rx:2});r.append(svg('title',{},date+' '+name(app)+' '+minutes(seconds)));chart.append(r);y-=h;}});
+  if(i%5===0||i===29)chart.append(svg('text',{x:x+10,y:255,fill:'#9bb2cf','font-size':12,'text-anchor':'middle'},date.slice(5)));
+ });
+ $('legend').replaceChildren(...apps.map((app,i)=>{const e=document.createElement('span');e.textContent='● '+name(app);e.style.color=COLORS[i%COLORS.length];return e;}));
+ if(!apps.length)$('legend').textContent='最近30天暂无正式设备观看记录。';
+}
+function renderTimeline(){
+ if(!stats)return;const selected=$('timelineDate').value,events=stats.timeline.filter(r=>day(r.start_seconds*1000)===selected),start=Date.parse(selected+'T00:00:00+08:00')/1000;
+ const apps=[...new Set(events.map(x=>x.app_package))],chart=$('timelineChart');chart.replaceChildren();chart.setAttribute('viewBox','0 0 960 '+Math.max(120,apps.length*36+65));
+ for(let h=0;h<=24;h+=3){const x=150+h/24*780;chart.append(svg('line',{x1:x,x2:x,y1:25,y2:Math.max(65,apps.length*36+30),stroke:'#293c57'}),svg('text',{x,y:18,fill:'#9db2cc','font-size':12,'text-anchor':'middle'},String(h).padStart(2,'0')+':00'));}
+ apps.forEach((app,i)=>{chart.append(svg('text',{x:4,y:51+i*36,fill:'#c9d9ef','font-size':14},name(app)));events.filter(e=>e.app_package===app).forEach(e=>{const x=150+(e.start_seconds-start)/86400*780,w=Math.max(2,(e.end_seconds-e.start_seconds)/86400*780);chart.append(svg('rect',{x,y:34+i*36,width:w,height:22,fill:COLORS[i%COLORS.length],rx:3}));});});
+ const body=$('timelineBody');body.replaceChildren();events.forEach(e=>{const tr=document.createElement('tr');[name(e.app_package),fmt(e.start_seconds*1000),fmt(e.end_seconds*1000),minutes(e.watched_seconds)].forEach(v=>cell(tr,v));body.append(tr);});
+ if(!events.length){const tr=document.createElement('tr');cell(tr,'这一天暂无观看记录');body.append(tr);}
+}
+function renderStats(){
+ $('todayTotal').textContent=minutes(stats.daily.filter(x=>x.day===stats.today).reduce((a,b)=>a+b.seconds,0));$('monthTotal').textContent=minutes(stats.daily.reduce((a,b)=>a+b.seconds,0));
+ $('remaining').textContent=(stats.state.stage<3?'第'+(stats.state.stage+1)+'阶段':'循环阶段')+' · '+minutes(stats.state.remaining_seconds);$('restAt').textContent=stats.state.rest_until_ms?fmt(stats.state.rest_until_ms):'已就绪';$('updated').textContent='更新于 '+fmt(stats.server_now_ms);
+ if(!$('timelineDate').value)$('timelineDate').value=stats.today;$('timelineDate').max=stats.today;$('timelineDate').min=day(Date.parse(stats.today+'T00:00:00+08:00')-29*86400000);
+ renderChart();renderTimeline();const body=$('mathBody');body.replaceChildren();
+ const result={open:'未完成',completed:'算术通过',admin_released:'管理员放行',adult_verified:'成人确认',rest_reset:'连续休息重置',day_rollover:'旧版跨日结束'};
+ stats.math.forEach(m=>{const tr=document.createElement('tr');[fmt(m.opened_ms),fmt(m.completed_ms),result[m.status]||m.status,m.completed_ms?((m.completed_ms-m.opened_ms)/1000).toFixed(1)+' 秒':'进行中',m.answer_count+' / '+m.wrong_count,minutes(m.reward_seconds)].forEach(v=>cell(tr,v));body.append(tr);});
+}
+function windowEditor(w){
+ const box=document.createElement('div');box.className='window';box.dataset.id=w.id||crypto.randomUUID();
+ const top=document.createElement('div');top.className='actions';
+ const enabled=document.createElement('input');enabled.type='checkbox';enabled.checked=w.enabled;enabled.dataset.field='enabled';
+ const label=document.createElement('input');label.type='text';label.maxLength=64;label.value=w.label;label.placeholder='时段名称';label.dataset.field='label';
+ const start=document.createElement('input');start.type='time';start.value=w.start;start.dataset.field='start';
+ const end=document.createElement('input');end.type='time';end.value=w.end;end.dataset.field='end';
+ const remove=document.createElement('button');remove.textContent='移除';remove.className='danger';remove.addEventListener('click',()=>box.remove());
+ top.append(enabled,label,start,document.createTextNode('至'),end,remove);box.append(top);
+ const days=document.createElement('div');days.className='days';
+ ['日','一','二','三','四','五','六'].forEach((d,i)=>{const l=document.createElement('label'),check=document.createElement('input');check.type='checkbox';check.value=i;check.checked=w.days.includes(i);check.dataset.day='true';l.append(check,document.createTextNode('周'+d));days.append(l);});box.append(days);return box;
+}
+function renderPolicy(){document.querySelectorAll('[data-policy]').forEach(e=>e.value=policy[e.dataset.policy]/60);$('grantMinutes').value=policy.default_grant_seconds/60;$('windows').replaceChildren(...policy.banned_windows.map(windowEditor));}
+// 不用统计刷新模拟心跳：只对服务器提交成功的新事件闪动，重连快照不闪动。
+let heartSource=null,lastHeart=null,lastHeartId=null,heartConnected=false;
+function paintHeartbeat(){
+ const online=lastHeart!==null&&Date.now()+offset-lastHeart<35000;
+ $('heartbeatLive').dataset.online=String(online);
+ $('heartState').textContent=(online?'电视在线':'心跳已中断')+(heartConnected?' · 实时连接':' · 推送重连中');
+ $('heartTime').textContent=lastHeart===null?'尚无记录':new Date(lastHeart).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+ if(lastHeart!==null)$('heartTime').dateTime=new Date(lastHeart).toISOString();
+}
+function stopHeartbeat(){heartSource?.close();heartSource=null;heartConnected=false;lastHeartId=null;$('heartbeatLive').hidden=true;}
+function startHeartbeat(){
+ stopHeartbeat();$('heartbeatLive').hidden=false;
+ heartSource=new EventSource(scopePath('/admin/heartbeat_stream'));
+ const receive=(event,flash)=>{try{
+  const data=JSON.parse(event.data);if(data.device!==selectedDevice)return;
+  if(Number.isFinite(data.server_now_ms))offset=data.server_now_ms-Date.now();
+  if(data.received_ms!==null&&!Number.isFinite(data.received_ms))return;
+  lastHeart=data.received_ms;heartConnected=true;paintHeartbeat();
+  if(flash&&data.event_id!==lastHeartId){lastHeartId=data.event_id;
+   if(!matchMedia('(prefers-reduced-motion: reduce)').matches)$('heartDot').animate([{transform:'scale(1)',boxShadow:'0 0 0 0 #90e5bb80'},{transform:'scale(1.65)',boxShadow:'0 0 0 10px #90e5bb00'},{transform:'scale(1)',boxShadow:'0 0 0 0 #90e5bb00'}],{duration:650});
+   $('heartbeatLive').dataset.eventId=data.event_id;
+  }
+ }catch{heartConnected=false;paintHeartbeat();}};
+ heartSource.addEventListener('snapshot',e=>receive(e,false));heartSource.addEventListener('heartbeat',e=>receive(e,true));
+ heartSource.addEventListener('expired',()=>showLogin());heartSource.onerror=()=>{heartConnected=false;paintHeartbeat();};
+}
+setInterval(()=>{if(loaded)paintHeartbeat();},1000);
+async function refresh(){try{stats=await api('/admin/stats');renderStats();message('');}catch(e){message(e.message,true);if(e.status===401)showLogin();}}
+function showLogin(){$('agentSecret').value='';$('agentSecretPanel').hidden=true;stopHeartbeat();hideProvision();identity=null;selectedDevice=null;deviceList=[];accountList=[];$('newPassword').value='';$('resetPassword').value='';$('resetUser').hidden=true;$('app').hidden=true;$('loginPanel').hidden=false;$('logout').hidden=true;loaded=false;csrf='';}
+async function enter(session){csrf=session.csrf;identity=session.identity||{role:'superadmin',username:'admin',tenant_id:'default'};selectedTenant=identity.tenant_id;selectedDevice=null;offset=session.server_now_ms-Date.now();$('loginPanel').hidden=true;$('app').hidden=false;$('logout').hidden=false;loaded=true;$('identityLabel').textContent=identity.username+' · '+(identity.role==='superadmin'?'超级管理员':'普通用户');$('tenantField').hidden=identity.role!=='superadmin';$('userManagement').hidden=identity.role!=='superadmin';await loadUsers();await switchScope();}
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();$('loginMessage').textContent='验证中…';try{const session=await api('/admin/login',{username:$('username').value,password:$('password').value});$('password').value='';await enter(session);$('loginMessage').textContent='';}catch(error){$('loginMessage').textContent=error.message;}});
+$('logout').addEventListener('click',async()=>{try{await api('/admin/logout',{});showLogin();}catch(e){message(e.message,true);}});
+document.querySelectorAll('[data-tab]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-selected',String(b===button)));document.querySelectorAll('[data-panel]').forEach(p=>p.hidden=p.id!==button.dataset.tab);}));
+$('refresh').addEventListener('click',refresh);$('timelineDate').addEventListener('change',renderTimeline);
+$('addWindow').addEventListener('click',()=>$('windows').append(windowEditor({label:'休息时间',days:[0,1,2,3,4,5,6],start:'22:00',end:'08:00',enabled:true})));
+$('savePolicy').addEventListener('click',async()=>{try{const next={};document.querySelectorAll('[data-policy]').forEach(e=>next[e.dataset.policy]=Number(e.value)*60);next.banned_windows=[...$('windows').children].map(box=>({id:box.dataset.id,label:box.querySelector('[data-field=label]').value,start:box.querySelector('[data-field=start]').value,end:box.querySelector('[data-field=end]').value,enabled:box.querySelector('[data-field=enabled]').checked,days:[...box.querySelectorAll('[data-day]:checked')].map(x=>Number(x.value))}));const result=await api('/admin/config',{policy:next});policy=result.policy;renderPolicy();await refresh();message('规则已保存。');}catch(e){message(e.message,true);}});
+$('grant').addEventListener('click',async()=>{const b=$('grant');b.disabled=true;try{const seconds=Number($('grantMinutes').value)*60;await api('/admin/grant',{seconds});await refresh();message('已临时放行 '+minutes(seconds)+'，休息计时已更新。');}catch(e){message(e.message,true);}finally{b.disabled=false;}});
+function updateClock(){if(!loaded)return;const now=Date.now()+offset,parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date(now));const m=Object.fromEntries(parts.map(p=>[p.type,p.value]));$('serverClock').textContent=fmt(now);$('dynamicCode').textContent=m.year+m.month+m.day+m.hour+m.minute;}
+setInterval(updateClock,1000);setInterval(()=>{if(loaded&&!document.hidden)refresh();},60000);
+api('/admin/session').then(enter).catch(showLogin);
+</script></body></html>

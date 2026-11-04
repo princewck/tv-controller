@@ -1,0 +1,3 @@
+interface:
+  display_name: "观有度电视配置"
+  short_description: "从手机安装页配置 Android TV 并验证连接与实际播放控制"

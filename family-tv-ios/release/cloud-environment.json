@@ -1,0 +1,27 @@
+{
+  "accountID": "0e467c906db204b9448ef5cb763b5f6a",
+  "worker": "familytv-api",
+  "workerURL": "https://familytv-api.princewck.workers.dev",
+  "workerCreated": true,
+  "workerApplicationCodeDeployed": false,
+  "workerCurrentCode": "Cloudflare Hello World template only",
+  "d1Database": "familytv-production",
+  "d1DatabaseID": "413eea96-2169-4c6b-9792-423336058dad",
+  "binding": "DB",
+  "boundToWorker": true,
+  "previewUsesProductionDatabase": false,
+  "schemaMigrated": true,
+  "testEnvironment": "https://tv.chengkai.wang",
+  "supportEmail": "contact@minnuo.net",
+  "dashboardURL": "https://dash.cloudflare.com/0e467c906db204b9448ef5cb763b5f6a/workers/services/view/familytv-api/production/settings#bindings",
+  "schemaMigrationMethod": "Existing authenticated Cloudflare dashboard D1 console",
+  "schemaMigrations": [
+    "0001_cloud.sql",
+    "0002_usage_samples.sql"
+  ],
+  "businessTablesVerified": 10,
+  "businessTriggersVerified": 5,
+  "householdsAfterInitialization": 0,
+  "schemaProof": "release/cloud-d1-schema-proof.png",
+  "workerEditorUnavailable": "Dashboard editor remained blank/Loading after one reload; no code or assets published"
+}

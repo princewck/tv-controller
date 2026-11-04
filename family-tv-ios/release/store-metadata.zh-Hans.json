@@ -1,0 +1,44 @@
+{
+  "status": "draft-not-for-submission",
+  "name": "观有度",
+  "subtitle": "给家庭电视安排观看与休息",
+  "primaryCategory": "LIFESTYLE",
+  "secondaryCategory": "UTILITIES",
+  "price": "free",
+  "keywords": "电视,家长,观看,时长,休息,家庭,Android TV,时间管理",
+  "promotionalText": "看得明白，休息有约定。用 iPhone 查看家庭电视的观看情况、调整规则，并在需要时给予额外时间。",
+  "description": "观有度帮助家长管理 Android TV 的观看与休息时间。\n\n首次使用需要兼容的 Android TV 和一台与电视连接同一 Wi-Fi 的电脑。家长将手机安装页截图交给 Codex、Cursor 等 Agent 助手；助手下载配套技能包与电视客户端，按要求安装、测试并完成手机健康检查。\n\n• 免费查看受管视频应用的今日观看时长。\n• 设置每日观看额度和按星期重复的休息时段。\n• 暂停、恢复，或给予一段临时观看时间。\n• 查看电视连接与实际执行回执。\n• 订阅家庭云 Plus，保存最近30天的云端记录，查看7天／30天趋势及应用用量分析。\n\n无需账号即可体验明确标注的演示模式。正式使用可创建家庭账号；密码恢复码由家长自行保管。\n\n仅安装 iPhone App 不能直接控制电视；不支持 Apple TV、HDMI 或外接设备。仅统计已支持的受管视频应用，播放采样可能存在误差。兼容性、自启动与后台执行能力需要在电视上实际验证。电视收到规则后可使用缓存规则离线执行；离线时手机无法实时更新规则，权限关闭或客户端被强行停止可能导致限制失效。日期与每日额度按北京时间计算。\n\n家庭云 Plus 为月度自动续订服务，价格以 App Store 确认页为准，可在 Apple 订阅设置中管理或取消。免费账号只可查看当天记录；订阅有效时保留最近30天历史，过期后往日记录会在每日清理时移除。\n\n缓存规则不会因断网自动失效；电视重启和跨日后仍需保持服务与必要权限正常；设备时钟异常可能影响时段判断。已经清理的历史不会因后来订阅恢复。",
+  "reviewNotes": "This is a native iPhone companion for a parent-installed Android TV agent, not Apple's Screen Time or Apple TV. Basic device connection, daily limits, pause/resume and temporary time are free. Family TV Plus Monthly (wang.chengkai.familytv.plus.monthly) provides 30-day cloud history, trends and application usage analysis; the requested US price is USD 9.90 per month.\n\nTry demo using 先体验演示模式 on the welcome screen. It is available to all users, clearly labels sample data, makes no real device actions or purchases, and demonstrates controls, daily rules, history and four-step onboarding. Demo is not proof of hardware compatibility.\n\nReal use requires an Android TV agent installed by a computer on the same Wi-Fi. The screenshot handoff links to a complete versioned installation skill ZIP. Installation must verify actual playback stop/resume, phone health checks, ADB closure and a full system restart. Only tested hardware may be listed as compatible.\n\nBefore submission, add the separate live review household credentials and actual phone-to-TV control recording to the review fields. Production deployment, sandbox purchase verification, device removal and hardware behavior must pass the release gates. Do not submit this draft before those checks. No advertising or third-party analytics SDKs are included.",
+  "privacyPolicyURL": null,
+  "supportURL": null,
+  "reviewContact": null,
+  "reviewCredentials": null,
+  "hardwareDemoVideo": null,
+  "storefronts": [
+    "USA"
+  ],
+  "copyright": "2026 Shanghai Minnuo Network Technology Co., Ltd.",
+  "supportEmail": "contact@minnuo.net",
+  "inAppPurchases": [
+    {
+      "type": "Auto-Renewable Subscription",
+      "productID": "wang.chengkai.familytv.plus.monthly",
+      "referenceName": "Family TV Plus Monthly",
+      "displayName": "家庭云 Plus 月度订阅",
+      "duration": "P1M",
+      "requestedPriceUSD": "9.90",
+      "productionPriceVerified": true,
+      "appStoreConnectConfigured": true,
+      "features": [
+        "最近30天云端观看历史",
+        "跨设备观看记录同步",
+        "7天／30天趋势与应用用量分析"
+      ],
+      "appStoreAppleID": "6829014365",
+      "subscriptionGroupID": "22530010",
+      "productionPurchaseVerified": false
+    }
+  ],
+  "appAppleID": "6829013285",
+  "storefrontBasis": "US-first preparation assumption stated after optional storefront clarification remained unanswered"
+}

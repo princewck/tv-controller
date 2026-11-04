@@ -1,0 +1,1 @@
+{"name":"familytv-verifier-runtime-test","main":"./verifier-worker.mjs","compatibility_date":"2026-10-23","alias":{"node-fetch":"../src/apple-fetch.mjs"}}

@@ -1,0 +1,109 @@
+{
+  "objective": "Release-quality native iOS parental management app based on the referenced analysis, with App Store review materials",
+  "complete": false,
+  "gates": [
+    {
+      "id": "native-app",
+      "status": "partial",
+      "evidence": "Native iPhone app, daily rules, four-step setup, account creation/recovery/deletion, and 7/30-day history/application analysis implemented; deployment and real-hardware verification pending."
+    },
+    {
+      "id": "native-auth",
+      "status": "partial",
+      "evidence": "Keychain/HTTPS login plus registration and recovery implemented; local workerd HTTP registration/deletion verified. Actual production iPhone account flow still pending."
+    },
+    {
+      "id": "device-onboarding",
+      "status": "partial",
+      "required": "In-app device creation or secure pairing, one-time credentials, rename/unpair and tested setup",
+      "evidence": "Skill ZIP 1.0.1 and signed universal APK 5.0.1/code7 packaged at versioned URLs; all 10 archive entries match source, extracted scripts parse and run --help from a foreign directory, local asset HTTP bytes/headers/hashes verified. Android runtime tests 7/7 and release lint 0 errors/9 warnings. Public CDN and physical-TV acceptance remain pending."
+    },
+    {
+      "id": "pause-resume",
+      "status": "partial",
+      "required": "Explicit reversible device-specific pause/resume and real television acknowledgment",
+      "evidence": "Cloud per-device pause and idempotent request IDs tested. Android reports revisions, actual stop verification, permissions/boot/ADB. APK builds and lints; physical playback/ack not verified."
+    },
+    {
+      "id": "daily-budget",
+      "status": "partial",
+      "required": "Daily budget and local timezone behavior; existing backend only implements staged budgets",
+      "evidence": "Daily Beijing-time budgets, quiet windows, temporary bonus and manual pause implemented. Cloud tests and 7 Android runtime cases pass; physical-TV control remains unverified."
+    },
+    {
+      "id": "offline-enforcement",
+      "status": "partial",
+      "required": "Cache rules on TV and verify interruption without network; existing agent fails open",
+      "evidence": "Android runtime 7/7 on a disposable API36 emulator verifies persistent counters, retry acknowledgments, day rollover, overnight quiet hours, offline bonus expiry, rebind cache reset, and respecting disabled accessibility. Missing lock_reason fixed; recovery no longer changes accessibility settings. Physical TV offline/playback/reboot behavior remains unverified."
+    },
+    {
+      "id": "temporary-grant",
+      "status": "partial",
+      "evidence": "Native grant API and local demo; real authenticated end-to-end test and replay handling pending"
+    },
+    {
+      "id": "cloud-scale",
+      "status": "partial",
+      "required": "Validate production API/assets, quota/load and authenticated remote deployment",
+      "evidence": "Independent Worker and D1 binding exist; migrations0001/0002 verified in dashboard with10business tables/5triggers. Browser /healthz still rendersHelloWorld template; terminal client receivesCloudflare1010. API/assets undeployed, existing dashboard editor unavailable, officialWranglerOAuth grant awaits confirmation; publicAPI/CDN/quota/load unverified."
+    },
+    {
+      "id": "delete-household",
+      "status": "partial",
+      "required": "Authenticated deletion path, TV unpair behavior, session revocation and data retention policy",
+      "evidence": "Authenticated password-confirmed deletion cascades household/session/device/history/subscription rows; tested cross-tenant preservation. Native UI implemented; TV now clears cache/credentials and disables itself on trusted server 401, pending runtime verification."
+    },
+    {
+      "id": "native-tests",
+      "status": "partial",
+      "evidence": "Build5 release/native-release-05-tests.xcresult:18 passed,0failed; large account UI2 passed,0failed. Cloud10/10, adapter48 and Android runtime7/7 remain prior evidence. Actual Apple Sandbox and TV execution not verified."
+    },
+    {
+      "id": "visual-accessibility",
+      "status": "partial",
+      "required": "Review iPhone screens, dark appearance, large text, landscape, and accessibility labels",
+      "evidence": "Ten demo-labeled native store screenshots independently reviewed and uploaded in both phone sizes. Build5 twelve account captures independently reviewed ship at light simulator scope; medium/large account tests and sufficientElementDescription/textClipped audits pass. Full VoiceOver and actual production/hardware behavior remain unverified."
+    },
+    {
+      "id": "real-tv-verification",
+      "status": "missing",
+      "required": "Timeout, Home/Back reentry, offline, suspend/resume, full restart; supported models stated from evidence"
+    },
+    {
+      "id": "distribution-archive",
+      "status": "complete",
+      "required": "Valid provisioning profile, release archive, export/signature and App Store Connect upload validation",
+      "evidence": "Build5 archive/export and signature verified locally; correct distribution profile/get-task-allow false/no test resources. App Store Connect processed the uploaded binary and reports VALIDATED; version1.0.0 draft associated with build5. Validation is not App Review approval."
+    },
+    {
+      "id": "submission-assets",
+      "status": "partial",
+      "evidence": "Version metadata, ten demo-labeled screenshots, categories, computed4+ rating, Build5 association and review business contact saved. Subscription native review screenshot and notes saved. Seven privacy types fully drafted, not published. Public support/privacy hosting, live review family/hardware recording and updated legal agreement remain."
+    },
+    {
+      "id": "legal-storefront",
+      "status": "partial",
+      "required": "Confirm legal entity, support contact, target storefronts and applicable registration details before submission. No contact or legal identity has been invented.",
+      "evidence": "Local authorized company certificate and contact@minnuo.net used; same Apple organization account supplied existing review name/business telephone. US-first preparation assumption: freeUSD0.00 app andUSD9.90 monthly subscription USA-only. Paid/free Apps agreements currently active, but AppleDeveloperProgramLicenseAgreement dated2026-10-29 awaits explicit action-time consent."
+    },
+    {
+      "id": "review-access",
+      "status": "partial",
+      "evidence": "Local labeled demo implemented; live isolated review household and video pending"
+    },
+    {
+      "id": "monthly-iap",
+      "status": "partial",
+      "evidence": "App6829013285 group22530010 product6829014365 (wang.chengkai.familytv.plus.monthly,1month) created. US$9.90 andUSA-only availability saved; zh-Hans/en-US localizations configured. Official Apple JWS positive/tamper rejection and real chain/OCSP pass locally. Real Sandbox purchase/notifications and formal review incomplete."
+    },
+    {
+      "id": "deleted-household-subscription-recovery",
+      "status": "partial",
+      "required": "Restore unexpired Apple entitlement to a new family only after permanent deletion of the original family; verify with actual Apple Sandbox.",
+      "evidence": "Matching independently verified AppTransaction proof, one-hour freshness, original-family exclusion, atomic ownership arbitration, renewed/refunded notifications mapped by original ID, native restore and owned-receipt sync implemented. 10 cloud tests and 18 native tests pass; synthetic signature tests and real Apple certificate/online status checks pass in workerd. Public deployment and actual sandbox restore remain unverified."
+    }
+  ],
+  "analysisSource": "chatgpt-conversation://6ae4c566-d800-83e9-8f8b-4afc6d0dc6e6",
+  "checkedAt": "2026-10-30T20:14:58.599150+00:00",
+  "updatedAt": "2026-10-30T22:48:59.767987+00:00"
+}

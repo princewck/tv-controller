@@ -1,0 +1,38 @@
+name: Family TV source checks
+on:
+  pull_request:
+    paths:
+      - 'family-tv-ios/**'
+      - '.github/workflows/family-tv-check.yml'
+permissions:
+  contents: read
+jobs:
+  cloud-and-adapter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.20.0'
+          cache: npm
+          cache-dependency-path: |
+            family-tv-ios/cloud/package-lock.json
+            family-tv-ios/service/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify pinned installer and APK downloads
+        run: python3 scripts/check-distribution.py --fetch --online
+        working-directory: family-tv-ios
+      - name: Test release drift rejection
+        run: python3 scripts/test-distribution.py
+        working-directory: family-tv-ios
+      - run: npm ci --ignore-scripts
+        working-directory: family-tv-ios/cloud
+      - run: npm test
+        working-directory: family-tv-ios/cloud
+      - run: npm ci --ignore-scripts
+        working-directory: family-tv-ios/service
+      - run: node --test test/mobile.test.mjs test/policy.test.mjs test/tenancy.test.mjs test/http.test.mjs test/store.test.mjs test/admin.test.mjs test/learning-display.test.mjs
+        working-directory: family-tv-ios/service
+      - run: python3 scripts/check-public.py
