@@ -1,1 +1,18 @@
-{"name":"familytv-cloud","private":true,"type":"module","scripts":{"test":"node --test test/*.test.mjs","dev":"wrangler dev","deploy":"wrangler deploy"},"dependencies":{"@apple/app-store-server-library":"^3.0.0"},"devDependencies":{"wrangler":"4.156.0"}}
+{
+  "name": "familytv-cloud",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "predeploy": "python3 ../scripts/check-distribution.py",
+    "postdeploy": "python3 ../scripts/check-distribution.py --online"
+  },
+  "dependencies": {
+    "@apple/app-store-server-library": "^3.0.0"
+  },
+  "devDependencies": {
+    "wrangler": "4.156.0"
+  }
+}

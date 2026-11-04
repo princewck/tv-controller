@@ -145,7 +145,7 @@ struct InstallationTicket: Codable {
     var expired: Bool { Date.now.timeIntervalSince1970 * 1000 >= expires_ms }
     var displayCode: String { String(code.prefix(8)) + "-" + String(code.suffix(8)) }
     var agentPrompt: String {
-        L10n.tr("请下载 https://familytv-api.princewck.workers.dev/downloads/install/1.0.2/family-tv-setup.zip，解压并先读 SKILL.md，按要求配置本页电视并完成手机健康检查。")
+        L10n.tr("请下载 \(ReleaseDownloads.setupURL)，解压并先读 SKILL.md，按要求配置本页电视并完成手机健康检查。")
     }
 }
 struct InstallationChecks: Codable {

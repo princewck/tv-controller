@@ -16,6 +16,11 @@ targets:
   FamilyTV:
     type: application
     platform: iOS
+    preBuildScripts:
+      - name: Verify installer release links
+        script: /usr/bin/env python3 "$SRCROOT/scripts/check-distribution.py" --packaged-only
+        basedOnDependencyAnalysis: false
+        inputFileLists: ["$(SRCROOT)/scripts/distribution-inputs.xcfilelist"]
     sources: [App, Core, Resources]
     info:
       path: AppInfo.plist

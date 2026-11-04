@@ -18,6 +18,15 @@ jobs:
           cache-dependency-path: |
             family-tv-ios/cloud/package-lock.json
             family-tv-ios/service/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify pinned installer and APK downloads
+        run: python3 scripts/check-distribution.py --fetch --online
+        working-directory: family-tv-ios
+      - name: Test release drift rejection
+        run: python3 scripts/test-distribution.py
+        working-directory: family-tv-ios
       - run: npm ci --ignore-scripts
         working-directory: family-tv-ios/cloud
       - run: npm test

@@ -27,10 +27,7 @@ xcodebuild -project FamilyTV.xcodeproj -scheme FamilyTV \
 归档前在 Xcode 的 Signing & Capabilities 选择实际发布团队和合法的 bundle ID。当前团队与 App Store 商品标识属于本应用；其他维护者部署自己的应用时必须同步调整工程、商店和服务标识，不能沿用不属于自己的证书。
 
 ```sh
-mkdir -p release
-xcodebuild -project FamilyTV.xcodeproj -scheme FamilyTV \
-  -configuration Release -destination 'generic/platform=iOS' \
-  -archivePath release/FamilyTV.xcarchive archive
+bash scripts/archive-release.sh
 ```
 
 用 Xcode Organizer 的 Distribute App 导出或上传 App Store Connect 构建。上传后仍要核对商店验证、隐私信息、商品、截图和审核资料；归档成功不等于已经通过审核。签名密钥、证书登录凭证、IPA 和本机日志不进入 Git。
@@ -70,6 +67,17 @@ python3 scripts/package-distribution.py
 - `cloud/public/downloads/install/1.0.2/family-tv-setup.zip`
 - `cloud/public/downloads/install/1.0.2/manifest.json`
 
-源码仓库不携带已签名 APK 或 ZIP。当前 APK 哈希属于维护者已经构建的正式签名文件；Debug 构建或使用其他密钥的构建不会通过该清单。若要发布修改后的版本，先增加 APK 的 `versionName`／`versionCode` 和技能版本，更新下载 URL、手机 Agent 提示词及对应文档；构建后用 `shasum -a 256`、文件字节数及 `apksigner` 输出更新新清单，再打包。不得改写已发布版本的内容。文件已存在但字节不同时，脚本报错，应使用新版本。
+源码仓库不携带已签名 APK 或 ZIP。当前 APK 哈希属于维护者已经构建的正式签名文件；Debug 构建或使用其他密钥的构建不会通过该清单。若要发布修改后的版本，先增加 APK 的 `versionName`／`versionCode` 和技能版本，更新发布清单及对应文档；构建后用 `shasum -a 256`、文件字节数及 `apksigner` 输出更新新清单，再打包。不得改写已发布版本的内容。文件已存在但字节不同时，脚本报错，应使用新版本。
 
 打包成功只是本地产物准备完成。公网发布和真实端到端验收遵循[家庭云发布流程](../cloud/README.md#发布)，全部发布检查通过前不宣布正式可用。
+
+
+## 下载版本检查
+
+Xcode 每次构建都会执行 `scripts/check-distribution.py`。它核对 Android 源码版本、发布清单、安装工具源码、已打包文件的大小与 SHA-256，以及 App 使用的下载地址。App 的地址由清单生成，四种语言的提示词只插入该地址，不再分别保存版本号。仅修改 iPhone 界面不要求增加电视 APK 或工具版本。
+
+首次从源码仓库构建时，先运行 `python3 scripts/check-distribution.py --fetch`，按仓库中 `distribution/downloads.json` 固定的校验值下载缺失文件。校验不通过不会保存文件；该命令不会安装到电视。
+
+更新 APK 或安装工具后，先增加对应版本并更新 `distribution/family-tv-setup/assets/release.json`，运行 `python3 scripts/package-distribution.py`，再运行 `python3 scripts/check-distribution.py --write` 生成 App 地址和 Xcode 输入清单。已有版本不允许覆盖。运行 `python3 scripts/test-distribution.py` 可验证检查器会拒绝版本、地址或文件不一致的情况。
+
+云端使用 `npm run deploy`：部署前检查本地文件，部署后用 `--online` 下载并核对线上文件。正式 iOS 归档使用 `bash scripts/archive-release.sh`，它先检查线上 ZIP、APK 和清单；网络不可用、文件未发布或校验不符都会停止归档。直接调用 `wrangler deploy` 或 Xcode Organizer 归档不会执行这两条命令的线上检查，但 Xcode 的本地构建检查仍然执行。

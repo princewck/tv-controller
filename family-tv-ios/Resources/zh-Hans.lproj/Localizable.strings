@@ -388,7 +388,7 @@
 "设置每日上限" = "设置每日上限";
 "设置观看额度和休息时段。" = "设置观看额度和休息时段。";
 "语言" = "语言";
-"请下载 https://familytv-api.princewck.workers.dev/downloads/install/1.0.2/family-tv-setup.zip，解压并先读 SKILL.md，按要求配置本页电视并完成手机健康检查。" = "请下载 https://familytv-api.princewck.workers.dev/downloads/install/1.0.2/family-tv-setup.zip，解压并先读 SKILL.md，按要求配置本页电视并完成手机健康检查。";
+"请下载 {p0}，解压并先读 SKILL.md，按要求配置本页电视并完成手机健康检查。" = "请下载 {p0}，解压并先读 SKILL.md，按要求配置本页电视并完成手机健康检查。";
 "请先登录家庭账号，再订阅家庭云。" = "请先登录家庭账号，再订阅家庭云。";
 "请先确认当前登录的家庭，再继续购买订阅。" = "请先确认当前登录的家庭，再继续购买订阅。";
 "请先配对本地电视。" = "请先配对本地电视。";

@@ -27,6 +27,7 @@
 		76156F2AD708711F48E92304 /* LanTLSExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7814425E410B3BED241406D3 /* LanTLSExchange.swift */; };
 		81B576298B2C62BD7F43C0D4 /* LanVector.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F2B2C72DE8D3636126B59DA /* LanVector.json */; };
 		882AC6EA955CC8DFABA5569F /* TVAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C34D7E92F0142EF9C362BE5 /* TVAPI.swift */; };
+		88348AD596430466C798D308 /* ReleaseDownloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E87983A711BF401A157413D /* ReleaseDownloads.swift */; };
 		8F1B82FA4F7F921CCC5F8A94 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDE94B16A5231C18B291BD9 /* WelcomeView.swift */; };
 		96771B2CB40C5E28002C4E4C /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFBCAAC951792828533B7CD /* Models.swift */; };
 		96E47704050F9230E8259617 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = DF66C6FAF0D8C4C580FADA57 /* PrivacyInfo.xcprivacy */; };
@@ -79,6 +80,7 @@
 		13F323BB66FD808E6B8097FD /* LanguageSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageSettingsView.swift; sourceTree = "<group>"; };
 		1ADCF913583651EF2D67652C /* LocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTests.swift; sourceTree = "<group>"; };
 		1B30C250B140EFD691A7569F /* RulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesView.swift; sourceTree = "<group>"; };
+		1E87983A711BF401A157413D /* ReleaseDownloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseDownloads.swift; sourceTree = "<group>"; };
 		24ED659C77774D67DDEFA998 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		255E0026CA09602DFD08758C /* LocalNetworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNetworkView.swift; sourceTree = "<group>"; };
 		27C854A52007871A91240D8A /* BreakDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakDesign.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 				E6EF18A1EDD04E90F71084A0 /* LocalNetworkController.swift */,
 				4AFBCAAC951792828533B7CD /* Models.swift */,
 				37758754279954067EB314FF /* OfflineHouseholdVault.swift */,
+				1E87983A711BF401A157413D /* ReleaseDownloads.swift */,
 				2C77A6AF084C00C24C1BF65F /* ServiceEndpoint.swift */,
 				FC4F07ECB892FA257E73107E /* SubscriptionStore.swift */,
 				3C34D7E92F0142EF9C362BE5 /* TVAPI.swift */,
@@ -265,6 +268,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2C3D9C99F4D53F97966381F0 /* Build configuration list for PBXNativeTarget "FamilyTV" */;
 			buildPhases = (
+				B0A5FB7CF2E1B9C7139F516B /* Verify installer release links */,
 				31AC042069A1BBABC8B9CE2B /* Sources */,
 				7D8917DB2CEF675BB0CA5061 /* Resources */,
 			);
@@ -365,6 +369,29 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		B0A5FB7CF2E1B9C7139F516B /* Verify installer release links */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"$(SRCROOT)/scripts/distribution-inputs.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "Verify installer release links";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/bin/env python3 \"$SRCROOT/scripts/check-distribution.py\" --packaged-only";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		31AC042069A1BBABC8B9CE2B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -387,6 +414,7 @@
 				B182FA41E823D73E077CF40C /* LocalNetworkView.swift in Sources */,
 				96771B2CB40C5E28002C4E4C /* Models.swift in Sources */,
 				DFF18434733212B2009B40C3 /* OfflineHouseholdVault.swift in Sources */,
+				88348AD596430466C798D308 /* ReleaseDownloads.swift in Sources */,
 				5993462F1096DF924A4B641E /* RulesView.swift in Sources */,
 				5DF028CC517AFDED605FF7A6 /* ServiceEndpoint.swift in Sources */,
 				07E7D39250BE0EBA378D5D62 /* ServiceSelectionView.swift in Sources */,

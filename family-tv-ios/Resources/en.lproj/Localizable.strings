@@ -388,7 +388,7 @@
 "设置每日上限" = "Set daily limit";
 "设置观看额度和休息时段。" = "Set viewing limits and break times.";
 "语言" = "Language";
-"请下载 https://familytv-api.princewck.workers.dev/downloads/install/1.0.2/family-tv-setup.zip，解压并先读 SKILL.md，按要求配置本页电视并完成手机健康检查。" = "Download https://familytv-api.princewck.workers.dev/downloads/install/1.0.2/family-tv-setup.zip, extract it and read SKILL.md first. Follow its instructions to set up the TV on this page and complete the checks shown on the parent's phone. The parent must personally test picture, sound and remote controls.";
+"请下载 {p0}，解压并先读 SKILL.md，按要求配置本页电视并完成手机健康检查。" = "Download {p0}, extract it and read SKILL.md first. Follow its instructions to set up the TV on this page and complete the checks shown on the parent's phone. The parent must personally test picture, sound and remote controls.";
 "请先登录家庭账号，再订阅家庭云。" = "Sign in to your family account before subscribing to Family Cloud.";
 "请先确认当前登录的家庭，再继续购买订阅。" = "Check which family account you're signed in to before buying.";
 "请先配对本地电视。" = "Pair this phone with your TV first.";

@@ -31,5 +31,6 @@ def main():
     immutable(PUBLIC/(prefix+'/family-tv-setup.zip'),skill_data)
     release={**manifest,'skill':{'url':ORIGIN+'/'+prefix+'/family-tv-setup.zip','sha256':sha(skill_data),'size':len(skill_data)}}
     immutable(PUBLIC/(prefix+'/manifest.json'),(json.dumps(release,ensure_ascii=False,indent=2)+'\n').encode())
+    (ROOT/'distribution/downloads.json').write_text(json.dumps(release,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps({'apk':apk['url'],'skill':release['skill']['url'],'skill_sha256':sha(skill_data),'files':len(zipfile.ZipFile(io.BytesIO(skill_data)).namelist())},indent=2))
 if __name__=='__main__':main()
